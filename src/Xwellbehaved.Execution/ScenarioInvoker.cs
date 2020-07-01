@@ -146,6 +146,49 @@ namespace Xwellbehaved.Execution
             return Task.FromResult(0);
         }
 
+        /* #2 MWP 2020-07-01 12:32:08 PM / for use comparing the Background Method DeclaringType
+         * and BaseTypes. */
+        /// <summary>
+        /// Comparer ensures that <see cref="MethodInfo"/> is ordered from the basest of classes
+        /// through the derivedest of classes, in that order.
+        /// </summary>
+        private class MethodInfoComparer : IComparer<MethodInfo>
+        {
+            /// <summary>
+            /// Returns the Comparison of <paramref name="x"/> with <paramref name="y"/>.
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <returns></returns>
+            public int Compare(MethodInfo x, MethodInfo y)
+            {
+                var lineage = new List<Type> { };
+
+                /* #2 MWP 2020-07-01 12:34:25 PM / netstandard2.0 target is strongly implied by
+                 * usage of Type.BaseType; see
+                 * https://docs.microsoft.com/en-us/dotnet/api/system.type.basetype; otherwise,
+                 * netstandard1.0 would be just fine here. */
+
+                // Capture the hierarchy Type lineage, starting with itself, out to the base type.
+                for (var type = y.DeclaringType; type != null; type = type.BaseType)
+                {
+                    // Remember, in reverse order, should be sufficient to check IndexOf zero being the same type.
+                    lineage.Add(type);
+                }
+
+                // Compare the indices of the X Method DeclaringType with the lineage of the Y Method DeclaringType.
+                var typeIndex = lineage.IndexOf(x.DeclaringType);
+
+                const int isParentClass = -1;
+                const int isSameClass = 0;
+                const int isChildClass = 1;
+
+                return typeIndex < isSameClass
+                    ? isChildClass
+                    : typeIndex == isSameClass ? isSameClass : isParentClass;
+            }
+        }
+
         private async Task<RunSummary> InvokeScenarioMethodAsync(object scenarioClassInstance)
         {
             var backgroundStepDefinitions = new List<IStepDefinition>();
@@ -154,11 +197,13 @@ namespace Xwellbehaved.Execution
             {
                 using (CurrentThread.EnterStepDefinitionContext())
                 {
-                    // TODO: TBD: for immediate consideration: https://github.com/mwpowellhtx/xwellbehaved.net/issues/2
                     foreach (var backgroundMethod in this._scenario.TestCase.TestMethod.TestClass.Class
                         .GetMethods(false)
                         .Where(candidate => candidate.GetCustomAttributes(typeof(BackgroundAttribute)).Any())
-                        .Select(method => method.ToRuntimeMethod()))
+                        .Select(method => method.ToRuntimeMethod())
+                        // #2 MWP 2020-07-01 12:28:03 PM: the rubber meeting the road here.
+                        .OrderBy(method => method, new MethodInfoComparer())
+                        )
                     {
                         await this._timer.AggregateAsync(() => backgroundMethod.InvokeAsync(scenarioClassInstance, null));
                     }
