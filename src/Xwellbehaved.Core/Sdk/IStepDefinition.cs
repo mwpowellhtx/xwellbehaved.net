@@ -1,9 +1,9 @@
-namespace Xbehave.Sdk
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace Xwellbehaved.Sdk
+{
     /// <summary>
     /// Provides the definition of a step within a scenario.
     /// </summary>

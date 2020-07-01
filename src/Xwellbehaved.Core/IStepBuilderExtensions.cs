@@ -1,8 +1,9 @@
-namespace Xbehave
+using System;
+using System.Threading.Tasks;
+
+namespace Xwellbehaved
 {
-    using System;
-    using System.Threading.Tasks;
-    using Xbehave.Sdk;
+    using Xwellbehaved.Sdk;
 
     /// <summary>
     /// Provides extension methods for building steps.
@@ -10,8 +11,8 @@ namespace Xbehave
     public static class IStepBuilderExtensions
     {
         /// <summary>
-        /// Declares a teardown action (related to this step and/or previous steps) which will be executed
-        /// after all steps in the current scenario have been executed.
+        /// Declares a teardown action, relating to this step or previous steps, which will be
+        /// executed after all steps in the current scenario have been executed.
         /// </summary>
         /// <param name="stepBuilder">The step builder.</param>
         /// <param name="action">The action.</param>
@@ -24,8 +25,8 @@ namespace Xbehave
                 : stepBuilder.Teardown(context => action());
 
         /// <summary>
-        /// Declares a teardown action (related to this step and/or previous steps) which will be executed
-        /// after all steps in the current scenario have been executed.
+        /// Declares a teardown action, relating to this step or previous steps, which will be
+        /// executed after all steps in the current scenario have been executed.
         /// </summary>
         /// <param name="stepBuilder">The step builder.</param>
         /// <param name="action">The action.</param>
@@ -36,14 +37,14 @@ namespace Xbehave
             action == null
                 ? stepBuilder
                 : stepBuilder?.Teardown(context =>
-                    {
-                        action(context);
-                        return Task.FromResult(0);
-                    });
+                {
+                    action(context);
+                    return Task.FromResult(0);
+                });
 
         /// <summary>
-        /// Declares a teardown action (related to this step and/or previous steps) which will be executed
-        /// after all steps in the current scenario have been executed.
+        /// Declares a teardown action, relating to this step or previous steps, which will be
+        /// executed after all steps in the current scenario have been executed.
         /// </summary>
         /// <param name="stepBuilder">The step builder.</param>
         /// <param name="action">The action.</param>

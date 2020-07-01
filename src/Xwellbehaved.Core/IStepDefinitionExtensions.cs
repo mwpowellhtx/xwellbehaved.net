@@ -1,8 +1,9 @@
-namespace Xbehave
+using System;
+using System.Threading.Tasks;
+
+namespace Xwellbehaved
 {
-    using System;
-    using System.Threading.Tasks;
-    using Xbehave.Sdk;
+    using Xwellbehaved.Sdk;
 
     /// <summary>
     /// Provides extension methods for the definition of a step within a scenario.
@@ -10,8 +11,8 @@ namespace Xbehave
     public static class IStepDefinitionExtensions
     {
         /// <summary>
-        /// Declares a teardown action (related to this step and/or previous steps) which will be executed
-        /// after all steps in the current scenario have been executed.
+        /// Declares a teardown action, relating to this step or previous steps, which will be
+        /// executed after all steps in the current scenario have been executed.
         /// </summary>
         /// <param name="stepDefinition">The step definition.</param>
         /// <param name="action">The action.</param>
@@ -26,8 +27,8 @@ namespace Xbehave
         }
 
         /// <summary>
-        /// Declares a teardown action (related to this step and/or previous steps) which will be executed
-        /// after all steps in the current scenario have been executed.
+        /// Declares a teardown action, relating to this step or previous steps, which will be
+        /// executed after all steps in the current scenario have been executed.
         /// </summary>
         /// <param name="stepDefinition">The step definition.</param>
         /// <param name="action">The action.</param>
@@ -42,8 +43,8 @@ namespace Xbehave
         }
 
         /// <summary>
-        /// Declares a teardown action (related to this step and/or previous steps) which will be executed
-        /// after all steps in the current scenario have been executed.
+        /// Declares a teardown action, relating to this step or previous steps, which will be
+        /// executed after all steps in the current scenario have been executed.
         /// </summary>
         /// <param name="stepDefinition">The step definition.</param>
         /// <param name="action">The action.</param>

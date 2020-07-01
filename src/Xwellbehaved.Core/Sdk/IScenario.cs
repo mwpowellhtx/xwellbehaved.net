@@ -1,4 +1,4 @@
-﻿namespace Xbehave.Sdk
+namespace Xwellbehaved.Sdk
 {
     using Xunit.Abstractions;
     using Xunit.Sdk;

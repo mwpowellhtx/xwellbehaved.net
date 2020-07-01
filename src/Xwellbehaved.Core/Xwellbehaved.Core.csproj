@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);NU5128;CA1303</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Version>2.4.1.5</Version>
+        <AssemblyVersion>2.4.1.5</AssemblyVersion>
+        <FileVersion>2.4.1.5</FileVersion>
+        <PackageVersion>2.4.1.5</PackageVersion>
+        <NuspecFile>$(NUSPEC_FILE)</NuspecFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- TODO: TBD: consider guard fluently instead... also do not need/want FxCop I think... -->
+        <!-- TODO: TBD: or needing a Github SourceLink (?) -->
+        <PackageReference Include="LiteGuard.Source" Version="2.2.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" PrivateAssets="All" />
+        <PackageReference Include="xunit.extensibility.core" Version="2.4.0" />
+    </ItemGroup>
+
+    <!-- The timing of which is key here, after versions bump, before build, and subsequent packaging. -->
+    <Target Name="InitializeNuspecProperties" AfterTargets="BumpAssemblyVersionsBeforeBuild" BeforeTargets="BeforeBuild">
+
+        <ItemGroup>
+            <!-- TODO: TBD: And here are the Nuspec properties... -->
+            <!-- TODO: TBD: Which more could be exposed, i.e. authors, etc... -->
+            <!-- TODO: TBD: Or differently, i.e. do not need/want Commit, etc... -->
+            <NuspecProperty Include="RepositoryCommit=$(SourceRevisionId)" />
+            <NuspecProperty Include="RepositoryType=$(RepositoryType)" />
+            <NuspecProperty Include="RepositoryUrl=$(PrivateRepositoryUrl)" />
+            <NuspecProperty Include="Version=$(Version)" />
+        </ItemGroup>
+
+        <PropertyGroup>
+            <NuspecProperties>@(NuspecProperty, ';')</NuspecProperties>
+        </PropertyGroup>
+
+    </Target>
+
+    <Import Project="..\Signed.props" />
+
+</Project>

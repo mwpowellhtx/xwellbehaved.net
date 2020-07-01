@@ -1,7 +1,7 @@
-﻿namespace Xbehave
-{
-    using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
+namespace Xwellbehaved
+{
     /// <summary>
     /// Indicates the behavior of remaining steps when a step fails.
     /// </summary>
@@ -16,6 +16,6 @@
         /// <summary>
         /// Run remaining steps.
         /// </summary>
-        Run = 1,
+        Run = 1
     }
 }

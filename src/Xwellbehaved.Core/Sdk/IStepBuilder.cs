@@ -1,8 +1,8 @@
-namespace Xbehave.Sdk
-{
-    using System;
-    using System.Threading.Tasks;
+using System;
+using System.Threading.Tasks;
 
+namespace Xwellbehaved.Sdk
+{
     /// <summary>
     /// Provides methods for building steps.
     /// </summary>

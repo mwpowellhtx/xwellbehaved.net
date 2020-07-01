@@ -1,4 +1,4 @@
-namespace Xbehave.Sdk
+namespace Xwellbehaved.Sdk
 {
     /// <summary>
     /// Gets the display text for a step.

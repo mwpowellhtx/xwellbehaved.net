@@ -1,16 +1,16 @@
-namespace Xbehave.Sdk
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
+namespace Xwellbehaved.Sdk
+{
     /// <summary>
     /// Represents the currently executing thread.
     /// </summary>
     public static class CurrentThread
     {
         [ThreadStatic]
-        private static List<IStepDefinition> stepDefinitions;
+        private static List<IStepDefinition> _stepDefs;
 
         /// <summary>
         /// Causes the currently executing thread to enter a step definition context
@@ -22,7 +22,7 @@ namespace Xbehave.Sdk
         /// </returns>
         public static IDisposable EnterStepDefinitionContext()
         {
-            stepDefinitions = new List<IStepDefinition>();
+            _stepDefs = new List<IStepDefinition>();
 
             return new StepDefinitionContext();
         }
@@ -40,12 +40,12 @@ namespace Xbehave.Sdk
         /// </remarks>
         public static void Add(IStepDefinition item)
         {
-            if (stepDefinitions == null)
+            if (_stepDefs == null)
             {
                 throw new InvalidOperationException("The currently executing thread is not in a step definition context.");
             }
 
-            stepDefinitions.Add(item);
+            _stepDefs.Add(item);
         }
 
         /// <summary>
@@ -56,11 +56,11 @@ namespace Xbehave.Sdk
         /// the <see cref="IEnumerable{T}"/> will be empty.
         /// </remarks>
         public static IEnumerable<IStepDefinition> StepDefinitions =>
-            stepDefinitions ?? Enumerable.Empty<IStepDefinition>();
+            _stepDefs ?? Enumerable.Empty<IStepDefinition>();
 
         private sealed class StepDefinitionContext : IDisposable
         {
-            public void Dispose() => stepDefinitions = null;
+            public void Dispose() => _stepDefs = null;
         }
     }
 }

@@ -1,15 +1,19 @@
-namespace Xbehave
+using System;
+using System.Threading.Tasks;
+
+namespace Xwellbehaved
 {
-    using System;
-    using System.Threading.Tasks;
-    using Xbehave.Sdk;
+    using Xwellbehaved.Sdk;
 
     /// <summary>
     /// Provides access to step definition methods.
     /// </summary>
     public static class StringExtensions
     {
+
 #pragma warning disable IDE1006 // Naming Styles
+        private static Func<IStepContext, Task> NullBodyCallback => null;
+
         /// <summary>
         /// Defines a step in the current scenario.
         /// </summary>
@@ -20,20 +24,18 @@ namespace Xbehave
         /// </returns>
         public static IStepBuilder x(this string text, Action body)
         {
-            var stepDefinition = new StepDefinition
+            var stepDef = new StepDefinition
             {
                 Text = text,
-                Body = body == null
-                    ? (Func<IStepContext, Task>)null
-                    : c =>
-                        {
-                            body();
-                            return Task.FromResult(0);
-                        },
+                Body = body == null ? NullBodyCallback : c =>
+                {
+                    body();
+                    return Task.FromResult(0);
+                },
             };
 
-            CurrentThread.Add(stepDefinition);
-            return stepDefinition;
+            CurrentThread.Add(stepDef);
+            return stepDef;
         }
 
         /// <summary>
@@ -46,20 +48,18 @@ namespace Xbehave
         /// </returns>
         public static IStepBuilder x(this string text, Action<IStepContext> body)
         {
-            var stepDefinition = new StepDefinition
+            var stepDef = new StepDefinition
             {
                 Text = text,
-                Body = body == null
-                    ? (Func<IStepContext, Task>)null
-                    : c =>
-                        {
-                            body(c);
-                            return Task.FromResult(0);
-                        },
+                Body = body == null ? NullBodyCallback : c =>
+                {
+                    body(c);
+                    return Task.FromResult(0);
+                },
             };
 
-            CurrentThread.Add(stepDefinition);
-            return stepDefinition;
+            CurrentThread.Add(stepDef);
+            return stepDef;
         }
 
         /// <summary>
@@ -72,14 +72,14 @@ namespace Xbehave
         /// </returns>
         public static IStepBuilder x(this string text, Func<Task> body)
         {
-            var stepDefinition = new StepDefinition
+            var stepDef = new StepDefinition
             {
                 Text = text,
-                Body = body == null ? (Func<IStepContext, Task>)null : c => body(),
+                Body = body == null ? NullBodyCallback : c => body(),
             };
 
-            CurrentThread.Add(stepDefinition);
-            return stepDefinition;
+            CurrentThread.Add(stepDef);
+            return stepDef;
         }
 
         /// <summary>
@@ -92,10 +92,11 @@ namespace Xbehave
         /// </returns>
         public static IStepBuilder x(this string text, Func<IStepContext, Task> body)
         {
-            var stepDefinition = new StepDefinition { Text = text, Body = body, };
-            CurrentThread.Add(stepDefinition);
-            return stepDefinition;
+            var stepDef = new StepDefinition { Text = text, Body = body };
+            CurrentThread.Add(stepDef);
+            return stepDef;
         }
 #pragma warning restore IDE1006 // Naming Styles
+
     }
 }

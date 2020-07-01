@@ -1,7 +1,8 @@
-namespace Xbehave
+using System;
+
+namespace Xwellbehaved
 {
-    using System;
-    using Xbehave.Sdk;
+    using Xwellbehaved.Sdk;
 
     /// <summary>
     /// <see cref="IDisposable"/> extensions.
@@ -9,8 +10,8 @@ namespace Xbehave
     public static class DisposableExtensions
     {
         /// <summary>
-        /// Immediately registers the <see cref="IDisposable"/> object for disposal
-        /// after all steps in the current scenario have been executed.
+        /// Immediately registers the <see cref="IDisposable"/> object for disposal after all
+        /// steps in the current scenario have been executed.
         /// </summary>
         /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="disposable">The object to be disposed.</param>
@@ -19,8 +20,8 @@ namespace Xbehave
         public static T Using<T>(this T disposable, IStepContext stepContext)
             where T : IDisposable
         {
+            // TODO: TBD: replace the guard with fluent...
             Guard.AgainstNullArgument(nameof(stepContext), stepContext);
-
             stepContext.Using(disposable);
             return disposable;
         }
