@@ -1,0 +1,27 @@
+<Project>
+
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);NU1603</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <XunitVersion>2.4.1</XunitVersion>
+        <XbehaveVersion>2.4.1</XbehaveVersion>
+        <XunitFluentlyAssertVersion>1.6.1</XunitFluentlyAssertVersion>
+        <XunitFluentlyAssertExceptionallyVersion>1.0.1</XunitFluentlyAssertExceptionallyVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="xunit" Version="$(XunitVersion)" />
+        <PackageReference Include="xunit.runner.console" Version="$(XunitVersion)" PrivateAssets="all">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitVersion)" PrivateAssets="all">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Xbehave" Version="$(XbehaveVersion)" />
+        <PackageReference Include="xunit.fluently.assert" Version="$(XunitFluentlyAssertVersion)" />
+        <PackageReference Include="xunit.fluently.assert.exceptionally" Version="$(XunitFluentlyAssertExceptionallyVersion)" />
+    </ItemGroup>
+
+</Project>
