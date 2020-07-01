@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Xwellbehaved.Execution
 {
+    using Validation;
     using Xunit.Abstractions;
     using Xunit.Sdk;
     using Xwellbehaved.Execution.Extensions;
@@ -41,25 +42,16 @@ namespace Xwellbehaved.Execution
             , ExceptionAggregator aggregator
             , CancellationTokenSource cancellationTokenSource)
         {
-            // TODO: TBD: ditto fluent guards...
-            Guard.AgainstNullArgument(nameof(scenario), scenario);
-            Guard.AgainstNullArgument(nameof(messageBus), messageBus);
-            Guard.AgainstNullArgument(nameof(scenarioClass), scenarioClass);
-            Guard.AgainstNullArgument(nameof(scenarioMethod), scenarioMethod);
-            Guard.AgainstNullArgument(nameof(beforeAfterScenarioAttributes), beforeAfterScenarioAttributes);
-            Guard.AgainstNullArgument(nameof(aggregator), aggregator);
-            Guard.AgainstNullArgument(nameof(cancellationTokenSource), cancellationTokenSource);
-
-            this._scenario = scenario;
+            this._scenario = scenario.RequiresNotNull(nameof(scenario));
             // TODO: TBD: #1 MWP 2020-07-01 11:58:07 AM: but which also beggars the question, should we be cleaning up after IDisposable members like messageBus?
-            this._messageBus = messageBus;
-            this._scenarioClass = scenarioClass;
-            this._constructorArguments = constructorArguments;
-            this._scenarioMethod = scenarioMethod;
+            this._messageBus = messageBus.RequiresNotNull(nameof(messageBus));
+            this._scenarioClass = scenarioClass.RequiresNotNull(nameof(scenarioClass));
+            this._constructorArguments = constructorArguments; // TODO: TBD: put fluent validation guards on the arguments?
+            this._scenarioMethod = scenarioMethod.RequiresNotNull(nameof(scenarioMethod));
             this._scenarioMethodArguments = scenarioMethodArguments;
-            this._beforeAfterScenarioAttributes = beforeAfterScenarioAttributes;
-            this._aggregator = aggregator;
-            this._cancellationTokenSource = cancellationTokenSource;
+            this._beforeAfterScenarioAttributes = beforeAfterScenarioAttributes.RequiresNotNull(nameof(beforeAfterScenarioAttributes));
+            this._aggregator = aggregator.RequiresNotNull(nameof(aggregator));
+            this._cancellationTokenSource = cancellationTokenSource.RequiresNotNull(nameof(cancellationTokenSource));
         }
 
         public async Task<RunSummary> RunAsync()

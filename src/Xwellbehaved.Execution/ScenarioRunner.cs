@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Xwellbehaved.Execution
 {
+    using Validation;
     using Xunit.Sdk;
     using Xwellbehaved.Execution.Extensions;
     using Xwellbehaved.Sdk;
@@ -36,20 +37,16 @@ namespace Xwellbehaved.Execution
             , ExceptionAggregator aggregator
             , CancellationTokenSource cancellationTokenSource)
         {
-            // TODO: TBD: ditto fluently guard.
-            Guard.AgainstNullArgument(nameof(scenario), scenario);
-            Guard.AgainstNullArgument(nameof(messageBus), messageBus);
-            Guard.AgainstNullArgument(nameof(aggregator), aggregator);
-
-            this._scenario = scenario;
-            this._messageBus = messageBus;
+            this._scenario = scenario.RequiresNotNull(nameof(scenario));
+            this._messageBus = messageBus.RequiresNotNull(nameof(messageBus));
+            // TODO: TBD: #3 MWP 2020-07-01 03:14:04 PM / should there be guards on these?
             this._scenarioClass = scenarioClass;
             this._constructorArguments = constructorArguments;
             this._scenarioMethod = scenarioMethod;
             this._scenarioMethodArguments = scenarioMethodArguments;
             this._skipReason = skipReason;
             this._beforeAfterScenarioAttributes = beforeAfterScenarioAttributes;
-            this._parentAggregator = aggregator;
+            this._parentAggregator = aggregator.RequiresNotNull(nameof(aggregator));
             this._cancellationTokenSource = cancellationTokenSource;
         }
 

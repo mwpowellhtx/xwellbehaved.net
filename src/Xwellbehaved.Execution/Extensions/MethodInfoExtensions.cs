@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Xwellbehaved.Execution.Extensions
 {
+    using Validation;
     using Xunit.Sdk;
 
     // TODO: TBD: can and probably should comment in Xml comments...
@@ -13,8 +14,7 @@ namespace Xwellbehaved.Execution.Extensions
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Propagating sync method parameter name.")]
         public static async Task InvokeAsync(this MethodInfo method, object obj, object[] arguments)
         {
-            // TODO: TBD: ditto fluent guards...
-            Guard.AgainstNullArgument(nameof(method), method);
+            method = method.RequiresNotNull(nameof(method));
 
             var parameterTypes = method.GetParameters().Select(parameter => parameter.ParameterType).ToArray();
             Reflector.ConvertArguments(arguments, parameterTypes);

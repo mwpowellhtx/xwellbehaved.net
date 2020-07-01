@@ -12,10 +12,10 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Version>2.4.1.4</Version>
-        <AssemblyVersion>2.4.1.4</AssemblyVersion>
-        <FileVersion>2.4.1.4</FileVersion>
-        <PackageVersion>2.4.1.4</PackageVersion>
+        <Version>2.4.1.20</Version>
+        <AssemblyVersion>2.4.1.20</AssemblyVersion>
+        <FileVersion>2.4.1.20</FileVersion>
+        <PackageVersion>2.4.1.20</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,7 +24,6 @@
 
     <ItemGroup>
         <!-- TODO: TBD: ditto re: fluently guard, etc. -->
-        <PackageReference Include="LiteGuard.Source" Version="2.2.0" PrivateAssets="All" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
         <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" PrivateAssets="All" />
         <PackageReference Include="xunit.extensibility.execution" Version="2.4.0" />
@@ -34,6 +33,7 @@
         <AssemblyAttribute Include="Xunit.Sdk.PlatformSpecificAssembly" />
     </ItemGroup>-->
 
+    <Import Project="..\Validations.props" />
     <Import Project="..\Signed.props" />
 
 </Project>

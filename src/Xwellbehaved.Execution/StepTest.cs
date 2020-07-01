@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Xwellbehaved.Execution
 {
+    using Validation;
     using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Sdk;
@@ -12,10 +13,7 @@ namespace Xwellbehaved.Execution
     {
         public StepTest(IScenario scenario, string displayName)
         {
-            // TODO: TBD: ditto fluently guard...
-            Guard.AgainstNullArgument(nameof(scenario), scenario);
-
-            this.Scenario = scenario;
+            this.Scenario = scenario.RequiresNotNull(nameof(scenario));
             this.DisplayName = displayName;
         }
 

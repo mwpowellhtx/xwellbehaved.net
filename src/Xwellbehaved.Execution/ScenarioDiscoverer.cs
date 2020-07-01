@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Xwellbehaved.Execution
 {
+    using Validation;
     using Xunit.Abstractions;
     using Xunit.Sdk;
 
@@ -23,8 +24,7 @@ namespace Xwellbehaved.Execution
             , ITestMethod testMethod
             , IAttributeInfo factAttribute)
         {
-            // TODO: TBD: ditto fluently guard...
-            Guard.AgainstNullArgument(nameof(discoveryOptions), discoveryOptions);
+            discoveryOptions = discoveryOptions.RequiresNotNull(nameof(discoveryOptions));
 
             yield return new ScenarioOutlineTestCase(
                 this.DiagnosticMessageSink

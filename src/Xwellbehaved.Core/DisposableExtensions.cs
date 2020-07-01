@@ -2,6 +2,7 @@ using System;
 
 namespace Xwellbehaved
 {
+    using Validation;
     using Xwellbehaved.Sdk;
 
     /// <summary>
@@ -20,9 +21,7 @@ namespace Xwellbehaved
         public static T Using<T>(this T disposable, IStepContext stepContext)
             where T : IDisposable
         {
-            // TODO: TBD: replace the guard with fluent...
-            Guard.AgainstNullArgument(nameof(stepContext), stepContext);
-            stepContext.Using(disposable);
+            stepContext.RequiresNotNull(nameof(stepContext)).Using(disposable);
             return disposable;
         }
     }

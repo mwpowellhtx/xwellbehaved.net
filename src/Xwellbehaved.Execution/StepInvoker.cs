@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace Xwellbehaved.Execution
 {
+    using Validation;
     using Xunit.Sdk;
     using Xwellbehaved.Sdk;
 
@@ -22,14 +23,11 @@ namespace Xwellbehaved.Execution
             , ExceptionAggregator aggregator
             , CancellationTokenSource cancellationTokenSource)
         {
-            // TODO: TBD: ditto fluently guard...
-            Guard.AgainstNullArgument(nameof(aggregator), aggregator);
-            Guard.AgainstNullArgument(nameof(cancellationTokenSource), cancellationTokenSource);
-
+            // TODO: TBD: #3 MWP 2020-07-01 03:15:09 PM / should we validate the other bits?
             this._stepContext = stepContext;
             this._body = body;
-            this._aggregator = aggregator;
-            this._cancellationTokenSource = cancellationTokenSource;
+            this._aggregator = aggregator.RequiresNotNull(nameof(aggregator));
+            this._cancellationTokenSource = cancellationTokenSource.RequiresNotNull(nameof(cancellationTokenSource));
         }
 
         public async Task<decimal> RunAsync()

@@ -3,6 +3,7 @@ using System.Threading;
 
 namespace Xwellbehaved.Execution.Extensions
 {
+    using Validation;
     using Xunit.Abstractions;
     using Xunit.Sdk;
 
@@ -15,10 +16,8 @@ namespace Xwellbehaved.Execution.Extensions
             , Func<ITest, IMessageSinkMessage> createTestResultMessage
             , CancellationTokenSource cancellationTokenSource)
         {
-            // TODO: TBD: ditto fluent guards...
-            Guard.AgainstNullArgument(nameof(messageBus), messageBus);
-            Guard.AgainstNullArgument(nameof(createTestResultMessage), createTestResultMessage);
-            Guard.AgainstNullArgument(nameof(cancellationTokenSource), cancellationTokenSource);
+            messageBus = messageBus.RequiresNotNull(nameof(messageBus));
+            cancellationTokenSource = cancellationTokenSource.RequiresNotNull(nameof(cancellationTokenSource));
 
             if (!messageBus.QueueMessage(new TestStarting(test)))
             {
@@ -26,7 +25,8 @@ namespace Xwellbehaved.Execution.Extensions
             }
             else
             {
-                if (!messageBus.QueueMessage(createTestResultMessage(test)))
+                var message = createTestResultMessage.RequiresNotNull(nameof(createTestResultMessage)).Invoke(test);
+                if (!messageBus.QueueMessage(message))
                 {
                     cancellationTokenSource.Cancel();
                 }

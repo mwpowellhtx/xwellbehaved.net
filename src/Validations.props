@@ -1,0 +1,9 @@
+<Project>
+
+    <!-- TODO: TBD: https://github.com/mwpowellhtx/xwellbehaved.net/issues/3 -->
+    <ItemGroup>
+        <PackageReference Include="Validate.Fluently" Version="1.0.1.18566" PrivateAssets="all" />
+        <!--<PackageReference Include="LiteGuard.Source" Version="2.2.0" PrivateAssets="All" />-->
+    </ItemGroup>
+
+</Project>

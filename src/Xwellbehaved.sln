@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{3154940B-6
 		..\Licensing.props = ..\Licensing.props
 		Signed.props = Signed.props
 		Unit.Testing.props = Unit.Testing.props
+		Validations.props = Validations.props
 		Xwellbehaved.snk = Xwellbehaved.snk
 	EndProjectSection
 EndProject

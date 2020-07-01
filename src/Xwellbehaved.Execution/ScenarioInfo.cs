@@ -6,6 +6,7 @@ using System.Reflection;
 
 namespace Xwellbehaved.Execution
 {
+    using Validation;
     using Xunit.Abstractions;
     using Xunit.Sdk;
 
@@ -22,7 +23,7 @@ namespace Xwellbehaved.Execution
 
         public ScenarioInfo(IMethodInfo testMethod, object[] dataRow, string scenarioOutlineDisplayName)
         {
-            Guard.AgainstNullArgument(nameof(testMethod), testMethod);
+            testMethod = testMethod.RequiresNotNull(nameof(testMethod));
 
             var parameters = testMethod.GetParameters().ToList();
             var typeParameters = testMethod.GetGenericArguments().ToList();
@@ -160,8 +161,7 @@ namespace Xwellbehaved.Execution
 
             public Argument(Type type)
             {
-                Guard.AgainstNullArgument(nameof(type), type);
-
+                type = type.RequiresNotNull(nameof(type));
                 this.Value = genericFactoryMethod.MakeGenericMethod(type).Invoke(null, null);
                 this.IsGeneratedDefault = true;
             }
