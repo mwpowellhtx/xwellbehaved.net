@@ -9,3 +9,6 @@ obj/
 
 # Should never ever need to commit this one.
 *.PublicKey
+
+# Ignore files prefixed with #hashtag
+\#*.*
