@@ -1,15 +1,67 @@
 <Project>
 
-  <!-- version -->
-  <ItemGroup>
-    <PackageReference Include="MinVer" Version="2.3.0" PrivateAssets="All" />
-  </ItemGroup>
+    <PropertyGroup>
+        <RootNamespace>Xwellbehaved</RootNamespace>
+    </PropertyGroup>
 
-  <!-- assembly signing -->
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Xbehave.snk</AssemblyOriginatorKeyFile>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
+    <ItemGroup>
+        <None Remove="*.TMP" />
+        <None Remove="**/*.TMP" />
+    </ItemGroup>
+
+    <!-- Versioning... -->
+    <PropertyGroup>
+        <BumpAssemblyVersionsVersion>1.4.0</BumpAssemblyVersionsVersion>
+        <BumpAssemblyVersionsTargetsPath>..\packages\BumpAssemblyVersions\$(BumpAssemblyVersionsVersion)\build\BumpAssemblyVersions.targets</BumpAssemblyVersionsTargetsPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BumpAssemblyVersions" Version="$(BumpAssemblyVersionsVersion)" PrivateAssets="All">
+            <IncludeAssets>runtime;build;native;contentfiles;analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Debug' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+        <BumpVersionSpec Include="Version" BuildProviderTemplate="Increment" />
+        <BumpVersionSpec Include="AssemblyVersion" BuildProviderTemplate="Increment" />
+        <BumpVersionSpec Include="FileVersion" BuildProviderTemplate="Increment" />
+        <BumpVersionSpec Include="PackageVersion" BuildProviderTemplate="Increment" />
+    </ItemGroup>
+
+    <!-- ReSharper disable UnknownProperty -->
+    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpInitialRelease)' == 'true' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+        <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="SecondsSinceMidnight" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpPatchRelease)' == 'true' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+        <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpMinorRelease)' == 'true' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+        <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpMajorRelease)' == 'true' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+        <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+        <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="SecondsSinceMidnight" />
+    </ItemGroup>
+
+    <!-- Depending on `PackageOutputPath´ is still the right thing to do, as is 'PackageId'.
+     Where we run into difficulty is when we try to deliver into a single location, especially for similarly named packages. -->
+    <!--<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="if exist &quot;$(PackageOutputPath)$(PackageId).*.nupkg&quot; del /f &quot;$(PackageOutputPath)$(PackageId).*.nupkg&quot;" />
+    </Target>-->
+    <!-- ReSharper restore UnknownProperty -->
 
 </Project>
