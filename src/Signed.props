@@ -1,0 +1,10 @@
+<Project>
+
+    <!-- Assembly signing... -->
+    <PropertyGroup>
+        <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Xwellbehaved.snk</AssemblyOriginatorKeyFile>
+        <PublicSign Condition="'$(OS)' != 'Windows_NT'">true</PublicSign>
+        <SignAssembly>true</SignAssembly>
+    </PropertyGroup>
+
+</Project>
