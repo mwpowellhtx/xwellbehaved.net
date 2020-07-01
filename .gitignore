@@ -6,3 +6,6 @@ bin/
 obj/
 
 *.user
+
+# Should never ever need to commit this one.
+*.PublicKey
