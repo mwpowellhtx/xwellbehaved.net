@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <CodeAnalysisRuleSet>Test.Xwellbehaved.ruleset</CodeAnalysisRuleSet>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <NoWarn>$(NoWarn);CS0168;CS1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Version>2.4.1.4</Version>
+        <AssemblyVersion>2.4.1.4</AssemblyVersion>
+        <FileVersion>2.4.1.4</FileVersion>
+        <PackageVersion>2.4.1.4</PackageVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Xwellbehaved.Execution\Xwellbehaved.Execution.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- TODO: TBD: ditto re: FluentAssertions, etc. -->
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+        <PackageReference Include="FluentAssertions" Version="5.10.3" />
+        <PackageReference Include="PublicApiGenerator" Version="10.0.2" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.utility" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,103 @@
+[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName="")]
+namespace Xwellbehaved
+{
+    [System.AttributeUsage(System.AttributeTargets.Method | System.AttributeTargets.All)]
+    public class BackgroundAttribute : System.Attribute
+    {
+        public BackgroundAttribute() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Method | System.AttributeTargets.All, AllowMultiple=true, Inherited=true)]
+    public abstract class BeforeAfterScenarioAttribute : Xunit.Sdk.BeforeAfterTestAttribute
+    {
+        protected BeforeAfterScenarioAttribute() { }
+    }
+    public static class DisposableExtensions
+    {
+        public static T Using<T>(this T disposable, Xwellbehaved.Sdk.IStepContext stepContext)
+            where T : System.IDisposable { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method | System.AttributeTargets.All, AllowMultiple=true)]
+    [Xunit.Sdk.DataDiscoverer("Xunit.Sdk.InlineDataDiscoverer", "xunit.core")]
+    public sealed class ExampleAttribute : Xunit.Sdk.DataAttribute
+    {
+        public ExampleAttribute(params object[] data) { }
+        public override System.Collections.Generic.IEnumerable<object[]> GetData(System.Reflection.MethodInfo testMethod) { }
+    }
+    public static class IStepBuilderExtensions
+    {
+        public static Xwellbehaved.Sdk.IStepBuilder Teardown(this Xwellbehaved.Sdk.IStepBuilder stepBuilder, System.Action action) { }
+        public static Xwellbehaved.Sdk.IStepBuilder Teardown(this Xwellbehaved.Sdk.IStepBuilder stepBuilder, System.Action<Xwellbehaved.Sdk.IStepContext> action) { }
+        public static Xwellbehaved.Sdk.IStepBuilder Teardown(this Xwellbehaved.Sdk.IStepBuilder stepBuilder, System.Func<System.Threading.Tasks.Task> action) { }
+    }
+    public static class IStepDefinitionExtensions
+    {
+        public static Xwellbehaved.Sdk.IStepDefinition Teardown(this Xwellbehaved.Sdk.IStepDefinition stepDefinition, System.Action action) { }
+        public static Xwellbehaved.Sdk.IStepDefinition Teardown(this Xwellbehaved.Sdk.IStepDefinition stepDefinition, System.Action<Xwellbehaved.Sdk.IStepContext> action) { }
+        public static Xwellbehaved.Sdk.IStepDefinition Teardown(this Xwellbehaved.Sdk.IStepDefinition stepDefinition, System.Func<System.Threading.Tasks.Task> action) { }
+    }
+    public enum RemainingSteps
+    {
+        Skip = 0,
+        Run = 1,
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method | System.AttributeTargets.All)]
+    [Xunit.Sdk.XunitTestCaseDiscoverer("Xwellbehaved.Execution.ScenarioDiscoverer", "Xwellbehaved.Execution")]
+    public class ScenarioAttribute : Xunit.FactAttribute
+    {
+        public ScenarioAttribute() { }
+    }
+    public static class StringExtensions
+    {
+        public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Action body) { }
+        public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Action<Xwellbehaved.Sdk.IStepContext> body) { }
+        public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Func<System.Threading.Tasks.Task> body) { }
+        public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> body) { }
+    }
+}
+namespace Xwellbehaved.Sdk
+{
+    public static class CurrentThread
+    {
+        public static System.Collections.Generic.IEnumerable<Xwellbehaved.Sdk.IStepDefinition> StepDefinitions { get; }
+        public static void Add(Xwellbehaved.Sdk.IStepDefinition item) { }
+        public static System.IDisposable EnterStepDefinitionContext() { }
+    }
+    public delegate string GetStepDisplayText(string stepText, bool isBackgroundStep);
+    public interface IFilter<T>
+    {
+        System.Collections.Generic.IEnumerable<T> Filter(System.Collections.Generic.IEnumerable<T> source);
+    }
+    public interface IScenario : Xunit.Abstractions.ITest
+    {
+        new string DisplayName { get; }
+        Xunit.Sdk.IXunitTestCase ScenarioOutline { get; }
+    }
+    public interface IStep : Xunit.Abstractions.ITest
+    {
+        Xwellbehaved.Sdk.IScenario Scenario { get; }
+    }
+    public interface IStepBuilder
+    {
+        Xwellbehaved.Sdk.IStepBuilder OnFailure(Xwellbehaved.RemainingSteps behavior);
+        Xwellbehaved.Sdk.IStepBuilder Skip(string reason);
+        Xwellbehaved.Sdk.IStepBuilder Teardown(System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> action);
+    }
+    public interface IStepContext
+    {
+        Xwellbehaved.Sdk.IStep Step { get; }
+        Xwellbehaved.Sdk.IStepContext Using(System.IDisposable disposable);
+    }
+    public interface IStepDefinition : Xwellbehaved.Sdk.IStepBuilder
+    {
+        System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> Body { get; set; }
+        Xwellbehaved.Sdk.GetStepDisplayText DisplayTextFunc { get; set; }
+        Xwellbehaved.RemainingSteps FailureBehavior { get; set; }
+        string SkipReason { get; set; }
+        System.Collections.Generic.ICollection<System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task>> Teardowns { get; }
+        string Text { get; set; }
+        Xwellbehaved.Sdk.IStepDefinition DisplayText(Xwellbehaved.Sdk.GetStepDisplayText func);
+        Xwellbehaved.Sdk.IStepDefinition OnFailure(Xwellbehaved.RemainingSteps behavior);
+        Xwellbehaved.Sdk.IStepDefinition Skip(string reason);
+        Xwellbehaved.Sdk.IStepDefinition Teardown(System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> action);
+    }
+}
