@@ -1,5 +1,8 @@
 .idea/
 .vs/
+
+packages/
 bin/
 obj/
+
 *.user
