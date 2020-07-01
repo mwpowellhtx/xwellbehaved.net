@@ -3,22 +3,46 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{33269118-539E-4B80-8298-556253F984FE}"
-	ProjectSection(SolutionItems) = preProject
-		src\Directory.Build.props = src\Directory.Build.props
-		src\Xbehave.snk = src\Xbehave.snk
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xbehave.Core", "src\Xbehave.Core\Xbehave.Core.csproj", "{37910B4A-996D-4DB1-816E-7ABAAE43CEC2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xbehave.Execution", "src\Xbehave.Execution\Xbehave.Execution.csproj", "{27AB17E5-1796-4DBD-8FFE-99249114C93A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{41BB5C25-6084-4CA2-A9E8-EE35A1CA1DEA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xbehave.Test", "tests\Xbehave.Test\Xbehave.Test.csproj", "{AB3C58C9-5EB0-419B-90F4-2835F997CC93}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "targets", "targets", "{7FE5E741-9F2D-497B-8FAC-FF404D765FBE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Targets", "targets\Targets.csproj", "{AF81B0F8-7DE8-4595-9B2F-6AC8F2AB57EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xwellbehaved.Core", "Xwellbehaved.Core\Xwellbehaved.Core.csproj", "{37910B4A-996D-4DB1-816E-7ABAAE43CEC2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xwellbehaved.Execution", "Xwellbehaved.Execution\Xwellbehaved.Execution.csproj", "{27AB17E5-1796-4DBD-8FFE-99249114C93A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Xwellbehaved", "Test.Xwellbehaved\Test.Xwellbehaved.csproj", "{AB3C58C9-5EB0-419B-90F4-2835F997CC93}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Targets", "Targets\Targets.csproj", "{AF81B0F8-7DE8-4595-9B2F-6AC8F2AB57EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{3154940B-6ED5-44F0-A2E6-B4AEA2A7D0E0}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		..\Licensing.props = ..\Licensing.props
+		Signed.props = Signed.props
+		Unit.Testing.props = Unit.Testing.props
+		Xwellbehaved.snk = Xwellbehaved.snk
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".parent", ".parent", "{7B680FCF-5B6D-4B05-B3CF-E2E4C38F4A60}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+		..\.gitattributes = ..\.gitattributes
+		..\.gitignore = ..\.gitignore
+		..\.mailmap = ..\.mailmap
+		..\build.cmd = ..\build.cmd
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\CONTRIBUTORS = ..\CONTRIBUTORS
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{490E6AAA-0771-4F3E-A020-A6314309125A}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.Config = NuGet.Config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +75,7 @@ Global
 		{27AB17E5-1796-4DBD-8FFE-99249114C93A} = {33269118-539E-4B80-8298-556253F984FE}
 		{AB3C58C9-5EB0-419B-90F4-2835F997CC93} = {41BB5C25-6084-4CA2-A9E8-EE35A1CA1DEA}
 		{AF81B0F8-7DE8-4595-9B2F-6AC8F2AB57EB} = {7FE5E741-9F2D-497B-8FAC-FF404D765FBE}
+		{7B680FCF-5B6D-4B05-B3CF-E2E4C38F4A60} = {3154940B-6ED5-44F0-A2E6-B4AEA2A7D0E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {397F0EE3-6CD7-4EF4-B6D2-ED3FEAAE5FBF}
