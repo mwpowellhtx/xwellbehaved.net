@@ -51,6 +51,7 @@ namespace Xwellbehaved.Execution
             Guard.AgainstNullArgument(nameof(cancellationTokenSource), cancellationTokenSource);
 
             this._scenario = scenario;
+            // TODO: TBD: #1 MWP 2020-07-01 11:58:07 AM: but which also beggars the question, should we be cleaning up after IDisposable members like messageBus?
             this._messageBus = messageBus;
             this._scenarioClass = scenarioClass;
             this._constructorArguments = constructorArguments;
@@ -153,6 +154,7 @@ namespace Xwellbehaved.Execution
             {
                 using (CurrentThread.EnterStepDefinitionContext())
                 {
+                    // TODO: TBD: for immediate consideration: https://github.com/mwpowellhtx/xwellbehaved.net/issues/2
                     foreach (var backgroundMethod in this._scenario.TestCase.TestMethod.TestClass.Class
                         .GetMethods(false)
                         .Where(candidate => candidate.GetCustomAttributes(typeof(BackgroundAttribute)).Any())
@@ -166,8 +168,7 @@ namespace Xwellbehaved.Execution
 
                 using (CurrentThread.EnterStepDefinitionContext())
                 {
-                    await this._timer.AggregateAsync(() =>
-                        this._scenarioMethod.InvokeAsync(scenarioClassInstance, this._scenarioMethodArguments));
+                    await this._timer.AggregateAsync(() => this._scenarioMethod.InvokeAsync(scenarioClassInstance, this._scenarioMethodArguments));
 
                     scenarioStepDefinitions.AddRange(CurrentThread.StepDefinitions);
                 }
@@ -196,8 +197,8 @@ namespace Xwellbehaved.Execution
             var scenarioTeardowns = new List<Tuple<StepContext, Func<IStepContext, Task>>>();
             var stepNumber = 0;
             foreach (var stepDefinition in filters.Aggregate(
-                backGroundStepDefinitions.Concat(scenarioStepDefinitions),
-                (current, filter) => filter.Filter(current)))
+                backGroundStepDefinitions.Concat(scenarioStepDefinitions)
+                , (current, filter) => filter.Filter(current)))
             {
                 stepDefinition.SkipReason = stepDefinition.SkipReason ?? skipReason;
 
@@ -206,49 +207,52 @@ namespace Xwellbehaved.Execution
 
                 var step = new StepTest(this._scenario, stepDisplayName);
 
-                // TODO: TBD: is a potential candidate going out of scope and being disposed before it should be...
-                // TODO: TBD: should probably be established in a full using block instead of floating free like this...
-                var interceptingBus = new DelegatingMessageBus(
-                    this._messageBus,
-                    message =>
+                // #1 MWP 2020-07-01 11:56:45 AM: After testing, this should be fine, and better behaved we think.
+                using (var interceptingBus = new DelegatingMessageBus(
+                    this._messageBus
+                    , message =>
                     {
                         if (message is ITestFailed && stepDefinition.FailureBehavior == RemainingSteps.Skip)
                         {
                             skipReason = $"Failed to execute preceding step: {step.DisplayName}";
                         }
-                    });
+                    })
+                )
+                {
+                    var stepContext = new StepContext(step);
 
-                var stepContext = new StepContext(step);
+                    // TODO: TBD: #1 MWP 2020-07-01 11:57:26 AM: it is an xUnit thing, could possibly be IDisposable itself...
+                    // TODO: TBD: including assumed ownership of the IDisposable messageBus, for instance, TODO: TBD: but that is outside the scope of xWellBehaved...
+                    var stepRunner = new StepTestRunner(
+                        stepContext
+                        , stepDefinition.Body
+                        , step
+                        , interceptingBus
+                        , this._scenarioClass
+                        , this._constructorArguments
+                        , this._scenarioMethod
+                        , this._scenarioMethodArguments
+                        , stepDefinition.SkipReason
+                        , Array.Empty<BeforeAfterTestAttribute>()
+                        , new ExceptionAggregator(this._aggregator)
+                        , this._cancellationTokenSource);
 
-                var stepRunner = new StepTestRunner(
-                    stepContext
-                    , stepDefinition.Body
-                    , step
-                    , interceptingBus
-                    , this._scenarioClass
-                    , this._constructorArguments
-                    , this._scenarioMethod
-                    , this._scenarioMethodArguments
-                    , stepDefinition.SkipReason
-                    , Array.Empty<BeforeAfterTestAttribute>()
-                    , new ExceptionAggregator(this._aggregator)
-                    , this._cancellationTokenSource);
+                    summary.Aggregate(await stepRunner.RunAsync());
 
-                summary.Aggregate(await stepRunner.RunAsync());
+                    // TODO: TBD: could we use disposable?.Dispose() here?
+                    var stepTeardowns = stepContext.Disposables
+                        .Where(disposable => disposable != null)
+                         .Select((Func<IDisposable, Func<IStepContext, Task>>)(disposable => context =>
+                         {
+                             disposable.Dispose();
+                             return Task.FromResult(0);
+                         }))
+                        .Concat(stepDefinition.Teardowns)
+                        .Where(teardown => teardown != null)
+                        .Select(teardown => Tuple.Create(stepContext, teardown));
 
-                // TODO: TBD: could we use disposable?.Dispose() here?
-                var stepTeardowns = stepContext.Disposables
-                    .Where(disposable => disposable != null)
-                     .Select((Func<IDisposable, Func<IStepContext, Task>>)(disposable => context =>
-                     {
-                         disposable.Dispose();
-                         return Task.FromResult(0);
-                     }))
-                    .Concat(stepDefinition.Teardowns)
-                    .Where(teardown => teardown != null)
-                    .Select(teardown => Tuple.Create(stepContext, teardown));
-
-                scenarioTeardowns.AddRange(stepTeardowns);
+                    scenarioTeardowns.AddRange(stepTeardowns);
+                }
             }
 
             if (scenarioTeardowns.Any())
