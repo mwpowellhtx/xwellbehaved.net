@@ -1,13 +1,15 @@
-namespace Xbehave.Execution
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+
+namespace Xwellbehaved.Execution
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
     using Xunit.Abstractions;
     using Xunit.Sdk;
 
+    // TODO: TBD: we can and probably should comment these in Xml fashion...
     public class ScenarioInfo
     {
         private static readonly ITypeInfo objectType = Reflector.Wrap(typeof(object));
@@ -36,7 +38,7 @@ namespace Xbehave.Execution
             }
             else
             {
-                typeArguments = new ITypeInfo[0];
+                typeArguments = Array.Empty<ITypeInfo>();
                 this.MethodToRun = testMethod.ToRuntimeMethod();
             }
 
@@ -56,7 +58,9 @@ namespace Xbehave.Execution
         }
 
         private static ITypeInfo InferTypeArgument(
-            string typeParameterName, IReadOnlyList<IParameterInfo> parameters, IReadOnlyList<object> passedArguments)
+            string typeParameterName
+            , IReadOnlyList<IParameterInfo> parameters
+            , IReadOnlyList<object> passedArguments)
         {
             var sawNullValue = false;
             ITypeInfo typeArgument = null;
@@ -85,10 +89,10 @@ namespace Xbehave.Execution
         }
 
         private static IEnumerable<Argument> GetGeneratedArguments(
-            IReadOnlyList<ITypeInfo> typeParameters,
-            IReadOnlyList<ITypeInfo> typeArguments,
-            IReadOnlyList<IParameterInfo> parameters,
-            int passedArgumentsCount)
+            IReadOnlyList<ITypeInfo> typeParameters
+            , IReadOnlyList<ITypeInfo> typeArguments
+            , IReadOnlyList<IParameterInfo> parameters
+            , int passedArgumentsCount)
         {
             for (var missingArgumentIndex = passedArgumentsCount;
                 missingArgumentIndex < parameters.Count;
@@ -118,10 +122,10 @@ namespace Xbehave.Execution
         }
 
         private static string GetScenarioDisplayName(
-            string scenarioOutlineDisplayName,
-            IReadOnlyList<ITypeInfo> typeArguments,
-            IReadOnlyList<IParameterInfo> parameters,
-            IReadOnlyList<Argument> arguments)
+            string scenarioOutlineDisplayName
+            , IReadOnlyList<ITypeInfo> typeArguments
+            , IReadOnlyList<IParameterInfo> parameters
+            , IReadOnlyList<Argument> arguments)
         {
             var typeArgumentsString = typeArguments.Any()
                 ? $"<{string.Join(", ", typeArguments.Select(typeArgument => TypeUtility.ConvertToSimpleTypeName(typeArgument)))}>"

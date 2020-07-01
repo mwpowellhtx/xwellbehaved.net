@@ -1,18 +1,21 @@
-namespace Xbehave.Execution.Extensions
+using System;
+using System.Threading;
+
+namespace Xwellbehaved.Execution.Extensions
 {
-    using System;
-    using System.Threading;
     using Xunit.Abstractions;
     using Xunit.Sdk;
 
+    // TODO: TBD: can and probably should comment in Xml comments...
     internal static class MessageBusExtensions
     {
         public static void Queue(
-            this IMessageBus messageBus,
-            ITest test,
-            Func<ITest, IMessageSinkMessage> createTestResultMessage,
-            CancellationTokenSource cancellationTokenSource)
+            this IMessageBus messageBus
+            , ITest test
+            , Func<ITest, IMessageSinkMessage> createTestResultMessage
+            , CancellationTokenSource cancellationTokenSource)
         {
+            // TODO: TBD: ditto fluent guards...
             Guard.AgainstNullArgument(nameof(messageBus), messageBus);
             Guard.AgainstNullArgument(nameof(createTestResultMessage), createTestResultMessage);
             Guard.AgainstNullArgument(nameof(cancellationTokenSource), cancellationTokenSource);

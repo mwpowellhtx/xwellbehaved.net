@@ -1,4 +1,5 @@
 // UPSTREAM: https://raw.githubusercontent.com/xunit/assert.xunit/2.4.1/Sdk/ArgumentFormatter.cs
+
 #pragma warning disable CA1305 // Specify IFormatProvider
 #pragma warning disable IDE0007 // Use implicit type
 #pragma warning disable IDE0011 // Add braces
@@ -9,6 +10,7 @@
 #pragma warning disable IDE0040 // Add accessibility modifiers
 #pragma warning disable IDE0045 // Convert to conditional expression
 #pragma warning disable IDE0046 // Convert to conditional expression
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+// TODO: TBD: Xunit.Sdk (?)
 namespace Xunit.Sdk
 {
     /// <summary>
@@ -30,8 +33,8 @@ namespace Xunit.Sdk
         const int MAX_OBJECT_PARAMETER_COUNT = 5;
         const int MAX_STRING_LENGTH = 50;
 
-        static readonly object[] EmptyObjects = new object[0];
-        static readonly Type[] EmptyTypes = new Type[0];
+        static readonly object[] EmptyObjects = Array.Empty<object>();
+        static readonly Type[] EmptyTypes = Array.Empty<Type>();
 
         // List of system types => C# type names
         static readonly Dictionary<TypeInfo, string> TypeMappings = new Dictionary<TypeInfo, string>
@@ -291,30 +294,21 @@ namespace Xunit.Sdk
             }
             return builder.ToString();
         }
-        
+
         static bool TryGetEscapeSequence(char ch, out string value)
         {
             value = null;
-            
-            if (ch == '\t') // tab
-                value = @"\t";
-            if (ch == '\n') // newline
-                value = @"\n";
-            if (ch == '\v') // vertical tab
-                value = @"\v";
-            if (ch == '\a') // alert
-                value = @"\a";
-            if (ch == '\r') // carriage return
-                value = @"\r";
-            if (ch == '\f') // formfeed
-                value = @"\f";
-            if (ch == '\b') // backspace
-                value = @"\b";
-            if (ch == '\0') // null char
-                value = @"\0";
-            if (ch == '\\') // backslash
-                value = @"\\";
-            
+
+            if (ch == '\t') value = @"\t"; // tab
+            if (ch == '\n') value = @"\n"; // newline
+            if (ch == '\v') value = @"\v"; // vertical tab
+            if (ch == '\a') value = @"\a"; // alert
+            if (ch == '\r') value = @"\r"; // carriage return
+            if (ch == '\f') value = @"\f"; // formfeed
+            if (ch == '\b') value = @"\b"; // backspace
+            if (ch == '\0') value = @"\0"; // null char
+            if (ch == '\\') value = @"\\"; // backslash
+                    
             return value != null;
         }
     }

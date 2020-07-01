@@ -1,19 +1,23 @@
 // UPSTREAM: https://raw.githubusercontent.com/xunit/xunit/2.4.1/src/common/ExceptionExtensions.cs
+
 #pragma warning disable IDE0011 // Add braces
 #pragma warning disable IDE0019 // Use pattern matching
 #pragma warning disable IDE0022 // Use expression body for methods
 #pragma warning disable IDE0040 // Add accessibility modifiers
+
 using System;
 using System.Reflection;
 
+// TODO: TBD: no namespace? is that on account of the mixing of Xunit.Sdk with Xwellbehaved?
 static class ExceptionExtensions
 {
+
 #if NET35
     const string RETHROW_MARKER = "$$RethrowMarker$$";
 #endif
 
     /// <summary>
-    /// Rethrows an exception object without losing the existing stack trace information
+    /// Rethrows an exception object without losing the existing stack trace information.
     /// </summary>
     /// <param name="ex">The exception to re-throw.</param>
     /// <remarks>
@@ -23,16 +27,18 @@ static class ExceptionExtensions
     /// </remarks>
     public static void RethrowWithNoStackTraceLoss(this Exception ex)
     {
+
 #if NET35
         FieldInfo remoteStackTraceString =
-            typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic) ??
-            typeof(Exception).GetField("remote_stack_trace", BindingFlags.Instance | BindingFlags.NonPublic);
+            typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? typeof(Exception).GetField("remote_stack_trace", BindingFlags.Instance | BindingFlags.NonPublic);
 
         remoteStackTraceString.SetValue(ex, ex.StackTrace + RETHROW_MARKER);
         throw ex;
 #else
         System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(ex).Throw();
 #endif
+
     }
 
     /// <summary>
@@ -45,8 +51,8 @@ static class ExceptionExtensions
         while (true)
         {
             var tiex = ex as TargetInvocationException;
-            if (tiex == null)
-                return ex;
+
+            if (tiex == null) return ex;
 
             ex = tiex.InnerException;
         }
