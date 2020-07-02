@@ -6,7 +6,7 @@
 
     <ItemGroup>
         <None Remove="*.TMP" />
-        <None Remove="**/*.TMP" />
+        <None Remove="**\*.TMP" />
     </ItemGroup>
 
     <!-- Versioning... -->
