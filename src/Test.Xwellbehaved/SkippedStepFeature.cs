@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
+    using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
 
@@ -21,16 +21,15 @@ namespace Xwellbehaved
 
             "When I run the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then the results should not be empty".x(() => results.Should().NotBeEmpty());
+            "Then the results should not be empty".x(() => results.AssertNotEmpty());
 
-            "And there should be no failures".x(() => results.Should().NotContain(result => result is ITestFailed));
+            "And there should be no failures".x(() => results.Any(result => result is ITestFailed).AssertFalse());
 
-            "And some steps should have been skipped".x(
-                () => results.Any(result => result is ITestSkipped).Should().BeTrue());
+            "And some steps should have been skipped".x(() => results.Any(result => result is ITestSkipped).AssertTrue());
 
-            "And each skipped step should be skipped because \"the feature is unfinished\"".x(
-                () => results.OfType<ITestSkipped>().Should().OnlyContain(
-                    result => result.Reason == "the feature is unfinished"));
+            "And each skipped step should be skipped because \"the feature is unfinished\"".x(() =>
+                results.OfType<ITestSkipped>().All(
+                    result => result.Reason == "the feature is unfinished").AssertTrue());
         }
 
         private static class AScenarioWithSkippedStepsBecauseTheFeatureIsUnfinished
@@ -42,11 +41,9 @@ namespace Xwellbehaved
 
                 "When I doing something".x(() => { });
 
-                "Then there is an outcome".x(
-                    () => throw new NotImplementedException()).Skip("the feature is unfinished");
+                "Then there is an outcome".x(() => throw new NotImplementedException()).Skip("the feature is unfinished");
 
-                "And there is another outcome".x(
-                    () => throw new NotImplementedException()).Skip("the feature is unfinished");
+                "And there is another outcome".x(() => throw new NotImplementedException()).Skip("the feature is unfinished");
             }
         }
     }

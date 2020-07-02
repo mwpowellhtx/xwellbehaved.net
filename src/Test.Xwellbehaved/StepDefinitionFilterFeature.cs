@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
+    using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Sdk;
     using Xwellbehaved.Infrastructure;
@@ -93,8 +93,9 @@ namespace Xwellbehaved
 
             "When I run the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then the steps are skipped".x(
-                () => results.Should().NotBeEmpty().And.ContainItemsAssignableTo<ITestSkipped>());
+            "And there are results".x(() => results.AssertNotEmpty());
+
+            "Then the steps are skipped".x(() => results.All(result => result is ITestSkipped).AssertTrue());
         }
 
         [Scenario]
@@ -105,16 +106,13 @@ namespace Xwellbehaved
 
             "When I run the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then there are four results".x(() => results.Length.Should().Be(4));
+            "Then there are four results".x(() => results.Length.AssertEqual(4));
 
-            "Then the first two steps pass".x(
-                () => results.Take(2).Should().ContainItemsAssignableTo<ITestPassed>());
+            "Then the first two steps pass".x(() => results.Take(2).All(result => result is ITestPassed).AssertTrue());
 
-            "And the third step fails".x(
-                () => results.Skip(2).Take(1).Should().ContainItemsAssignableTo<ITestFailed>());
+            "And the third step fails".x(() => results.Skip(2).Take(1).All(result => result is ITestFailed).AssertTrue());
 
-            "And the fourth step passes".x(
-                () => results.Skip(3).Take(1).Should().ContainItemsAssignableTo<ITestPassed>());
+            "And the fourth step passes".x(() => results.Skip(3).Take(1).All(result => result is ITestPassed).AssertTrue());
         }
 
         [Scenario]
@@ -126,8 +124,7 @@ namespace Xwellbehaved
             "When I run the scenario".x(
                 () => results = this.Run<ITestResultMessage>(feature));
 
-            "Then the first result has a background suffix".x(
-                () => results[0].Test.DisplayName.Should().EndWith("(Background)"));
+            "Then the first result has a background suffix".x(() => results[0].Test.DisplayName.AssertEndsWith("(Background)"));
         }
     }
 }

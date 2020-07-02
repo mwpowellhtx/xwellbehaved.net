@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
     using Infrastructure;
+    using Xunit;
     using Xunit.Abstractions;
 
     public abstract class BackgroundEvaluationOrderFeatureOne : Feature
@@ -16,9 +16,9 @@ namespace Xwellbehaved
         [Background]
         public void BackgroundOne()
         {
-            "Visited should not be null".x(() => this.Visited.Should().NotBeNull());
+            "Visited should not be null".x(() => this.Visited.AssertNotNull());
 
-            "And visited should not be empty".x(() => this.Visited.Should().BeEmpty());
+            "And visited should not be empty".x(() => this.Visited.AssertEmpty());
 
             "Then record background one visitation".x(() => this.Visited.Add(this.BaseOneId));
         }
@@ -31,7 +31,7 @@ namespace Xwellbehaved
         [Background]
         public void BackgroundTwo()
         {
-            "Visited should have 1 item".x(() => this.Visited.Should().HaveCount(1));
+            "Visited should have 1 item".x(() => this.Visited.Count.AssertEqual(1));
 
             "Then record background two visitation".x(() => this.Visited.Add(this.BaseTwoId));
         }
@@ -44,7 +44,7 @@ namespace Xwellbehaved
         [Background]
         public void BackgroundThree()
         {
-            "Visited should have 2 items".x(() => this.Visited.Should().HaveCount(2));
+            "Visited should have 2 items".x(() => this.Visited.Count.AssertEqual(2));
 
             "Record background three visitation".x(() => this.Visited.Add(this.BaseThreeId));
         }
@@ -58,7 +58,7 @@ namespace Xwellbehaved
         [Background]
         public void BackgroundFour()
         {
-            "Visited should have 3 items".x(() => this.Visited.Should().HaveCount(3));
+            "Visited should have 3 items".x(() => this.Visited.Count.AssertEqual(3));
 
             "Record background four visitation".x(() => this.Visited.Add(this.BaseFourId));
         }
@@ -76,10 +76,13 @@ namespace Xwellbehaved
         [Scenario]
         public void Backgrounds_should_be_visited_in_the_correct_order()
         {
+
+#pragma warning disable IDE0022 // Use expression body for methods
             // And we have early detection in the sense of backgrounds doing a little preliminary verification.
-            "Finally, Visited should appear in the expected order".x(() =>
-                this.Visited.Should().Equal(
-                    this.BaseOneId, this.BaseTwoId, this.BaseThreeId, this.BaseFourId));
+            "Finally, Visited should appear in the expected order".x(() => this.Visited.AssertEqual(
+                new[] { this.BaseOneId, this.BaseTwoId, this.BaseThreeId, this.BaseFourId }));
+#pragma warning restore IDE0022 // Use expression body for methods
+
         }
     }
 }

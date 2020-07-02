@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
+    using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
 
@@ -95,7 +95,7 @@ namespace Xwellbehaved
                     disposable2.Use();
                 });
 
-                "Then something happens".x(() => 1.Should().Be(0));
+                "Then something happens".x(() => 1.AssertEqual(0));
             }
         }
 
@@ -214,15 +214,15 @@ namespace Xwellbehaved
 
             "When running the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "And there should be no failures".x(() => results.Should().ContainItemsAssignableTo<ITestPassed>());
+            "And there should be no failures".x(() => results.All(result => result is ITestPassed).AssertTrue());
 
             /* TODO: TBD: additionally, I'm not sure we can depend upon artifact prefixes being
              * that consistent from run to run, again, when taken together with a mass of
              * neighboring tests. */
 
-            "And the disposables should each have been disposed in reverse order".x(
-                () => typeof(ObjectDisposalFeature).GetTestEvents()
-                    .Should().Equal("disposed3", "disposed2", "disposed1"));
+            "And the disposables should each have been disposed in reverse order".x(() =>
+                typeof(ObjectDisposalFeature).GetTestEvents().AssertEqual(
+                    new[] { "disposed3", "disposed2", "disposed1" }));
         }
 
         [Scenario]
@@ -233,17 +233,16 @@ namespace Xwellbehaved
 
             "When running the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then the there should be at least two results".x(() => results.Length.Should().BeGreaterOrEqualTo(2));
+            "Then the there should be at least two results".x(() => results.Length.AssertTrue(length => length >= 2));
 
-            "And the first n-1 results should be passes".x(
-                () => results.Reverse().Skip(1).Should().ContainItemsAssignableTo<ITestPassed>());
+            "And the first n-1 results should be passes".x(() =>
+                results.Reverse().Skip(1).All(result => result is ITestPassed).AssertTrue());
 
-            "And the last result should be a failure".x(
-                () => results.Reverse().First().Should().BeAssignableTo<ITestFailed>());
+            "And the last result should be a failure".x(() => results.Reverse().First().AssertIsAssignableTo<ITestFailed>());
 
-            "And the disposables should be disposed in reverse order".x(
-                () => typeof(ObjectDisposalFeature).GetTestEvents()
-                    .Should().Equal("disposed3", "disposed2", "disposed1"));
+            "And the disposables should be disposed in reverse order".x(() =>
+                typeof(ObjectDisposalFeature).GetTestEvents().AssertEqual(
+                    new[] { "disposed3", "disposed2", "disposed1" }));
         }
 
         [Scenario
@@ -255,11 +254,11 @@ namespace Xwellbehaved
 
             "When running the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then there should be one failure".x(() => results.OfType<ITestFailed>().Count().Should().Be(1));
+            "Then there should be one failure".x(() => results.OfType<ITestFailed>().AssertEqual(1, x => x.Count()));
 
-            "And the disposables should be disposed in reverse order".x(
-                () => typeof(ObjectDisposalFeature).GetTestEvents()
-                    .Should().Equal("disposed3", "disposed2", "disposed1"));
+            "And the disposables should be disposed in reverse order".x(() =>
+                typeof(ObjectDisposalFeature).GetTestEvents().AssertEqual(
+                    new[] { "disposed3", "disposed2", "disposed1" }));
         }
 
         [Scenario]
@@ -270,11 +269,11 @@ namespace Xwellbehaved
 
             "When running the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "And there should be no failures".x(() => results.Should().ContainItemsAssignableTo<ITestPassed>());
+            "And there should be no failures".x(() => results.All(result => result is ITestPassed).AssertTrue());
 
-            "And the disposables and teardowns should be disposed/executed in reverse order".x(
-                () => typeof(ObjectDisposalFeature).GetTestEvents()
-                    .Should().Equal("teardown4", "disposed3", "teardown2", "disposed1"));
+            "And the disposables and teardowns should be disposed/executed in reverse order".x(() =>
+                typeof(ObjectDisposalFeature).GetTestEvents().AssertEqual(
+                    new[] { "teardown4", "disposed3", "teardown2", "disposed1" }));
         }
 
         [Scenario]

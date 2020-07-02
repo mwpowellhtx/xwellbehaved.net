@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
+    using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
 
@@ -30,11 +29,9 @@ namespace Xwellbehaved
 
             "When I run the scenarios".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then there should be one result".x(() => results.Count().Should().Be(1));
+            "Then there should be one result".x(() => results.AssertEqual(1, x => x.Length));
 
-            "And the result should be a skip result".x(
-                () => results[0].Should().BeAssignableTo<ITestSkipped>(
-                    results.ToDisplayString("the result should be a skip")));
+            "And the result should be a skip result".x(() => results[0].AssertIsAssignableTo<ITestSkipped>());
         }
     }
 }

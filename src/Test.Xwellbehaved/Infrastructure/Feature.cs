@@ -97,7 +97,7 @@ namespace Xwellbehaved.Infrastructure
                  * test case is inappropriate, and the file or files, or other artifacts, may, and
                  * quite likely are, still in use. */
 
-                foreach (var featureArtifact in FeatureArtifacts)
+                foreach (var featureArtifact in this.FeatureArtifacts)
                 {
                     featureArtifact.ClearTestEvents();
                 }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
+    using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
 
@@ -38,14 +38,12 @@ namespace Xwellbehaved
             "Given an async step that throws after yielding".x(
                 () => feature = typeof(AsyncStepWhichThrowsAfterYielding));
 
-            "When I run the scenario".x(
-                () => results = this.Run<ITestResultMessage>(feature));
+            "When I run the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then the step fails".x(
-                () => results.Single().Should().BeAssignableTo<ITestFailed>());
+            "Then the step fails".x(() => results.Single().AssertIsAssignableTo<ITestFailed>());
 
-            "And the exception is the exception thrown after the yield".x(
-                () => results.Cast<ITestFailed>().Single().Messages.Single().Should().Be("I yielded before this."));
+            "And the exception is the exception thrown after the yield".x(() =>
+                results.Cast<ITestFailed>().Single().Messages.Single().AssertEqual("I yielded before this."));
         }
 
         [Scenario]
@@ -57,11 +55,10 @@ namespace Xwellbehaved
             "When I run the scenario".x(
                 () => results = this.Run<ITestResultMessage>(feature));
 
-            "Then the step fails".x(
-                () => results.Single().Should().BeAssignableTo<ITestFailed>());
+            "Then the step fails".x(() => results.Single().AssertIsAssignableTo<ITestFailed>());
 
-            "And the exception is the exception thrown after the yield".x(
-                () => results.Cast<ITestFailed>().Single().Messages.Single().Should().Be("I yielded before this."));
+            "And the exception is the exception thrown after the yield".x(() =>
+                results.Cast<ITestFailed>().Single().Messages.Single().AssertEqual("I yielded before this."));
         }
     }
 }

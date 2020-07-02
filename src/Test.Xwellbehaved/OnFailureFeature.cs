@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
+    using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
 
@@ -20,22 +20,22 @@ namespace Xwellbehaved
 
             "When I run the scenarios".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then there should be 7 results".x(() => results.Length.Should().Be(7));
+            "Then there should be 7 results".x(() => results.Length.AssertEqual(7));
 
             "Then the first and second results are passes".x(
-                () => results.Take(2).Should().ContainItemsAssignableTo<ITestPassed>());
+                () => results.Take(2).All(result => result is ITestPassed).AssertTrue());
 
             "And the third result is a failure".x(
-                () => results.Skip(2).Take(1).Should().ContainItemsAssignableTo<ITestFailed>());
+                () => results.Skip(2).Take(1).All(result => result is ITestFailed).AssertTrue());
 
             "And the fourth and fifth results are passes".x(
-                () => results.Skip(3).Take(2).Should().ContainItemsAssignableTo<ITestPassed>());
+                () => results.Skip(3).Take(2).All(result => result is ITestPassed).AssertTrue());
 
             "And the sixth result is a failure".x(
-                () => results.Skip(5).Take(1).Should().ContainItemsAssignableTo<ITestFailed>());
+                () => results.Skip(5).Take(1).All(result => result is ITestFailed).AssertTrue());
 
             "And the seventh result is a skip".x(
-                () => results.Skip(6).Take(1).Should().ContainItemsAssignableTo<ITestSkipped>());
+                () => results.Skip(6).Take(1).All(result => result is ITestSkipped).AssertTrue());
         }
 
         private static class Steps

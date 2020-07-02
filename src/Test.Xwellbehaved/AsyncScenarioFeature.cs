@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
+    using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
     using Xwellbehaved.Sdk;
@@ -29,22 +29,19 @@ namespace Xwellbehaved
             "Given an async scenario that throws after yielding".x(
                 () => feature = typeof(AsyncScenarioThatThrowsAfterYielding));
 
-            "When I run the scenario".x(
-                () => results = this.Run<ITestResultMessage>(feature));
+            "When I run the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then the scenario fails".x(
-                () => results.Single().Should().BeAssignableTo<ITestFailed>());
+            "Then the scenario fails".x(() => results.Single().AssertIsAssignableTo<ITestFailed>());
 
-            "And the exception is the exception thrown after the yield".x(
-                () => results.Cast<ITestFailed>().Single().Messages.Single().Should().Be("I yielded before this."));
+            "And the exception is the exception thrown after the yield".x(() =>
+                results.Cast<ITestFailed>().Single().Messages.Single().AssertEqual(
+                    "I yielded before this."));
         }
 
         [Scenario]
-        public void NullStepBody() =>
-            "Given a null body".x((Func<Task>)null);
+        public void NullStepBody() => "Given a null body".x((Func<Task>)null);
 
         [Scenario]
-        public void NullContextualStepBody() =>
-            "Given a null body".x((Func<IStepContext, Task>)null);
+        public void NullContextualStepBody() => "Given a null body".x((Func<IStepContext, Task>)null);
     }
 }

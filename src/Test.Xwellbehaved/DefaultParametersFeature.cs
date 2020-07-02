@@ -1,8 +1,9 @@
 using System;
+using System.Linq;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
+    using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
 
@@ -16,13 +17,13 @@ namespace Xwellbehaved
             [Scenario]
             public static void Scenario(string w, int x, object y, int? z)
             {
-                "Then w should be the default value of string".x(() => w.Should().Be(default));
+                "Then w should be the default value of string".x(() => w.AssertEqual(default));
 
-                "And x should be the default value of int".x(() => x.Should().Be(default));
+                "And x should be the default value of int".x(() => x.AssertEqual(default));
 
-                "And y should be the default value of object".x(() => y.Should().Be(default));
+                "And y should be the default value of object".x(() => y.AssertEqual(default));
 
-                "And z should be the default value of int?".x(() => z.Should().Be(default(int?)));
+                "And z should be the default value of int?".x(() => z.AssertEqual(default));
             }
         }
 
@@ -34,20 +35,18 @@ namespace Xwellbehaved
 
             "When I run the scenarios".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then each result should be a pass".x(
-                () => results.Should().ContainItemsAssignableTo<ITestPassed>(
-                    results.ToDisplayString("each result should be a pass")));
+            "Then each result should be a pass".x(() => results.All(result => result is ITestPassed).AssertTrue());
 
-            "And there should be 4 results".x(() => results.Length.Should().Be(4));
+            "And there should be 4 results".x(() => results.Length.AssertEqual(4));
 
             "And the display name of each result should not contain the parameter values".x(() =>
             {
                 foreach (var result in results)
                 {
-                    result.Test.DisplayName.Should().NotContain("w:");
-                    result.Test.DisplayName.Should().NotContain("x:");
-                    result.Test.DisplayName.Should().NotContain("y:");
-                    result.Test.DisplayName.Should().NotContain("z:");
+                    result.Test.DisplayName.AssertDoesNotContain("w:");
+                    result.Test.DisplayName.AssertDoesNotContain("x:");
+                    result.Test.DisplayName.AssertDoesNotContain("y:");
+                    result.Test.DisplayName.AssertDoesNotContain("z:");
                 }
             });
         }

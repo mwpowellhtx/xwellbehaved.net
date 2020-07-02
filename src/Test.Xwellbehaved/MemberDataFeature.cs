@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
     using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
@@ -29,8 +29,8 @@ namespace Xwellbehaved
             public void Scenario(int operand1, int operand2, int sum) =>
                 $"Then as a distinct example the sum of {operand1} and {operand2} is {sum}".x(() =>
                 {
-                    sum.Should().NotBe(_previousSum);
-                    (operand1 + operand2).Should().Be(sum);
+                    sum.AssertNotEqual(_previousSum);
+                    (operand1 + operand2).AssertEqual(sum);
                     _previousSum = sum;
                 });
         }
@@ -51,8 +51,8 @@ namespace Xwellbehaved
             public void Scenario(int operand1, int operand2, int sum) =>
                 $"Then as a distinct example the sum of {operand1} and {operand2} is {sum}".x(() =>
                 {
-                    sum.Should().NotBe(_previousSum);
-                    (operand1 + operand2).Should().Be(sum);
+                    sum.AssertNotEqual(_previousSum);
+                    (operand1 + operand2).AssertEqual(sum);
                     _previousSum = sum;
                 });
         }
@@ -73,8 +73,8 @@ namespace Xwellbehaved
             public void Scenario(int operand1, int operand2, int sum) =>
                 $"Then as a distinct example the sum of {operand1} and {operand2} is {sum}".x(() =>
                 {
-                    sum.Should().NotBe(_previousSum);
-                    (operand1 + operand2).Should().Be(sum);
+                    sum.AssertNotEqual(_previousSum);
+                    (operand1 + operand2).AssertEqual(sum);
                     _previousSum = sum;
                 });
         }
@@ -95,7 +95,7 @@ namespace Xwellbehaved
             public void Scenario(DoesNotSerialize @object) =>
                 $"Then the object has a distinct value of {@object.Value}".x(() =>
                 {
-                    @object.Value.Should().NotBe(_previousValue);
+                    @object.Value.AssertNotEqual(_previousValue);
                     _previousValue = @object.Value;
                 });
 
@@ -116,10 +116,10 @@ namespace Xwellbehaved
 
             "When I run the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then there should be three results".x(() => results.Length.Should().Be(3));
+            "Then there should be three results".x(() => results.Length.AssertEqual(3));
 
             "Then each of the member data value sets should be passed into the scenario".x(
-                () => results.Should().ContainItemsAssignableTo<ITestPassed>());
+                () => results.All(result => result is ITestPassed).AssertTrue());
         }
     }
 }

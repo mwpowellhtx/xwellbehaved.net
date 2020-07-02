@@ -1,37 +1,47 @@
 namespace Xwellbehaved
 {
-    using FluentAssertions;
-    using Xunit.Sdk;
-    using Xwellbehaved.Sdk;
+    using Sdk;
+    using Xunit;
 
     public class MetadataFeature
     {
+        /// <summary>
+        /// Critical in this Scenario is <paramref name="text"/>, as are the other bits.
+        /// <c>text</c> is unused throughout the body of the function, but is critical in
+        /// order for the caller to make the proper connection upon invocation.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="stepContext"></param>
+        /// <param name="step"></param>
+        /// <param name="scenario"></param>
         [Scenario
             , Example("abc")]
+#pragma warning disable IDE0060 // Remove unused parameter 'text' if it is not part of a shipped public API
         public void UsingMetadata(string text, IStepContext stepContext, IStep step, IScenario scenario)
+#pragma warning restore IDE0060 // Remove unused parameter 'text' if it is not part of a shipped public API
         {
-            "When I execute a step".x(c => stepContext = c)
-                .Teardown(c => c.Should().BeSameAs(stepContext));
+            "When I execute a step".x(context => stepContext = context)
+                .Teardown(context => context.AssertSame(stepContext));
 
             "Then the step context contains metadata about the step".x(() =>
             {
-                step = stepContext.Step.Should().NotBeNull().And.Subject.As<IStep>();
+                step = stepContext.Step.AssertNotNull();
                 var stepDisplayName = step.DisplayName;
-                stepDisplayName.Should().Be("Xwellbehaved.MetadataFeature.UsingMetadata(text: \"abc\") [01] When I execute a step");
+                stepDisplayName.AssertEqual("Xwellbehaved.MetadataFeature.UsingMetadata(text: \"abc\") [01] When I execute a step");
             });
 
             "And the step contains metadata about the scenario".x(() =>
             {
-                scenario = step.Scenario.Should().NotBeNull().And.Subject.As<IScenario>();
+                scenario = step.Scenario.AssertNotNull();
                 var scenarioDisplayName = scenario.DisplayName;
-                scenarioDisplayName.Should().Be("Xwellbehaved.MetadataFeature.UsingMetadata(text: \"abc\")");
+                scenarioDisplayName.AssertEqual("Xwellbehaved.MetadataFeature.UsingMetadata(text: \"abc\")");
             });
 
             "And the step contains metadata about the scenario outline".x(() =>
             {
                 var scenarioScenarioOutline = scenario.ScenarioOutline;
-                scenarioScenarioOutline.Should().NotBeNull().And.Subject.As<IXunitTestCase>()
-                    .DisplayName.Should().Be("Xwellbehaved.MetadataFeature.UsingMetadata");
+                scenarioScenarioOutline.AssertNotNull();
+                scenarioScenarioOutline.DisplayName.AssertEqual("Xwellbehaved.MetadataFeature.UsingMetadata");
             });
         }
     }

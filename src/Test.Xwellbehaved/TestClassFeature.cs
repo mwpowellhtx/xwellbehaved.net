@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
+    using Xunit;
     using Xwellbehaved.Infrastructure;
 
     public class TestClassFeature : Feature
@@ -55,9 +55,9 @@ namespace Xwellbehaved
 
             "When I run the scenario".x(() => this.Run(feature));
 
-            "Then an instance of the type is created and disposed once either side of the step execution".x(
-                () => typeof(TestClassFeature).GetTestEvents().Should().Equal(
-                    "created1", "step1", "step2", "step3", "disposed1.1"));
+            "Then an instance of the type is created and disposed once either side of the step execution".x(() =>
+                typeof(TestClassFeature).GetTestEvents().AssertEqual(
+                    new[] { "created1", "step1", "step2", "step3", "disposed1.1" }));
         }
     }
 }

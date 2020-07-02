@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
     using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
@@ -33,8 +32,7 @@ namespace Xwellbehaved
             $"When I run the feature specifying the 'foo' trait of '{traitValue}'".x(
                 () => results = this.Run<ITestResultMessage>(feature, "foo", traitValue));
 
-            "Then there is only {1} result".x(
-                () => results.Count().Should().Be(expectedResultCount));
+            "Then there is only {1} result".x(() => results.Count().AssertEqual(expectedResultCount));
         }
     }
 }

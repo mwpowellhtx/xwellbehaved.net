@@ -1,8 +1,8 @@
 using System;
+using System.Linq;
 
 namespace Xwellbehaved
 {
-    using FluentAssertions;
     using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
@@ -11,19 +11,22 @@ namespace Xwellbehaved
     {
         private class ScenarioWithAClassFixture : IClassFixture<Fixture>
         {
-            private readonly Fixture fixture;
+            private readonly Fixture _fixture;
 
             public ScenarioWithAClassFixture(Fixture fixture)
             {
-                fixture.Should().NotBeNull();
-                this.fixture = fixture;
+
+#pragma warning disable IDE0021 // Use expression body for constructors
+                this._fixture = fixture.AssertNotNull();
+#pragma warning restore IDE0021 // Use expression body for constructors
+
             }
 
             [Scenario]
-            public void Scenario1() => "Given".x(() => this.fixture.Scenario1Executed = true);
+            public void Scenario1() => "Given".x(() => this._fixture.Scenario1Executed = true);
 
             [Scenario]
-            public void Scenario2() => "Given".x(() => this.fixture.Scenario2Executed = true);
+            public void Scenario2() => "Given".x(() => this._fixture.Scenario2Executed = true);
         }
 
         private sealed class Fixture : IDisposable
@@ -34,8 +37,8 @@ namespace Xwellbehaved
 
             public void Dispose()
             {
-                this.Scenario1Executed.Should().BeTrue();
-                this.Scenario2Executed.Should().BeTrue();
+                this.Scenario1Executed.AssertTrue();
+                this.Scenario2Executed.AssertTrue();
                 typeof(ClassFixtureFeature).SaveTestEvent("disposed");
             }
         }
@@ -54,8 +57,8 @@ namespace Xwellbehaved
 
             "Then the class fixture is supplied as a constructor to each test class instance and disposed".x(() =>
             {
-                results.Should().ContainItemsAssignableTo<ITestPassed>();
-                typeof(ClassFixtureFeature).GetTestEvents().Should().Equal("disposed");
+                results.All(result => result is ITestPassed).AssertTrue();
+                typeof(ClassFixtureFeature).GetTestEvents().AssertEqual(new[] { "disposed" });
             });
         }
     }
