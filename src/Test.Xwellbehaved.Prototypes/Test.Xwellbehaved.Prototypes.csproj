@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <NoWarn>$(NoWarn);NU1603</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>Xwellbehaved.Prototypes</RootNamespace>
+        <Version>1.0.0.50</Version>
+        <AssemblyVersion>1.0.0.50</AssemblyVersion>
+        <FileVersion>1.0.0.50</FileVersion>
+        <PackageVersion>1.0.0.50</PackageVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- TODO: TBD: isolate core unit testing build properties for all of the unit test projects... -->
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.utility" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+        <PackageReference Include="xunit.fluently.assert" Version="1.6.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- TODO: TBD: which, we could also reference Validate.Fluently, but the core of it causing us grief is Validation. -->
+        <PackageReference Include="Validation" Version="2.4.22" PrivateAssets="All" />
+        <PackageReference Include="LiteGuard.Source" Version="2.2.0" PrivateAssets="All" />
+    </ItemGroup>
+
+</Project>
