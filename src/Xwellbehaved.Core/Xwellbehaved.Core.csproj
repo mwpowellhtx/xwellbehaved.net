@@ -3,14 +3,14 @@
     <PropertyGroup>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <NoWarn>$(NoWarn);NU5128;CA1303</NoWarn>
+        <NoWarn>$(NoWarn);NU5128;CA1303;NU1603</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup>
-        <Version>2.4.1.23</Version>
-        <AssemblyVersion>2.4.1.23</AssemblyVersion>
-        <FileVersion>2.4.1.23</FileVersion>
-        <PackageVersion>2.4.1.23</PackageVersion>
+        <Version>2.4.1.123</Version>
+        <AssemblyVersion>2.4.1.123</AssemblyVersion>
+        <FileVersion>2.4.1.123</FileVersion>
+        <PackageVersion>2.4.1.123</PackageVersion>
         <NuspecFile>$(NUSPEC_FILE)</NuspecFile>
     </PropertyGroup>
 
@@ -23,7 +23,7 @@
         <!-- TODO: TBD: or needing a Github SourceLink (?) -->
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
         <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" PrivateAssets="All" />
-        <PackageReference Include="xunit.extensibility.core" Version="2.4.0" />
+        <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
     </ItemGroup>
 
     <!-- The timing of which is key here, after versions bump, before build, and subsequent packaging. -->
