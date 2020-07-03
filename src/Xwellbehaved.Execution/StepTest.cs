@@ -2,7 +2,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Xwellbehaved.Execution
 {
+
+#if DEBUG
     using Validation;
+#endif
+
     using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Sdk;
@@ -13,7 +17,13 @@ namespace Xwellbehaved.Execution
     {
         public StepTest(IScenario scenario, string displayName)
         {
-            this.Scenario = scenario.RequiresNotNull(nameof(scenario));
+            //Guard.AgainstNullArgument(nameof(scenario), scenario);
+
+#if DEBUG
+            scenario.RequiresNotNull(nameof(scenario));
+#endif
+
+            this.Scenario = scenario;
             this.DisplayName = displayName;
         }
 

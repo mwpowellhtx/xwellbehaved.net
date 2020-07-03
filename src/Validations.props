@@ -1,8 +1,12 @@
 <Project>
 
     <!-- TODO: TBD: https://github.com/mwpowellhtx/xwellbehaved.net/issues/3 -->
+    <!-- TODO: TBD: open question ,not sure why things "work" with LiteGuard.Source, but fail with Validation, or Validate.Fluently,
+     https://github.com/xbehave/xbehave.net/issues/665 /
+     (Q: What's the difference between LiteGuard.Source and Validation) -->
     <ItemGroup>
-        <PackageReference Include="Validate.Fluently" Version="1.0.1.18566" PrivateAssets="all" />
+        <!--<PackageReference Include="Validation" Version="2.4.22" Condition="'$(Configuration)' == 'Debug'" />-->
+        <PackageReference Include="Validate.Fluently" Version="1.0.1" Condition="'$(Configuration)' == 'Debug'" />
         <!--<PackageReference Include="LiteGuard.Source" Version="2.2.0" PrivateAssets="All" />-->
     </ItemGroup>
 

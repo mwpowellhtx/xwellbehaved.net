@@ -9,7 +9,11 @@ using System.Threading.Tasks;
 
 namespace Xwellbehaved.Execution
 {
+
+#if DEBUG
     using Validation;
+#endif
+
     using Xunit.Abstractions;
     using Xunit.Sdk;
     using Xwellbehaved.Execution.Extensions;
@@ -42,16 +46,34 @@ namespace Xwellbehaved.Execution
             , ExceptionAggregator aggregator
             , CancellationTokenSource cancellationTokenSource)
         {
-            this._scenario = scenario.RequiresNotNull(nameof(scenario));
+            //Guard.AgainstNullArgument(nameof(scenario), scenario);
+            //Guard.AgainstNullArgument(nameof(messageBus), messageBus);
+            //Guard.AgainstNullArgument(nameof(scenarioClass), scenarioClass);
+            //Guard.AgainstNullArgument(nameof(scenarioMethod), scenarioMethod);
+            //Guard.AgainstNullArgument(nameof(beforeAfterScenarioAttributes), beforeAfterScenarioAttributes);
+            //Guard.AgainstNullArgument(nameof(aggregator), aggregator);
+            //Guard.AgainstNullArgument(nameof(cancellationTokenSource), cancellationTokenSource);
+
+#if DEBUG
+            scenario.RequiresNotNull(nameof(scenario));
+            messageBus.RequiresNotNull(nameof(messageBus));
+            scenarioClass.RequiresNotNull(nameof(scenarioClass));
+            scenarioMethod.RequiresNotNull(nameof(scenarioMethod));
+            beforeAfterScenarioAttributes.RequiresNotNull(nameof(beforeAfterScenarioAttributes));
+            aggregator.RequiresNotNull(nameof(aggregator));
+            cancellationTokenSource.RequiresNotNull(nameof(cancellationTokenSource));
+#endif
+
+            this._scenario = scenario;
             // TODO: TBD: #1 MWP 2020-07-01 11:58:07 AM: but which also beggars the question, should we be cleaning up after IDisposable members like messageBus?
-            this._messageBus = messageBus.RequiresNotNull(nameof(messageBus));
-            this._scenarioClass = scenarioClass.RequiresNotNull(nameof(scenarioClass));
+            this._messageBus = messageBus;
+            this._scenarioClass = scenarioClass;
             this._constructorArguments = constructorArguments; // TODO: TBD: put fluent validation guards on the arguments?
-            this._scenarioMethod = scenarioMethod.RequiresNotNull(nameof(scenarioMethod));
+            this._scenarioMethod = scenarioMethod;
             this._scenarioMethodArguments = scenarioMethodArguments;
-            this._beforeAfterScenarioAttributes = beforeAfterScenarioAttributes.RequiresNotNull(nameof(beforeAfterScenarioAttributes));
-            this._aggregator = aggregator.RequiresNotNull(nameof(aggregator));
-            this._cancellationTokenSource = cancellationTokenSource.RequiresNotNull(nameof(cancellationTokenSource));
+            this._beforeAfterScenarioAttributes = beforeAfterScenarioAttributes;
+            this._aggregator = aggregator;
+            this._cancellationTokenSource = cancellationTokenSource;
         }
 
         public async Task<RunSummary> RunAsync()

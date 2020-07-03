@@ -3,7 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Xwellbehaved.Execution
 {
+
+#if DEBUG
     using Validation;
+#endif
+
     using Xunit.Abstractions;
     using Xunit.Sdk;
 
@@ -24,7 +28,11 @@ namespace Xwellbehaved.Execution
             , ITestMethod testMethod
             , IAttributeInfo factAttribute)
         {
+            //Guard.AgainstNullArgument(nameof(discoveryOptions), discoveryOptions);
+
+#if DEBUG
             discoveryOptions = discoveryOptions.RequiresNotNull(nameof(discoveryOptions));
+#endif
 
             yield return new ScenarioOutlineTestCase(
                 this.DiagnosticMessageSink
