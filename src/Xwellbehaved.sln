@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{490E6A
 		NuGet.Config = NuGet.Config
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Xwellbehaved.Prototypes", "Test.Xwellbehaved.Prototypes\Test.Xwellbehaved.Prototypes.csproj", "{EE4EDA7A-73EA-482B-A9EF-590744F316EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{AF81B0F8-7DE8-4595-9B2F-6AC8F2AB57EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF81B0F8-7DE8-4595-9B2F-6AC8F2AB57EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF81B0F8-7DE8-4595-9B2F-6AC8F2AB57EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE4EDA7A-73EA-482B-A9EF-590744F316EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE4EDA7A-73EA-482B-A9EF-590744F316EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE4EDA7A-73EA-482B-A9EF-590744F316EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE4EDA7A-73EA-482B-A9EF-590744F316EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{AB3C58C9-5EB0-419B-90F4-2835F997CC93} = {41BB5C25-6084-4CA2-A9E8-EE35A1CA1DEA}
 		{AF81B0F8-7DE8-4595-9B2F-6AC8F2AB57EB} = {7FE5E741-9F2D-497B-8FAC-FF404D765FBE}
 		{7B680FCF-5B6D-4B05-B3CF-E2E4C38F4A60} = {3154940B-6ED5-44F0-A2E6-B4AEA2A7D0E0}
+		{EE4EDA7A-73EA-482B-A9EF-590744F316EE} = {41BB5C25-6084-4CA2-A9E8-EE35A1CA1DEA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {397F0EE3-6CD7-4EF4-B6D2-ED3FEAAE5FBF}
