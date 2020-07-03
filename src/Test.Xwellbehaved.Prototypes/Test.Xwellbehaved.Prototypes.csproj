@@ -8,10 +8,10 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>Xwellbehaved.Prototypes</RootNamespace>
-        <Version>1.0.0.50</Version>
-        <AssemblyVersion>1.0.0.50</AssemblyVersion>
-        <FileVersion>1.0.0.50</FileVersion>
-        <PackageVersion>1.0.0.50</PackageVersion>
+        <Version>1.0.0.51</Version>
+        <AssemblyVersion>1.0.0.51</AssemblyVersion>
+        <FileVersion>1.0.0.51</FileVersion>
+        <PackageVersion>1.0.0.51</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
