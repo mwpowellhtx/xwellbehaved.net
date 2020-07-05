@@ -33,7 +33,11 @@ namespace Xwellbehaved.Execution
             testMethod = testMethod.RequiresNotNull(nameof(testMethod));
 #endif
 
+            // Which, we "do", in DEBUG mode.
+#pragma warning disable CA1062 // ...validate parameter 'name' is non-null before using it...
             var parameters = testMethod.GetParameters().ToList();
+#pragma warning restore CA1062 // ...validate parameter 'name' is non-null before using it...
+
             var typeParameters = testMethod.GetGenericArguments().ToList();
 
             ITypeInfo[] typeArguments;
