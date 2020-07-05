@@ -12,3 +12,7 @@ obj/
 
 # Ignore files prefixed with #hashtag
 \#*.*
+
+# We do not want to track the incidental build pipeline side effects.
+LICENSE.txt
+CONTRIBUTORS.txt
