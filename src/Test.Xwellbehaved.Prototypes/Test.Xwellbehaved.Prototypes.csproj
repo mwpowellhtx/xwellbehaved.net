@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
+        <Configuration>Debug</Configuration>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>Xwellbehaved.Prototypes</RootNamespace>
         <Version>1.0.0.51</Version>
