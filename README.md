@@ -9,7 +9,7 @@ _[![Find your community at https://gitter.im/xwellbehaved/xwellbehaved.net](http
 
 Documentation coming soon. We are considering translating some of the docs in terms of *xWellBehaved.net*, but that is a future effort at the moment.
 
-xWellBehaved.net is an [*xUnit.net*](https://github.com/xunit/xunit) extension, available [in full](https://www.nuget.org/packages/Xwellbehaved) or [minimal](https://www.nuget.org/packages/Xwellbehaved.Core) form, for [*Behavior Driven Development (BDD)*](https://en.wikipedia.org/wiki/Behavior-driven_development) or [*Test Driven Development (TDD)*](https://en.wikipedia.org/wiki/Test-driven_development) using natural language.
+*xWellBehaved.net* is an [*xUnit.net*](https://github.com/xunit/xunit) extension, available [in full](https://www.nuget.org/packages/Xwellbehaved) or [minimal](https://www.nuget.org/packages/Xwellbehaved.Core) form, for [*Behavior Driven Development (BDD)*](https://en.wikipedia.org/wiki/Behavior-driven_development) or [*Test Driven Development (TDD)*](https://en.wikipedia.org/wiki/Test-driven_development) using natural language.
 
 Platform support: [.NET Standard 2.0 and upwards](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
 
