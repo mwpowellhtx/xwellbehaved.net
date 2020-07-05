@@ -1,0 +1,8 @@
+<Project>
+
+    <ItemGroup>
+        <!-- This seems like a fair enough idea to help enhance the consumer debugging UX. -->
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    </ItemGroup>
+
+</Project>

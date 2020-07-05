@@ -1,0 +1,11 @@
+<Project>
+
+    <ItemGroup>
+        <!-- TODO: TBD: consider guard fluently instead... also do not need/want FxCop I think... -->
+        <!-- TODO: TBD: v3.0 is out, do we update to that? -->
+        <!-- see: https://en.wikipedia.org/wiki/FxCop -->
+        <!-- see: https://github.com/dotnet/roslyn-analyzers -->
+        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" PrivateAssets="All" />
+    </ItemGroup>
+
+</Project>
