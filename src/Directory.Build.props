@@ -24,9 +24,10 @@
 
     <!-- Versioning... -->
     <PropertyGroup>
-        <BumpAssemblyVersionsVersion>1.5.0</BumpAssemblyVersionsVersion>
+        <BumpAssemblyVersionsVersion>1.6.0</BumpAssemblyVersionsVersion>
         <BumpAssemblyVersionsTargetsPath>..\packages\BumpAssemblyVersions\$(BumpAssemblyVersionsVersion)\build\BumpAssemblyVersions.targets</BumpAssemblyVersionsTargetsPath>
-        <BumpAssemblyVersionBuildProvider>DeltaDays2010</BumpAssemblyVersionBuildProvider>
+        <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Release'">MinutesSinceMidnight</BumpAssemblyVersionBuildProvider>
+        <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Debug'">Increment</BumpAssemblyVersionBuildProvider>
     </PropertyGroup>
 
     <ItemGroup>
@@ -43,28 +44,35 @@
     </ItemGroup>
 
     <!-- ReSharper disable UnknownProperty -->
-    <ItemGroup Condition="'$(BumpSpecSwitch)' == 'init' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(Configuration)' == 'Debug' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(BumpSpecSwitch)' == 'patch' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'init' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+        <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
+        <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
+        <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
+        <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'patch' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(BumpSpecSwitch)' == 'minor' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'minor' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(BumpSpecSwitch)' == 'major' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'major' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
