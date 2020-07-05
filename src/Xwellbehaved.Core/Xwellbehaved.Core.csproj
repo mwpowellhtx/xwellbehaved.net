@@ -12,10 +12,10 @@
         <Description>Includes the libraries for writing tests with xWellBehaved.net. Installing this package installs xunit.core.</Description>
         <TargetName>$(MSBuildProjectName)</TargetName>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>2.4.1.3839</Version>
-        <AssemblyVersion>2.4.1.3839</AssemblyVersion>
-        <FileVersion>2.4.1.3839</FileVersion>
-        <PackageVersion>2.4.1.3839</PackageVersion>
+        <Version>2.4.2.1229</Version>
+        <AssemblyVersion>2.4.2.1229</AssemblyVersion>
+        <FileVersion>2.4.2.1229</FileVersion>
+        <PackageVersion>2.4.2.1229</PackageVersion>
         <NuspecFile>$(MSBuildProjectName).nuspec</NuspecFile>
         <BumpSpecSwitch>init</BumpSpecSwitch>
     </PropertyGroup>
