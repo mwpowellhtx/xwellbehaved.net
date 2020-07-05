@@ -1,6 +1,8 @@
-Adam Ralph <adam@adamralph.com> adam@adamralph.com <adam@adamralph.com>
-Adam Ralph <adam@adamralph.com> Adam <none@none>
-Adam Ralph <adam@adamralph.com> adamralph <adam@adamralph.com>
-Adam Ralph <adam@adamralph.com> aralph1@wzrh4105039689.csfb.cs-group.com <aralph1@wzrh4105039689.csfb.cs-group.com>
-Adam Ralph <adam@adamralph.com> adamralph <none@none>
-Adam Ralph <adam@adamralph.com> aralph1@CHD06076002.ch.ad.hedani.net <aralph1@CHD06076002.ch.ad.hedani.net>
+#
+# This list is used by git-shortlog to fix a few botched name translations
+# in the git archive, either because the author's full name was messed up
+# and/or not always written the same way, making contributions from the
+# same person appearing not to be so.
+#
+
+Michael W. Powell <mwpowelllde@gmail.com>
