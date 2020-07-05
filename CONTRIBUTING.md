@@ -1,71 +1,54 @@
 # How to contribute
 
-First of all, thank you for wanting to contribute to xBehave.net! We really appreciate all the awesome support we get from our community. We want to keep it as easy as possible to contribute changes that get things working in your environment. There are a few guidelines we need contributors to follow to keep the project flowing smoothly.
+We really appreciate your consideration contributing to xWellBehaved.net! It is with this kind of fervent support that xWellBehaved.net and a host of other efforts are made successful. We want to make it as seamless as possible to enable contribution in order to support your working environment. We appreciate you observing these few guidelines as you do.
 
-These guidelines are for code changes but we are always very grateful to receive other forms of contribution, e.g. updates to the [documentation](https://github.com/xbehave/xbehave.net/wiki), answering [questions on StackOverflow](https://stackoverflow.com/search?q=xbehave.net), providing help in the [chat room](https://gitter.im/xbehave/xbehave.net/), blog posts and samples, [Twitter endorsements](https://twitter.com/xbehavenet), etc. :wink:
+The following guidelines apply for code changes, but we are always happy to consider contributions in a variety of means, i.e. updates to [documentation](https://github.com/mwpowellhtx/xwellbehaved.net/wiki), answering [questions on StackOverflow](https://stackoverflow.com/search?q=xwellbehaved.net), providing help in the [chat room](https://gitter.im/mwpowellhtx/xwellbehaved.net/), blog posts and samples, [Twitter endorsements](https://twitter.com) mentions, etc.
 
 ## Preparation
 
-Before starting work on a *functional* change, i.e. a new feature, a change to an existing feature or a fixing a bug, please ensure an [issue has been raised](https://github.com/xbehave/xbehave.net/issues/). Indicate your intention to do the work by writing a comment on the issue. This will prevent duplication of effort. If the change is non-trivial, it's usually best to propose a design in the issue comments before making a significant effort on the implementation.
+Please do [raise an issue](https://github.com/mwpowellhtx/xwellbehaved.net/issues) before you embark on any *functional* changes, features or enhancements, bug fixes, etc. Clearly communicate the motivation, observation, etc, concerning the issue. This will help to avert pollution of the issue space, duplication, etc. When the issue is non-trivial, we encourage open discussion beforehand, especially before excessive effort is devoted to the patch.
 
-It is **not** necessary to raise an issue for non-functional changes, e.g. refactoring, adding tests, reformatting code, documentation, updating packages, etc.
+It is *unnecessary** to raise any issues for non-functional changes, i.e. refactoring, adding tests, reformatting code, documentation, updating packages, and so on.
 
 ## Tests
 
-All new features must be covered by feature tests in the `Xbehave.Test` project.
+All new features must be covered by feature tests in the [`Test.Xwellbehaved` project](https://github.com/mwpowellhtx/xwellbehaved.net/tree/master/src/Test.Xwellbehaved).
 
-## Branches
+## Branches, tagging, etc
 
-There are two kinds of mainline branches, `master` and `release-x.y`. `master` is used for development work for the next release. All new features, changes, etc. must be applied to `master`. `release-x.y` are used for stable releases. A patch to version `x.y.z` must be applied to `release-x.y`.
+Let the owner do the tagging. This is non-negotiable. We try to keep a ready delivery pipeline, and part of that pipeline includes bumping assembly versions, tagging, etc.
+
+Tagging will come in the form *major.minor.patch.build*, and we manage this bump policy as part of the build pipeline. If you do any work on the project, be sure to set the `BumpSpecSwitch` property to `init`, which will leave the version unchanged for you during your contribution.
+
+Concerning branches, we try to keep the `master` and other branches relatively pristine. If we do any branching at all, we do so in our local working clones. We are open to suggestions on establishing a sane branching policy in terms of managing issues, releases, etc.
 
 ## Making changes
 
-1. [Fork](http://help.github.com/forking/) on GitHub
-1. Clone your fork locally
-1. Configure the `upstream` repo (`git remote add upstream git://github.com/xbehave/xbehave.net.git`)
-1. Checkout `master` (`git checkout master`) or, if you are working on a bug fix for version `x.y.z`, checkout `release-x.y` (`git checkout release-x.y`)
-1. Create a local branch (`git checkout -b my-branch`). The branch name should be descriptive, or it can just be the GitHub issue number which the work relates to, e.g. `123`.
-1. Work on your change
-1. Rebase if required (see 'Handling updates from `upstream`' below)
-1. Test the build locally by running `build.cmd`
-1. Push the branch up to GitHub (`git push origin my-branch`)
-1. Send a pull request on GitHub (see 'Sending a Pull Request' below)
+We are of the mindset, K.I.S.S. principle, *Keep It Simple Stupid*. How you maintain your local clones, branches, etc, is entirely up to you. We want to consider Pull Requests for acceptance through the official Github channels, always on the `master` branch. If it does not pass the *Pull Request* criteria, then we need to discuss why.
 
-You should **never** work on a clone of `master`/`release-x.y`, and you should **never** send a pull request from `master`/`release-x.y`. Always use a feature/patch branch. The reasons for this are detailed below.
+1. [Fork a repo](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) on GitHub
+1. Fork the project into your Github
+1. Make a local clone from your fork
+1. You should have a defacto `origin` source directed to your fork on Github
+1. Do your work, commit to your Github `master` branch, merge from your local branches, etc, freely
+1. When you are ready to submit the changes, submit a PR request to our repository
 
 ## Handling updates from `upstream`
 
-While you're working away in your branch it's quite possible that your `upstream` `master`/`release-x.y` may be updated. If this happens you should:
+The purpose of this project is not to get side tracked or bogged down as a Git or Github how-to. This is really not the purpose of the project, whatsoever, and subtracts from the overall efficacy of the offering.
 
-(If you are working on patch, replace `master` with `release-x.y` when following these steps.)
+Personally, I like to maintain a handful of useful clones, and indicate them such as `workstream`, `protostream`, so on and so forth. I use the [Git Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging) features far less than I do actual repository clones perhaps than I should.
 
-1. [Stash](http://progit.org/book/ch6-3.html) any un-committed changes you need to
-1. `git checkout master`
-1. `git pull upstream master --ff-only`
-1. `git checkout my-branch`
-1. `git rebase master my-branch`
-1. `git push origin master` (optional) this keeps `master` in your fork up to date
-
-These steps ensure your history is "clean" i.e. you have one branch from `master`/`release-x.y` followed by your changes in a straight line. Failing to do this ends up with several "messy" merges in your history, which we don't want. This is the reason why you should always work in a branch and you should never be working in or sending pull requests from `master`/`release-x.y`.
-
-If you're working on a long running feature you may want to do this quite often to reduce the risk of tricky merges later on.
+Which is to say, however you maintain your local clones, remotes, so on and so forth, is entirely up to you. Our goal for contributing is to facilitate your path to the trunk as early as possible. Because, after all, no one likes been that far out on a branch, out on a limb, so to speak. So we aim to trim that tree as early as possible in order to keep a sane trunk.
 
 ## Sending a pull request
 
-While working on your feature/patch you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single "feature/patch branch". We care about your commits, and we care about your feature/patch branch, but we don't care about how many or which branches you created while you were working on it. :smile:
+See the Github docs on [*Creating a pull request*](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
-When you're ready to go you should confirm that you are up to date and rebased with `upstream` `master`/`release-x.y` (see "Handling updates from `upstream`" above) and then:
-
-1. `git push origin my-branch`
-1. Send a descriptive [pull request](http://help.github.com/pull-requests/) on GitHub.
-  - Make sure the pull request is **from** the branch on your fork **to** the `xbehave/xbehave.net` `master` (or `xbehave/xbehave.net` `release-x.y` if patching).
-  - If your changes relate to a GitHub issue, add the issue number to the pull request description in the format `#123`.
-1. If GitHub determines that the pull request can be merged automatically, a test build will commence shortly after you raise the pull request. The build status will be reported on the pull request.
-  - If the build fails, there may be a problem with your changes which you will have to fix before the pull request can be merged. Follow the link to the build server and inspect the build logs to see what caused the failure.
-  - Occasionally, build failures may be due to problems on the build server rather than problems in your changes. If you determine this to be the case, please add a comment on the pull request and one of the maintainers will address the problem.
+We want to facilitate your contribution on the `master` branch. That is the goal.
 
 ## What happens next?
 
-The maintainers will review your pull request and provide any feedback required. If your pull request is accepted, your changes will be included in the next release. If we can determine your Twitter handle, we will mention you in the tweet which announces the release. :trophy:
+The maintainers will review your pull request and provide any feedback required. If your pull request is accepted, your changes will be included in the next release. If we can determine your Twitter handle, we will mention you in the tweet which announces the release.
 
-If you contributed a new feature or a change to an existing feature then we are always very grateful to receive updates to the [documentation](https://github.com/xbehave/xbehave.net/wiki).
+If you contributed a new feature or a change to an existing feature then we are always very grateful to receive updates to the [documentation](https://github.com/mwpowellhtx/xwellbehaved.net/wiki).
