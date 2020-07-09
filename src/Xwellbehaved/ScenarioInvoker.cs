@@ -219,7 +219,17 @@ namespace Xwellbehaved.Execution
                         .OrderBy(method => method, new MethodInfoComparer())
                         )
                     {
-                        await this._timer.AggregateAsync(() => backgroundMethod.InvokeAsync(scenarioClassInstance, null));
+                        /* #4 MWP 2020-07-09 05:47:25 PM / We support seeding default values into
+                         * Background methods with parameters. However, this is the extent of what
+                         * we can accomplish there. It does not make any sense to cross any Theory
+                         * dataRow bridges for Background methods. */
+                        var backgroundArgTypes = backgroundMethod.GetParameters().Select(param => param.ParameterType).ToArray();
+                        var backgroundArgs = backgroundArgTypes.Select(paramType => paramType.GetDefault()).ToArray();
+
+                        var convertedBackgroundArgs = Reflector.ConvertArguments(backgroundArgs, backgroundArgTypes);
+                        convertedBackgroundArgs = convertedBackgroundArgs.Any() ? convertedBackgroundArgs : null;
+
+                        await this._timer.AggregateAsync(() => backgroundMethod.InvokeAsync(scenarioClassInstance, convertedBackgroundArgs));
                     }
 
                     backgroundStepDefinitions.AddRange(CurrentThread.StepDefinitions);
