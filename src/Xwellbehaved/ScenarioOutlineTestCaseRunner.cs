@@ -54,21 +54,23 @@ namespace Xwellbehaved.Execution
                 foreach (var dataAttribute in dataAttributes)
                 {
                     var discovererAttribute = dataAttribute.GetCustomAttributes(typeof(DataDiscovererAttribute)).First();
-                    var discoverer =
-                        ExtensibilityPointFactory.GetDataDiscoverer(this._diagnosticMessageSink, discovererAttribute);
+                    // #4 MWP 2020-07-09 05:48:16 PM / also clarifying actualArgs versus dataRows
+                    var discoverer = ExtensibilityPointFactory.GetDataDiscoverer(this._diagnosticMessageSink, discovererAttribute);
 
-                    foreach (var dataRow in discoverer.GetData(dataAttribute, this.TestCase.TestMethod.Method))
+                    foreach (var actualArgs in discoverer.GetData(dataAttribute, this.TestCase.TestMethod.Method))
                     {
-                        this._disposables.AddRange(dataRow.OfType<IDisposable>());
+                        this._disposables.AddRange(actualArgs.OfType<IDisposable>());
 
-                        var info = new ScenarioInfo(this.TestCase.TestMethod.Method, dataRow, this.DisplayName);
+                        var info = new ScenarioInfo(this.TestCase.TestMethod.Method, actualArgs, this.DisplayName);
                         var methodToRun = info.MethodToRun;
-                        var convertedDataRow = info.ConvertedDataRow.ToArray();
+                        var convertedActualArgs = info.ConvertedActualArgs.ToArray();
 
                         var theoryDisplayName = info.ScenarioDisplayName;
                         var test = new Scenario(this.TestCase, theoryDisplayName);
                         var skipReason = this.SkipReason ?? dataAttribute.GetNamedArgument<string>("Skip");
-                        var runner = new ScenarioRunner(test, this.MessageBus, this.TestClass, this.ConstructorArguments, methodToRun, convertedDataRow, skipReason, this.BeforeAfterAttributes, this.Aggregator, this.CancellationTokenSource);
+                        var runner = new ScenarioRunner(test, this.MessageBus, this.TestClass, this.ConstructorArguments
+                            , methodToRun, convertedActualArgs, skipReason, this.BeforeAfterAttributes, this.Aggregator
+                            , this.CancellationTokenSource);
                         this._scenarioRunners.Add(runner);
                     }
                 }
@@ -77,11 +79,13 @@ namespace Xwellbehaved.Execution
                 {
                     var info = new ScenarioInfo(this.TestCase.TestMethod.Method, _noArguments, this.DisplayName);
                     var methodToRun = info.MethodToRun;
-                    var convertedDataRow = info.ConvertedDataRow.ToArray();
+                    var convertedActualArgs = info.ConvertedActualArgs.ToArray();
 
                     var theoryDisplayName = info.ScenarioDisplayName;
                     var test = new Scenario(this.TestCase, theoryDisplayName);
-                    var runner = new ScenarioRunner(test, this.MessageBus, this.TestClass, this.ConstructorArguments, methodToRun, convertedDataRow, this.SkipReason, this.BeforeAfterAttributes, this.Aggregator, this.CancellationTokenSource);
+                    var runner = new ScenarioRunner(test, this.MessageBus, this.TestClass, this.ConstructorArguments
+                        , methodToRun, convertedActualArgs, this.SkipReason, this.BeforeAfterAttributes, this.Aggregator
+                        , this.CancellationTokenSource);
                     this._scenarioRunners.Add(runner);
                 }
             }

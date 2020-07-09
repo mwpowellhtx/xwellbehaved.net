@@ -23,9 +23,10 @@ namespace Xwellbehaved.Execution
 
         public MethodInfo MethodToRun { get; }
 
-        public List<object> ConvertedDataRow { get; }
+        // #4 MWP 2020-07-09 05:46:25 PM / While we are here also clarify between dataRow and actualArgs
+        public List<object> ConvertedActualArgs { get; }
 
-        public ScenarioInfo(IMethodInfo testMethod, object[] dataRow, string scenarioOutlineDisplayName)
+        public ScenarioInfo(IMethodInfo testMethod, object[] actualArgs, string scenarioOutlineDisplayName)
         {
             //Guard.AgainstNullArgument(nameof(testMethod), testMethod);
 
@@ -38,36 +39,34 @@ namespace Xwellbehaved.Execution
             var parameters = testMethod.GetParameters().ToList();
 #pragma warning restore CA1062 // ...validate parameter 'name' is non-null before using it...
 
-            var typeParameters = testMethod.GetGenericArguments().ToList();
+            var typeParams = testMethod.GetGenericArguments().ToList();
 
-            ITypeInfo[] typeArguments;
+            ITypeInfo[] typeArgs;
             if (testMethod.IsGenericMethodDefinition)
             {
-                typeArguments = typeParameters
-                    .Select(typeParameter => InferTypeArgument(typeParameter.Name, parameters, dataRow))
+                typeArgs = typeParams
+                    .Select(typeParameter => InferTypeArgument(typeParameter.Name, parameters, actualArgs))
                     .ToArray();
 
-                this.MethodToRun = testMethod.MakeGenericMethod(typeArguments).ToRuntimeMethod();
+                this.MethodToRun = testMethod.MakeGenericMethod(typeArgs).ToRuntimeMethod();
             }
             else
             {
-                typeArguments = Array.Empty<ITypeInfo>();
+                typeArgs = Array.Empty<ITypeInfo>();
                 this.MethodToRun = testMethod.ToRuntimeMethod();
             }
 
-            var passedArguments = Reflector.ConvertArguments(
-                dataRow, this.MethodToRun.GetParameters().Select(p => p.ParameterType).ToArray());
+            var passedArgs = Reflector.ConvertArguments(actualArgs, this.MethodToRun.GetParameters().Select(p => p.ParameterType).ToArray());
 
-            var generatedArguments = GetGeneratedArguments(
-                typeParameters, typeArguments, parameters, passedArguments.Length);
+            var generatedArguments = GetGeneratedArguments(typeParams, typeArgs, parameters, passedArgs.Length);
 
-            var arguments = passedArguments
+            var args = passedArgs
                 .Select(value => new Argument(value))
                 .Concat(generatedArguments)
                 .ToList();
 
-            this.ScenarioDisplayName = GetScenarioDisplayName(scenarioOutlineDisplayName, typeArguments, parameters, arguments);
-            this.ConvertedDataRow = arguments.Select(argument => argument.Value).ToList();
+            this.ScenarioDisplayName = GetScenarioDisplayName(scenarioOutlineDisplayName, typeArgs, parameters, args);
+            this.ConvertedActualArgs = args.Select(arg => arg.Value).ToList();
         }
 
         private static ITypeInfo InferTypeArgument(
