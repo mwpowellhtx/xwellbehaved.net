@@ -205,8 +205,9 @@ namespace Xwellbehaved.Execution
 
         private async Task<RunSummary> InvokeScenarioMethodAsync(object scenarioClassInstance)
         {
-            var backgroundStepDefinitions = new List<IStepDefinition>();
-            var scenarioStepDefinitions = new List<IStepDefinition>();
+            var backgroundSteps = new List<IStepDefinition>();
+            var scenarioSteps = new List<IStepDefinition>();
+            var tearDownSteps = new List<IStepDefinition>();
             await this._aggregator.RunAsync(async () =>
             {
                 // We leverage this for both Background and TearDown methods.
@@ -247,14 +248,14 @@ namespace Xwellbehaved.Execution
                 {
                     await OnDiscoverSupportMethodsAsync<BackgroundAttribute>(this._scenario, this._timer);
 
-                    backgroundStepDefinitions.AddRange(CurrentThread.StepDefinitions);
+                    backgroundSteps.AddRange(CurrentThread.StepDefinitions);
                 }
 
                 using (CurrentThread.EnterStepDefinitionContext())
                 {
                     await this._timer.AggregateAsync(() => this._scenarioMethod.InvokeAsync(scenarioClassInstance, this._scenarioMethodArguments));
 
-                    scenarioStepDefinitions.AddRange(CurrentThread.StepDefinitions);
+                    scenarioSteps.AddRange(CurrentThread.StepDefinitions);
                 }
 
                 // MWP Sun, 06 Dec 2020 11:00:56 AM / Rinse and repeat Background, except for TearDown...
@@ -262,21 +263,31 @@ namespace Xwellbehaved.Execution
                 {
                     await OnDiscoverSupportMethodsAsync<TearDownAttribute>(this._scenario, this._timer);
 
-                    backgroundStepDefinitions.AddRange(CurrentThread.StepDefinitions);
+                    tearDownSteps.AddRange(CurrentThread.StepDefinitions);
                 }
             });
 
             var runSummary = new RunSummary { Time = this._timer.Total };
             if (!this._aggregator.HasExceptions)
             {
-                runSummary.Aggregate(await this.InvokeStepsAsync(backgroundStepDefinitions, scenarioStepDefinitions));
+                // Assumes Scenario for StepDefinitionType.
+                backgroundSteps.ForEach(x => x.StepDefinitionType = StepType.Background);
+                tearDownSteps.ForEach(x => x.StepDefinitionType = StepType.TearDown);
+                runSummary.Aggregate(await this.InvokeStepsAsync(backgroundSteps, scenarioSteps, tearDownSteps));
             }
 
             return runSummary;
         }
 
-        private async Task<RunSummary> InvokeStepsAsync(ICollection<IStepDefinition> backGroundStepDefinitions
-            , ICollection<IStepDefinition> scenarioStepDefinitions)
+        /// <summary>
+        /// Invokes the Steps given Background, Scenario, and TearDown steps.
+        /// </summary>
+        /// <param name="backgroundSteps"></param>
+        /// <param name="scenarioSteps"></param>
+        /// <param name="tearDownSteps"></param>
+        /// <returns></returns>
+        private async Task<RunSummary> InvokeStepsAsync(ICollection<IStepDefinition> backgroundSteps
+            , ICollection<IStepDefinition> scenarioSteps, ICollection<IStepDefinition> tearDownSteps)
         {
             var scenarioTypeInfo = this._scenarioClass.GetTypeInfo();
             var filters = scenarioTypeInfo.Assembly.GetCustomAttributes(typeof(Attribute))
@@ -288,14 +299,16 @@ namespace Xwellbehaved.Execution
             string skipReason = null;
             var scenarioTeardowns = new List<(StepContext context, Func<IStepContext, Task> callback)>();
             var stepNumber = 0;
-            foreach (var stepDefinition in filters.Aggregate(
-                backGroundStepDefinitions.Concat(scenarioStepDefinitions)
+            foreach (var stepDefinition in filters.Aggregate(backgroundSteps.Concat(scenarioSteps).Concat(tearDownSteps)
                 , (current, filter) => filter.Filter(current)))
             {
                 stepDefinition.SkipReason = stepDefinition.SkipReason ?? skipReason;
 
-                var stepDisplayName = GetStepDisplayName(this._scenario.DisplayName, ++stepNumber
-                    , stepDefinition.DisplayTextFunc?.Invoke(stepDefinition.Text, stepNumber <= backGroundStepDefinitions.Count));
+                var stepDisplayName = GetStepDisplayName(this._scenario.DisplayName
+                    , ++stepNumber
+                    , stepDefinition.OnDisplayTextCallback?.Invoke(
+                        stepDefinition.Text, stepDefinition.StepDefinitionType)
+                );
 
                 var step = new StepTest(this._scenario, stepDisplayName);
 
