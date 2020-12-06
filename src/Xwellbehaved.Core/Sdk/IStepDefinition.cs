@@ -11,6 +11,12 @@ namespace Xwellbehaved.Sdk
     public interface IStepDefinition : IStepBuilder
     {
         /// <summary>
+        /// Gets or Sets the StepDefinitionType for the Step.
+        /// Assumes <see cref="StepType.Scenario"/> by default.
+        /// </summary>
+        StepType StepDefinitionType { get; set; }
+
+        /// <summary>
         /// Gets or sets the natural language associated with step.
         /// </summary>
         string Text { get; set; }
@@ -38,7 +44,7 @@ namespace Xwellbehaved.Sdk
         /// <summary>
         /// Gets or sets the function used to get the step display text.
         /// </summary>
-        GetStepDisplayText DisplayTextFunc { get; set; }
+        GetStepDisplayText OnDisplayTextCallback { get; set; }
 
         /// <summary>
         /// Indicates that the step will not be executed.
@@ -70,10 +76,11 @@ namespace Xwellbehaved.Sdk
         /// <summary>
         /// Defines the function used to get the step display text.
         /// </summary>
-        /// <param name="func">The function used to get the step display text.</param>
+        /// <param name="onDisplayTextCallback">A callback to invoke.</param>
         /// <returns>
         /// An instance of <see cref="IStepDefinition"/>.
         /// </returns>
-        IStepDefinition DisplayText(GetStepDisplayText func);
+        /// <see cref="OnDisplayTextCallback"/>
+        IStepDefinition OnDisplayText(GetStepDisplayText onDisplayTextCallback);
     }
 }

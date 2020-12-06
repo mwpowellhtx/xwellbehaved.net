@@ -10,6 +10,9 @@ namespace Xwellbehaved.Sdk
     {
         public string Text { get; set; }
 
+        /// <inheritdoc/>
+        public StepType StepDefinitionType { get; set; } = StepType.Scenario;
+
         public Func<IStepContext, Task> Body { get; set; }
 
         public ICollection<Func<IStepContext, Task>> Teardowns { get; } = new List<Func<IStepContext, Task>>();
@@ -18,9 +21,17 @@ namespace Xwellbehaved.Sdk
 
         public RemainingSteps FailureBehavior { get; set; }
 
-        public GetStepDisplayText DisplayTextFunc { get; set; } =
-            (stepText, isBackgroundStep) =>
-                (isBackgroundStep ? "(Background) " : null) + stepText;
+        /// <summary>
+        /// The Default OnDisplayTextCallback Callback
+        /// </summary>
+        /// <param name="stepText"></param>
+        /// <param name="stepDefinitionType"></param>
+        /// <returns></returns>
+        private static string DefaultOnDisplayText(string stepText, StepType stepDefinitionType) =>
+            $"({stepDefinitionType}): {stepText}";
+
+        /// <inheritdoc/>
+        public GetStepDisplayText OnDisplayTextCallback { get; set; } = DefaultOnDisplayText;
 
         public IStepDefinition Skip(string reason)
         {
@@ -38,15 +49,17 @@ namespace Xwellbehaved.Sdk
             return this;
         }
 
+        /// <inheritdoc/>
         public IStepDefinition OnFailure(RemainingSteps behavior)
         {
             this.FailureBehavior = behavior;
             return this;
         }
 
-        public IStepDefinition DisplayText(GetStepDisplayText func)
+        /// <inheritdoc/>
+        public IStepDefinition OnDisplayText(GetStepDisplayText onDisplayTextCallback)
         {
-            this.DisplayTextFunc = func;
+            this.OnDisplayTextCallback = onDisplayTextCallback;
             return this;
         }
 
