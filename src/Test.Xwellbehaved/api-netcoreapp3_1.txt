@@ -70,7 +70,7 @@ namespace Xwellbehaved.Sdk
         public static void Add(Xwellbehaved.Sdk.IStepDefinition item) { }
         public static System.IDisposable EnterStepDefinitionContext() { }
     }
-    public delegate string GetStepDisplayText(string stepText, bool isBackgroundStep);
+    public delegate string GetStepDisplayText(string stepText, Xwellbehaved.Sdk.StepType stepDefinitionType);
     public interface IFilter<T>
     {
         System.Collections.Generic.IEnumerable<T> Filter(System.Collections.Generic.IEnumerable<T> source);
@@ -98,14 +98,21 @@ namespace Xwellbehaved.Sdk
     public interface IStepDefinition : Xwellbehaved.Sdk.IStepBuilder
     {
         System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> Body { get; set; }
-        Xwellbehaved.Sdk.GetStepDisplayText DisplayTextFunc { get; set; }
         Xwellbehaved.RemainingSteps FailureBehavior { get; set; }
+        Xwellbehaved.Sdk.GetStepDisplayText OnDisplayTextCallback { get; set; }
         string SkipReason { get; set; }
+        Xwellbehaved.Sdk.StepType StepDefinitionType { get; set; }
         System.Collections.Generic.ICollection<System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task>> Teardowns { get; }
         string Text { get; set; }
-        Xwellbehaved.Sdk.IStepDefinition DisplayText(Xwellbehaved.Sdk.GetStepDisplayText func);
+        Xwellbehaved.Sdk.IStepDefinition OnDisplayText(Xwellbehaved.Sdk.GetStepDisplayText onDisplayTextCallback);
         Xwellbehaved.Sdk.IStepDefinition OnFailure(Xwellbehaved.RemainingSteps behavior);
         Xwellbehaved.Sdk.IStepDefinition Skip(string reason);
         Xwellbehaved.Sdk.IStepDefinition Teardown(System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> action);
+    }
+    public enum StepType
+    {
+        Background = 0,
+        Scenario = 1,
+        TearDown = 2,
     }
 }

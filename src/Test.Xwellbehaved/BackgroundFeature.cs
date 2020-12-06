@@ -6,6 +6,7 @@ namespace Xwellbehaved
     using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
+    using Xwellbehaved.Sdk;
 
     /// <summary>
     /// In order to write less code as a developer I want to add background steps to all the
@@ -87,11 +88,11 @@ namespace Xwellbehaved
 
             "And there are eight results".x(() => results.Length.AssertEqual(8));
 
-            "And the background steps have '(Background)' in their names".x(() =>
+            $"And the background steps have '({StepType.Background})' in their names".x(() =>
             {
                 foreach (var result in results.Take(2).Concat(results.Skip(4).Take(2)))
                 {
-                    result.Test.DisplayName.AssertContains("(Background)");
+                    result.Test.DisplayName.AssertContains($"({StepType.Background})");
                 }
             });
         }

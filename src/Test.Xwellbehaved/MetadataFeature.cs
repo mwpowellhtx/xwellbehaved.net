@@ -27,7 +27,7 @@ namespace Xwellbehaved
             {
                 step = stepContext.Step.AssertNotNull();
                 var stepDisplayName = step.DisplayName;
-                stepDisplayName.AssertEqual("Xwellbehaved.MetadataFeature.UsingMetadata(text: \"abc\") [01] When I execute a step");
+                stepDisplayName.AssertEqual($"Xwellbehaved.MetadataFeature.UsingMetadata(text: \"abc\") [01] ({StepType.Scenario}): When I execute a step");
             });
 
             "And the step contains metadata about the scenario".x(() =>

@@ -12,6 +12,15 @@ namespace Xwellbehaved
 
         protected IList<Guid> Visited { get; } = new List<Guid>();
 
+        [Scenario]
+        public void Scenario()
+        {
+
+#pragma warning disable IDE0022 // Use expression body for methods
+            "At least one Scenario is required in order to discover Support methods".x(() => true.AssertTrue());
+
+        }
+
         [TearDown]
         public void TearDownOne()
         {
@@ -76,16 +85,27 @@ namespace Xwellbehaved
         /// order to maintain the Visited collection properly throughout the test resolution life
         /// cycle.
         /// </summary>
+        /// <see cref="IDisposable"/>
+        /// <see cref="Dispose(bool)"/>
         [Scenario]
-        public void TearDowns_should_be_visited_in_the_correct_order()
+        public void Scenario_occurs_before_TearDown()
         {
-
-#pragma warning disable IDE0022 // Use expression body for methods
             // And we have early detection in the sense of TearDowns doing a little preliminary verification.
-            "Finally, Visited should appear in the expected order".x(() => this.Visited.AssertEqual(
-                new[] { this.BaseFourId, this.BaseThreeId, this.BaseTwoId, this.BaseOneId }));
-#pragma warning restore IDE0022 // Use expression body for methods
+            "Remember, Scenario occurs before TearDown, so nothing Visted yet".x(
+                () => this.Visited.AssertCollectionEmpty()
+            );
+        }
 
+        /// <inheritdoc/>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // We should be able to verify the TearDown visitation did occur on disposal, however.
+                this.Visited.AssertEqual(new[] { this.BaseFourId, this.BaseThreeId, this.BaseTwoId, this.BaseOneId });
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

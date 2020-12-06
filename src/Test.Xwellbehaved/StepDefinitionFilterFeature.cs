@@ -6,8 +6,8 @@ namespace Xwellbehaved
 {
     using Xunit;
     using Xunit.Abstractions;
-    using Xwellbehaved.Sdk;
     using Xwellbehaved.Infrastructure;
+    using Xwellbehaved.Sdk;
 
     public class StepDefinitionFilterFeature : Feature
     {
@@ -61,9 +61,17 @@ namespace Xwellbehaved
 
         private sealed class BackgroundSuffixesAttribute : Attribute, IFilter<IStepDefinition>
         {
+            /// <summary>
+            /// The formatting here is on purposes, looking for a suffix.
+            /// </summary>
+            /// <param name="stepText"></param>
+            /// <param name="stepDefinitionType"></param>
+            /// <returns></returns>
+            private static string DefaultOnDisplayText(string stepText, StepType stepDefinitionType) =>
+                $"{stepText} ({stepDefinitionType})";
+
             public IEnumerable<IStepDefinition> Filter(IEnumerable<IStepDefinition> steps) =>
-                steps.Select(step => step.DisplayText((stepText, isBackgroundStep) =>
-                    stepText + (isBackgroundStep ? " (Background)" : null)));
+                steps.Select(step => step.OnDisplayText(DefaultOnDisplayText));
         }
 
         private class ScenarioWithBackgroundSuffixes
@@ -119,12 +127,16 @@ namespace Xwellbehaved
         public void BackgroundSuffixes(Type feature, ITestResultMessage[] results)
         {
             "Given a scenario marked with BackgroundSuffixes".x(
-                () => feature = typeof(ScenarioWithBackgroundSuffixes));
+                () => feature = typeof(ScenarioWithBackgroundSuffixes)
+            );
 
             "When I run the scenario".x(
-                () => results = this.Run<ITestResultMessage>(feature));
+                () => results = this.Run<ITestResultMessage>(feature)
+            );
 
-            "Then the first result has a background suffix".x(() => results[0].Test.DisplayName.AssertEndsWith("(Background)"));
+            "Then the first result has a background suffix".x(
+                () => results[0].Test.DisplayName.AssertEndsWith($"({StepType.Background})")
+            );
         }
     }
 }
