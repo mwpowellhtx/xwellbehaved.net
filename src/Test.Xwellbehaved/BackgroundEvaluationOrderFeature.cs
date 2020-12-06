@@ -5,7 +5,6 @@ namespace Xwellbehaved
 {
     using Infrastructure;
     using Xunit;
-    using Xunit.Abstractions;
 
     public abstract class BackgroundEvaluationOrderFeatureOne : Feature
     {
@@ -18,7 +17,7 @@ namespace Xwellbehaved
         {
             "Visited should not be null".x(() => this.Visited.AssertNotNull());
 
-            "And visited should not be empty".x(() => this.Visited.AssertEmpty());
+            "And visited should be empty".x(() => this.Visited.AssertCollectionEmpty());
 
             "Then record background one visitation".x(() => this.Visited.Add(this.BaseOneId));
         }
