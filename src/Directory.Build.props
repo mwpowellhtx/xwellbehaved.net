@@ -24,7 +24,7 @@
 
     <!-- Versioning... -->
     <PropertyGroup>
-        <BumpAssemblyVersionsVersion>1.6.0</BumpAssemblyVersionsVersion>
+        <BumpAssemblyVersionsVersion>1.8.0</BumpAssemblyVersionsVersion>
         <BumpAssemblyVersionsTargetsPath>..\packages\BumpAssemblyVersions\$(BumpAssemblyVersionsVersion)\build\BumpAssemblyVersions.targets</BumpAssemblyVersionsTargetsPath>
         <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Release'">MinutesSinceMidnight</BumpAssemblyVersionBuildProvider>
         <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Debug'">Increment</BumpAssemblyVersionBuildProvider>
