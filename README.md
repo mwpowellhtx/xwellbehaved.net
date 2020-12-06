@@ -13,6 +13,14 @@ Documentation coming soon. We are considering translating some of the docs in te
 
 Platform support: [.NET Standard 2.0 and upwards](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
 
+## Introducing TearDown, Background, etc
+
+*xWellBehaved.net* has supported `BackgroundAttribute` for some time now. *Background* affords developers a predictable *Background* initialization opportunity, from the base class forward to the class whose *Scenarios* are being invoked.
+
+Conversely, *xWellBehaved.net* now also supports *TearDownAttribute*, which does a similar thing, except treats *Background* something like a stack, and unwinds *teardown* evaluation in reverse order. Similar to `IDispose`, it is up developers to do the right thing unwinding their *BDD* assets and resources in the correct order.
+
+This is unlike *xUnit.net* support for `IDispose` in the sense that unit test resources such as `ITestOutputHelper` ought still to be available for use during the *teardown* invocation.
+
 ## Packages
 
 The [full `Xwellbehaved` package](https://www.nuget.org/packages/Xwellbehaved) depends on the [`xunit` package](https://www.nuget.org/packages/xunit). That means you get the full suite of *xUnit.net* dependencies such as [`xunit.assert`](https://www.nuget.org/packages/xunit.assert) and [`xunit.analyzers`](https://www.nuget.org/packages/xunit.analyzers).
