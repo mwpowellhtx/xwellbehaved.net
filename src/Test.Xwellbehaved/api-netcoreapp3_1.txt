@@ -1,8 +1,7 @@
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName="")]
 namespace Xwellbehaved
 {
-    [System.AttributeUsage(System.AttributeTargets.Method | System.AttributeTargets.All)]
-    public class BackgroundAttribute : System.Attribute
+    public class BackgroundAttribute : Xwellbehaved.SupportMethodAttribute
     {
         public BackgroundAttribute() { }
     }
@@ -52,6 +51,15 @@ namespace Xwellbehaved
         public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Action<Xwellbehaved.Sdk.IStepContext> body) { }
         public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Func<System.Threading.Tasks.Task> body) { }
         public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> body) { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method | System.AttributeTargets.All)]
+    public abstract class SupportMethodAttribute : System.Attribute
+    {
+        protected SupportMethodAttribute() { }
+    }
+    public class TearDownAttribute : Xwellbehaved.SupportMethodAttribute
+    {
+        public TearDownAttribute() { }
     }
 }
 namespace Xwellbehaved.Sdk
