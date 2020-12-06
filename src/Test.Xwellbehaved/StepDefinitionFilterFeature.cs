@@ -93,7 +93,7 @@ namespace Xwellbehaved
 
             "When I run the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "And there are results".x(() => results.AssertNotEmpty());
+            "And there are results".x(() => results.AssertCollectionNotEmpty());
 
             "Then the steps are skipped".x(() => results.All(result => result is ITestSkipped).AssertTrue());
         }

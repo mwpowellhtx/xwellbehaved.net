@@ -21,7 +21,7 @@ namespace Xwellbehaved
 
             "When I run the scenario".x(() => results = this.Run<ITestResultMessage>(feature));
 
-            "Then the results should not be empty".x(() => results.AssertNotEmpty());
+            "Then the results should not be empty".x(() => results.AssertCollectionNotEmpty());
 
             "And there should be no failures".x(() => results.Any(result => result is ITestFailed).AssertFalse());
 

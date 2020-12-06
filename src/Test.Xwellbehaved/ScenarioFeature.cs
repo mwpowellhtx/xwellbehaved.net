@@ -233,7 +233,7 @@ namespace Xwellbehaved
 
             "Then no exception should be thrown".x(() => exception.AssertNull());
 
-            "And the results should not be empty".x(() => results.AssertNotEmpty());
+            "And the results should not be empty".x(() => results.AssertCollectionNotEmpty());
 
             "And each result should be a failure".x(() => results.All(result => result is ITestFailed).AssertTrue());
         }
@@ -249,7 +249,7 @@ namespace Xwellbehaved
 
             "Then no exception should be thrown".x(() => exception.AssertNull());
 
-            "And the results should not be empty".x(() => results.AssertNotEmpty());
+            "And the results should not be empty".x(() => results.AssertCollectionNotEmpty());
 
             "And each result should be a failure".x(() => results.All(result => result is ITestFailed).AssertTrue());
         }
