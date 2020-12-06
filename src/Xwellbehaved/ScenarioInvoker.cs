@@ -209,28 +209,43 @@ namespace Xwellbehaved.Execution
             var scenarioStepDefinitions = new List<IStepDefinition>();
             await this._aggregator.RunAsync(async () =>
             {
-                using (CurrentThread.EnterStepDefinitionContext())
+                // We leverage this for both Background and TearDown methods.
+                async Task OnDiscoverSupportMethodsAsync<TAttribute>(
+                    IScenario scenario, ExecutionTimer timer)
+                    where TAttribute : SupportMethodAttribute
                 {
-                    foreach (var backgroundMethod in this._scenario.TestCase.TestMethod.TestClass.Class
+                    var methods = scenario.TestCase.TestMethod.TestClass.Class
                         .GetMethods(false)
-                        .Where(candidate => candidate.GetCustomAttributes(typeof(BackgroundAttribute)).Any())
+                        .Where(candidate => candidate.GetCustomAttributes(typeof(TAttribute)).Any())
                         .Select(method => method.ToRuntimeMethod())
                         // #2 MWP 2020-07-01 12:28:03 PM: the rubber meeting the road here.
-                        .OrderBy(method => method, new MethodInfoComparer())
-                        )
+                        .OrderBy(method => method, new MethodInfoComparer()).ToList();
+
+                    // Thus ensuring correct front to back Background, reverse TearDown.
+                    if (typeof(TAttribute) == typeof(TearDownAttribute))
+                    {
+                        methods.Reverse();
+                    }
+
+                    foreach (var method in methods)
                     {
                         /* #4 MWP 2020-07-09 05:47:25 PM / We support seeding default values into
                          * Background methods with parameters. However, this is the extent of what
                          * we can accomplish there. It does not make any sense to cross any Theory
                          * dataRow bridges for Background methods. */
-                        var backgroundArgTypes = backgroundMethod.GetParameters().Select(param => param.ParameterType).ToArray();
-                        var backgroundArgs = backgroundArgTypes.Select(paramType => paramType.GetDefault()).ToArray();
+                        var argTypes = method.GetParameters().Select(param => param.ParameterType).ToArray();
+                        var args = argTypes.Select(paramType => paramType.GetDefault()).ToArray();
 
-                        var convertedBackgroundArgs = Reflector.ConvertArguments(backgroundArgs, backgroundArgTypes);
-                        convertedBackgroundArgs = convertedBackgroundArgs.Any() ? convertedBackgroundArgs : null;
+                        var convertedArgs = Reflector.ConvertArguments(args, argTypes);
+                        convertedArgs = convertedArgs.Any() ? convertedArgs : null;
 
-                        await this._timer.AggregateAsync(() => backgroundMethod.InvokeAsync(scenarioClassInstance, convertedBackgroundArgs));
+                        await timer.AggregateAsync(() => method.InvokeAsync(scenarioClassInstance, convertedArgs));
                     }
+                }
+
+                using (CurrentThread.EnterStepDefinitionContext())
+                {
+                    await OnDiscoverSupportMethodsAsync<BackgroundAttribute>(this._scenario, this._timer);
 
                     backgroundStepDefinitions.AddRange(CurrentThread.StepDefinitions);
                 }
@@ -240,6 +255,14 @@ namespace Xwellbehaved.Execution
                     await this._timer.AggregateAsync(() => this._scenarioMethod.InvokeAsync(scenarioClassInstance, this._scenarioMethodArguments));
 
                     scenarioStepDefinitions.AddRange(CurrentThread.StepDefinitions);
+                }
+
+                // MWP Sun, 06 Dec 2020 11:00:56 AM / Rinse and repeat Background, except for TearDown...
+                using (CurrentThread.EnterStepDefinitionContext())
+                {
+                    await OnDiscoverSupportMethodsAsync<TearDownAttribute>(this._scenario, this._timer);
+
+                    backgroundStepDefinitions.AddRange(CurrentThread.StepDefinitions);
                 }
             });
 
@@ -263,7 +286,7 @@ namespace Xwellbehaved.Execution
 
             var summary = new RunSummary();
             string skipReason = null;
-            var scenarioTeardowns = new List<Tuple<StepContext, Func<IStepContext, Task>>>();
+            var scenarioTeardowns = new List<(StepContext context, Func<IStepContext, Task> callback)>();
             var stepNumber = 0;
             foreach (var stepDefinition in filters.Aggregate(
                 backGroundStepDefinitions.Concat(scenarioStepDefinitions)
@@ -318,7 +341,7 @@ namespace Xwellbehaved.Execution
                          }))
                         .Concat(stepDefinition.Teardowns)
                         .Where(teardown => teardown != null)
-                        .Select(teardown => Tuple.Create(stepContext, teardown));
+                        .Select(teardown => (stepContext, teardown));
 
                     scenarioTeardowns.AddRange(stepTeardowns);
                 }
@@ -329,9 +352,11 @@ namespace Xwellbehaved.Execution
                 scenarioTeardowns.Reverse();
                 var teardownTimer = new ExecutionTimer();
                 var teardownAggregator = new ExceptionAggregator();
-                foreach (var teardown in scenarioTeardowns)
+
+                // "Teardowns" not to be confused with TearDown versus Background.
+                foreach (var (context, callback) in scenarioTeardowns)
                 {
-                    await Invoker.Invoke(() => teardown.Item2(teardown.Item1), teardownAggregator, teardownTimer);
+                    await Invoker.Invoke(() => callback.Invoke(context), teardownAggregator, teardownTimer);
                 }
 
                 summary.Time += teardownTimer.Total;
