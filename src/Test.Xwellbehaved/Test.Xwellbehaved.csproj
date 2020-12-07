@@ -9,14 +9,15 @@
     <PropertyGroup>
         <Configuration>Debug</Configuration>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <Version>2.4.2.3865</Version>
-        <AssemblyVersion>2.4.2.3865</AssemblyVersion>
-        <FileVersion>2.4.2.3865</FileVersion>
-        <PackageVersion>2.4.2.3865</PackageVersion>
+        <Version>2.5.0.1109</Version>
+        <AssemblyVersion>2.5.0.1109</AssemblyVersion>
+        <FileVersion>2.5.0.1109</FileVersion>
+        <PackageVersion>2.5.0.1109</PackageVersion>
         <BumpSpecSwitch>init</BumpSpecSwitch>
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Xwellbehaved.Core\Xwellbehaved.Core.csproj" />
         <ProjectReference Include="..\Xwellbehaved\Xwellbehaved.csproj" />
     </ItemGroup>
 

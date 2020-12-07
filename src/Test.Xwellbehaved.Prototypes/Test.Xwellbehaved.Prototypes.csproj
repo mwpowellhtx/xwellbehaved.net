@@ -9,10 +9,10 @@
         <Configuration>Debug</Configuration>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>Xwellbehaved.Prototypes</RootNamespace>
-        <Version>1.0.0.51</Version>
-        <AssemblyVersion>1.0.0.51</AssemblyVersion>
-        <FileVersion>1.0.0.51</FileVersion>
-        <PackageVersion>1.0.0.51</PackageVersion>
+        <Version>1.0.0.52</Version>
+        <AssemblyVersion>1.0.0.52</AssemblyVersion>
+        <FileVersion>1.0.0.52</FileVersion>
+        <PackageVersion>1.0.0.52</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
