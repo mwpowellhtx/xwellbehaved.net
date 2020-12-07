@@ -18,6 +18,11 @@ namespace Xwellbehaved.Sdk
         /// <summary>
         /// A TearDown Step.
         /// </summary>
-        TearDown
+        TearDown,
+
+        /// <summary>
+        /// A Rollback Step.
+        /// </summary>
+        Rollback
     }
 }
