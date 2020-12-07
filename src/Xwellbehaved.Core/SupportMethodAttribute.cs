@@ -8,13 +8,8 @@ namespace Xwellbehaved
     /// class.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)
-        , SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes", Justification = "Designed for extensibility.")
-        , IgnoreXunitAnalyzersRule1013]
+        , SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes", Justification = "Designed for extensibility.")]
     public abstract class SupportMethodAttribute : Attribute
     {
-        [AttributeUsage(AttributeTargets.Class)]
-        private class IgnoreXunitAnalyzersRule1013Attribute : Attribute
-        {
-        }
     }
 }
