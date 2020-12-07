@@ -297,7 +297,7 @@ namespace Xwellbehaved.Execution
 
             var summary = new RunSummary();
             string skipReason = null;
-            var scenarioTeardowns = new List<(StepContext context, Func<IStepContext, Task> callback)>();
+            var scenarioRollbacks = new List<(StepContext context, Func<IStepContext, Task> callback)>();
             var stepNumber = 0;
             foreach (var stepDefinition in filters.Aggregate(backgroundSteps.Concat(scenarioSteps).Concat(tearDownSteps)
                 , (current, filter) => filter.Filter(current)))
@@ -306,7 +306,7 @@ namespace Xwellbehaved.Execution
 
                 var stepDisplayName = GetStepDisplayName(this._scenario.DisplayName
                     , ++stepNumber
-                    , stepDefinition.OnDisplayTextCallback?.Invoke(
+                    , stepDefinition.OnDisplayText?.Invoke(
                         stepDefinition.Text, stepDefinition.StepDefinitionType)
                 );
 
@@ -345,44 +345,44 @@ namespace Xwellbehaved.Execution
                     summary.Aggregate(await stepRunner.RunAsync());
 
                     // TODO: TBD: could we use disposable?.Dispose() here?
-                    var stepTeardowns = stepContext.Disposables
+                    var stepRollbacks = stepContext.Disposables
                         .Where(disposable => disposable != null)
                          .Select((Func<IDisposable, Func<IStepContext, Task>>)(disposable => context =>
                          {
                              disposable.Dispose();
                              return Task.FromResult(0);
                          }))
-                        .Concat(stepDefinition.Teardowns)
-                        .Where(teardown => teardown != null)
-                        .Select(teardown => (stepContext, teardown));
+                        .Concat(stepDefinition.Rollbacks)
+                        .Where(onRollback => onRollback != null)
+                        .Select(onRollback => (stepContext, onRollback));
 
-                    scenarioTeardowns.AddRange(stepTeardowns);
+                    scenarioRollbacks.AddRange(stepRollbacks);
                 }
             }
 
-            if (scenarioTeardowns.Any())
+            if (scenarioRollbacks.Any())
             {
-                scenarioTeardowns.Reverse();
-                var teardownTimer = new ExecutionTimer();
-                var teardownAggregator = new ExceptionAggregator();
+                scenarioRollbacks.Reverse();
+                var rollbackTimer = new ExecutionTimer();
+                var rollbackAggregator = new ExceptionAggregator();
 
                 // "Teardowns" not to be confused with TearDown versus Background.
-                foreach (var (context, callback) in scenarioTeardowns)
+                foreach (var (context, onRollback) in scenarioRollbacks)
                 {
-                    await Invoker.Invoke(() => callback.Invoke(context), teardownAggregator, teardownTimer);
+                    await Invoker.Invoke(() => onRollback.Invoke(context), rollbackAggregator, rollbackTimer);
                 }
 
-                summary.Time += teardownTimer.Total;
+                summary.Time += rollbackTimer.Total;
 
-                if (teardownAggregator.HasExceptions)
+                if (rollbackAggregator.HasExceptions)
                 {
                     summary.Failed++;
                     summary.Total++;
 
-                    var stepDisplayName = GetStepDisplayName(this._scenario.DisplayName, ++stepNumber, "(Teardown)");
+                    var stepDisplayName = GetStepDisplayName(this._scenario.DisplayName, ++stepNumber, $"({StepType.Rollback})");
 
                     this._messageBus.Queue(new StepTest(this._scenario, stepDisplayName)
-                        , test => new TestFailed(test, teardownTimer.Total, null, teardownAggregator.ToException())
+                        , test => new TestFailed(test, rollbackTimer.Total, null, rollbackAggregator.ToException())
                         , this._cancellationTokenSource);
                 }
             }
