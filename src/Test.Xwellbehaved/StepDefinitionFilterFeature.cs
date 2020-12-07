@@ -71,7 +71,7 @@ namespace Xwellbehaved
                 $"{stepText} ({stepDefinitionType})";
 
             public IEnumerable<IStepDefinition> Filter(IEnumerable<IStepDefinition> steps) =>
-                steps.Select(step => step.OnDisplayText(DefaultOnDisplayText));
+                steps.Select(step => step.ConfigureDisplayText(DefaultOnDisplayText));
         }
 
         private class ScenarioWithBackgroundSuffixes
