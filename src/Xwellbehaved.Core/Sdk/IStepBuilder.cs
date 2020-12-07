@@ -25,7 +25,17 @@ namespace Xwellbehaved.Sdk
         /// <returns>
         /// An instance of <see cref="IStepBuilder"/>.
         /// </returns>
+        [Obsolete("We are moving away from this as the syntax to avoid confusion with TearDown annotations")]
         IStepBuilder Teardown(Func<IStepContext, Task> action);
+
+        /// <summary>
+        /// Declares a rollback <paramref name="onRollback"/> <see cref="Func{T, TResult}"/>
+        /// related to this step or previous steps that will be executed after all steps in
+        /// the current scenario have been executed.
+        /// </summary>
+        /// <param name="onRollback"></param>
+        /// <returns></returns>
+        IStepBuilder Rollback(Func<IStepContext, Task> onRollback);
 
         /// <summary>
         /// Defines the behavior of remaining steps if this step fails.

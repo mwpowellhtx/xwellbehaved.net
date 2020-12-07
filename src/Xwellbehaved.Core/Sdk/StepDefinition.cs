@@ -5,20 +5,29 @@ using System.Threading.Tasks;
 
 namespace Xwellbehaved.Sdk
 {
+    /// <inheritdoc cref="IStepDefinition"/>
     [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Step", Justification = "By design.")]
     internal class StepDefinition : IStepDefinition
     {
+        /// <inheritdoc/>
         public string Text { get; set; }
 
         /// <inheritdoc/>
         public StepType StepDefinitionType { get; set; } = StepType.Scenario;
 
+        /// <inheritdoc/>
         public Func<IStepContext, Task> Body { get; set; }
 
-        public ICollection<Func<IStepContext, Task>> Teardowns { get; } = new List<Func<IStepContext, Task>>();
+        /// <inheritdoc/>
+        public ICollection<Func<IStepContext, Task>> Rollbacks { get; } = new List<Func<IStepContext, Task>>();
 
+        /// <inheritdoc/>
+        public ICollection<Func<IStepContext, Task>> Teardowns => this.Rollbacks;
+
+        /// <inheritdoc/>
         public string SkipReason { get; set; }
 
+        /// <inheritdoc/>
         public RemainingSteps FailureBehavior { get; set; }
 
         /// <summary>
@@ -31,19 +40,25 @@ namespace Xwellbehaved.Sdk
             $"({stepDefinitionType}): {stepText}";
 
         /// <inheritdoc/>
-        public GetStepDisplayText OnDisplayTextCallback { get; set; } = DefaultOnDisplayText;
+        public GetStepDisplayText OnDisplayText { get; set; } = DefaultOnDisplayText;
 
+        /// <inheritdoc/>
         public IStepDefinition Skip(string reason)
         {
             this.SkipReason = reason;
             return this;
         }
 
-        public IStepDefinition Teardown(Func<IStepContext, Task> action)
+        /// <inheritdoc/>
+        [Obsolete("See notes concerning IStepBuilder.Teardown and IStepDefinition.Teardowns")]
+        public IStepDefinition Teardown(Func<IStepContext, Task> onTeardown) => this.Rollback(onTeardown);
+
+        /// <inheritdoc/>
+        public IStepDefinition Rollback(Func<IStepContext, Task> onRollback)
         {
-            if (action != null)
+            if (onRollback != null)
             {
-                this.Teardowns.Add(action);
+                this.Rollbacks.Add(onRollback);
             }
 
             return this;
@@ -57,16 +72,23 @@ namespace Xwellbehaved.Sdk
         }
 
         /// <inheritdoc/>
-        public IStepDefinition OnDisplayText(GetStepDisplayText onDisplayTextCallback)
+        public IStepDefinition ConfigureDisplayText(GetStepDisplayText onDisplayText)
         {
-            this.OnDisplayTextCallback = onDisplayTextCallback;
+            this.OnDisplayText = onDisplayText;
             return this;
         }
 
+        /// <inheritdoc/>
         IStepBuilder IStepBuilder.Skip(string reason) => this.Skip(reason);
 
-        IStepBuilder IStepBuilder.Teardown(Func<IStepContext, Task> action) => this.Teardown(action);
+        /// <inheritdoc/>
+        [Obsolete("See notes concerning IStepDefinition.Teardown")]
+        IStepBuilder IStepBuilder.Teardown(Func<IStepContext, Task> onTeardown) => this.Rollback(onTeardown);
 
+        /// <inheritdoc/>
+        IStepBuilder IStepBuilder.Rollback(Func<IStepContext, Task> onRollback) => this.Rollback(onRollback);
+
+        /// <inheritdoc/>
         IStepBuilder IStepBuilder.OnFailure(RemainingSteps behavior) => this.OnFailure(behavior);
     }
 }

@@ -27,9 +27,17 @@ namespace Xwellbehaved.Sdk
         Func<IStepContext, Task> Body { get; set; }
 
         /// <summary>
-        /// Gets the teardowns to be invoked after the execution of the scenario in which the step participates.
+        /// Gets the teardowns to be invoked after the execution of the scenario
+        /// in which the step participates.
         /// </summary>
+        [Obsolete("We are moving away from the tear down verbiage in order to avoid confusion with the Tear Down annotation")]
         ICollection<Func<IStepContext, Task>> Teardowns { get; }
+
+        /// <summary>
+        /// Gets the rollbacks to be invoked after the execution of the scenario
+        /// in which the step participates.
+        /// </summary>
+        ICollection<Func<IStepContext, Task>> Rollbacks { get; }
 
         /// <summary>
         /// Gets or sets the reason for skipping this step.
@@ -44,7 +52,7 @@ namespace Xwellbehaved.Sdk
         /// <summary>
         /// Gets or sets the function used to get the step display text.
         /// </summary>
-        GetStepDisplayText OnDisplayTextCallback { get; set; }
+        GetStepDisplayText OnDisplayText { get; set; }
 
         /// <summary>
         /// Indicates that the step will not be executed.
@@ -76,11 +84,11 @@ namespace Xwellbehaved.Sdk
         /// <summary>
         /// Defines the function used to get the step display text.
         /// </summary>
-        /// <param name="onDisplayTextCallback">A callback to invoke.</param>
+        /// <param name="onDisplayText">A callback to invoke.</param>
         /// <returns>
         /// An instance of <see cref="IStepDefinition"/>.
         /// </returns>
-        /// <see cref="OnDisplayTextCallback"/>
-        IStepDefinition OnDisplayText(GetStepDisplayText onDisplayTextCallback);
+        /// <see cref="OnDisplayText"/>
+        IStepDefinition ConfigureDisplayText(GetStepDisplayText onDisplayText);
     }
 }
