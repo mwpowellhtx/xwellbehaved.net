@@ -7,8 +7,6 @@ _[![Xwellbehaved.Core NuGet package](https://img.shields.io/nuget/v/Xwellbehaved
 
 _[![Find your community at https://gitter.im/xwellbehaved/xwellbehaved.net](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/xwellbehaved/xwellbehaved.net?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)_
 
-Documentation coming soon. We are considering translating some of the docs in terms of *xWellBehaved.net*, but that is a future effort at the moment.
-
 _[![TL;DR read the documentation https://github.com/mwpowellhtx/xwellbehaved.net/wiki](https://img.shields.io/badge/wiki-documentation-forestgreen)](https://github.com/mwpowellhtx/xwellbehaved.net/wiki)_
 
 *xWellBehaved.net* is an [*xUnit.net*](https://github.com/xunit/xunit) extension, available [in full](https://nuget.org/packages/Xwellbehaved) or [minimal](https://nuget.org/packages/Xwellbehaved.Core) form, for [*Behavior Driven Development (BDD)*](https://en.wikipedia.org/wiki/Behavior-driven_development) or [*Test Driven Development (TDD)*](https://en.wikipedia.org/wiki/Test-driven_development) using natural language.
