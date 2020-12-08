@@ -1,0 +1,94 @@
+
+Tue, 08 Dec 2020 10:40:05 AM
+
+X:\path\to\xWellBehaved.net\master\src\Test.Xwellbehaved.Samples\bin\Debug\netcoreapp2.1>dotnet ..\..\..\..\packages\xunit.runner.console\2.4.1\tools\netcoreapp2.0\xunit.console.dll Test.Xwellbehaved.Samples.dll -class "Xwellbehaved.DebuggingScenarios" -verbose -html Test.Xwellbehaved.Samples.dll.DebuggingScenarios.html
+xUnit.net Console Runner v2.4.1 (64-bit .NET Core 4.6.29321.03)
+  Discovering: Test.Xwellbehaved.Samples
+  Discovered:  Test.Xwellbehaved.Samples
+  Starting:    Test.Xwellbehaved.Samples
+    Xwellbehaved.DebuggingScenarios.Addition() [01] (Scenario): Let x equal to 1 [STARTING]
+    Xwellbehaved.DebuggingScenarios.Addition() [01] (Scenario): Let x equal to 1 [FINISHED] Time: 0.0026903s
+    Xwellbehaved.DebuggingScenarios.Addition() [02] (Scenario): Let y equal to 2 [STARTING]
+    Xwellbehaved.DebuggingScenarios.Addition() [02] (Scenario): Let y equal to 2 [FINISHED] Time: 0.0001085s
+    Xwellbehaved.DebuggingScenarios.Addition() [03] (Scenario): Let expected equal to 3 [STARTING]
+    Xwellbehaved.DebuggingScenarios.Addition() [03] (Scenario): Let expected equal to 3 [FINISHED] Time: 0.000084s
+    Xwellbehaved.DebuggingScenarios.Addition() [04] (Scenario): And given calculator [STARTING]
+    Xwellbehaved.DebuggingScenarios.Addition() [04] (Scenario): And given calculator [FINISHED] Time: 0.0001679s
+    Xwellbehaved.DebuggingScenarios.Addition() [05] (Scenario): When x plus y [STARTING]
+    Xwellbehaved.DebuggingScenarios.Addition() [05] (Scenario): When x plus y [FINISHED] Time: 0.0028508s
+    Xwellbehaved.DebuggingScenarios.Addition() [06] (Scenario): Then actual equal to expected [STARTING]
+    Xwellbehaved.DebuggingScenarios.Addition() [06] (Scenario): Then actual equal to expected [FINISHED] Time: 0.0032507s
+  Finished:    Test.Xwellbehaved.Samples
+=== TEST EXECUTION SUMMARY ===
+   Test.Xwellbehaved.Samples  Total: 6, Errors: 0, Failed: 0, Skipped: 0, Time: 0.186s
+
+
+Tue, 08 Dec 2020 10:40:09 AM
+
+X:\path\to\xWellBehaved.net\master\src\Test.Xwellbehaved.Samples\bin\Debug\netcoreapp2.1>dotnet ..\..\..\..\packages\xunit.runner.console\2.4.1\tools\netcoreapp2.0\xunit.console.dll Test.Xwellbehaved.Samples.dll -class "Xwellbehaved.DebuggingScenariosWithExamples" -verbose -html Test.Xwellbehaved.Samples.dll.WithExamples.html
+xUnit.net Console Runner v2.4.1 (64-bit .NET Core 4.6.29321.03)
+  Discovering: Test.Xwellbehaved.Samples
+  Discovered:  Test.Xwellbehaved.Samples
+  Starting:    Test.Xwellbehaved.Samples
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [01] (Scenario): Given a number 1 [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [01] (Scenario): Given a number 1 [FINISHED] Time: 0.0027247s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [02] (Scenario): Given a number 2 [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [02] (Scenario): Given a number 2 [FINISHED] Time: 0.0000922s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [03] (Scenario): Given an expected result 3 [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [03] (Scenario): Given an expected result 3 [FINISHED] Time: 0.000104s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [04] (Scenario): And given calculator [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [04] (Scenario): And given calculator [FINISHED] Time: 0.0001624s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [05] (Scenario): When x plus y [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [05] (Scenario): When x plus y [FINISHED] Time: 0.0029453s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [06] (Scenario): Then actual equal to expected [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 1, y: 2, expected: 3) [06] (Scenario): Then actual equal to expected [FINISHED] Time: 0.0036313s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [01] (Scenario): Given a number 2 [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [01] (Scenario): Given a number 2 [FINISHED] Time: 0.0000022s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [02] (Scenario): Given a number 3 [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [02] (Scenario): Given a number 3 [FINISHED] Time: 0.0000011s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [03] (Scenario): Given an expected result 5 [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [03] (Scenario): Given an expected result 5 [FINISHED] Time: 0.0000009s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [04] (Scenario): And given calculator [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [04] (Scenario): And given calculator [FINISHED] Time: 0.0000013s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [05] (Scenario): When x plus y [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [05] (Scenario): When x plus y [FINISHED] Time: 0.0000036s
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [06] (Scenario): Then actual equal to expected [STARTING]
+    Xwellbehaved.DebuggingScenariosWithExamples.Addition(x: 2, y: 3, expected: 5) [06] (Scenario): Then actual equal to expected [FINISHED] Time: 0.0000083s
+  Finished:    Test.Xwellbehaved.Samples
+=== TEST EXECUTION SUMMARY ===
+   Test.Xwellbehaved.Samples  Total: 12, Errors: 0, Failed: 0, Skipped: 0, Time: 0.195s
+
+
+Tue, 08 Dec 2020 10:40:13 AM
+
+X:\path\to\xWellBehaved.net\master\src\Test.Xwellbehaved.Samples\bin\Debug\netcoreapp2.1>dotnet ..\..\..\..\packages\xunit.runner.console\2.4.1\tools\netcoreapp2.0\xunit.console.dll Test.Xwellbehaved.Samples.dll -class "Xwellbehaved.DebuggingScenariosIncorrectResult" -verbose -html Test.Xwellbehaved.Samples.dll.xunit.html
+xUnit.net Console Runner v2.4.1 (64-bit .NET Core 4.6.29321.03)
+  Discovering: Test.Xwellbehaved.Samples
+  Discovered:  Test.Xwellbehaved.Samples
+  Starting:    Test.Xwellbehaved.Samples
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [01] (Scenario): Let x equal to 1 [STARTING]
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [01] (Scenario): Let x equal to 1 [FINISHED] Time: 0.0026787s
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [02] (Scenario): Let y equal to 2 [STARTING]
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [02] (Scenario): Let y equal to 2 [FINISHED] Time: 0.0000874s
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [03] (Scenario): Let expected equal to 4 [STARTING]
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [03] (Scenario): Let expected equal to 4 [FINISHED] Time: 0.0000827s
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [04] (Scenario): And given calculator [STARTING]
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [04] (Scenario): And given calculator [FINISHED] Time: 0.0001962s
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [05] (Scenario): When x plus y [STARTING]
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [05] (Scenario): When x plus y [FINISHED] Time: 0.0031478s
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [06] (Scenario): Then actual equal to expected [STARTING]
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [06] (Scenario): Then actual equal to expected [FAIL]
+      Assert.Equal() Failure
+      Expected: 4
+      Actual:   3
+      Stack Trace:
+        X:\path\to\xWellBehaved.net\master\src\Test.Xwellbehaved.Samples\DebuggingScenariosIncorrectResult.cs(25,0): at Xwellbehaved.DebuggingScenariosIncorrectResult.<>c__DisplayClass1_0.<Addition>b__5()
+        X:\path\to\xWellBehaved.net\master\src\Xwellbehaved.Core\StringExtensions.cs(32,0): at Xwellbehaved.StringExtensions.<>c__DisplayClass2_0.<x>b__0(IStepContext c)
+        X:\path\to\xWellBehaved.net\master\src\Xwellbehaved\StepInvoker.cs(53,0): at Xwellbehaved.Execution.StepInvoker.<RunAsync>b__6_1()
+        X:\path\to\xWellBehaved.net\master\src\Xwellbehaved\Invoker.cs(23,0): at Xwellbehaved.Execution.Invoker.<>c__DisplayClass0_1.<<Invoke>b__1>d.MoveNext()
+        --- End of stack trace from previous location where exception was thrown ---
+    Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [06] (Scenario): Then actual equal to expected [FINISHED] Time: 0.0081851s
+  Finished:    Test.Xwellbehaved.Samples
+=== TEST EXECUTION SUMMARY ===
+   Test.Xwellbehaved.Samples  Total: 6, Errors: 0, Failed: 1, Skipped: 0, Time: 0.269s
+

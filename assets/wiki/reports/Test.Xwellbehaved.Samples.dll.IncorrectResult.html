@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+  <head>
+    <title>xUnit.net Test Results</title>
+    <style type="text/css">
+          body { font-family: Calibri, Verdana, Arial, sans-serif; background-color: White; color: Black; }
+          h2,h3,h4,h5 { margin: 0; padding: 0; }
+          h3 { font-weight: normal; }
+          h4 { margin: 0.5em 0; }
+          h5 { font-weight: normal; font-style: italic; margin-bottom: 0.75em; }
+          h6 { font-size: 0.9em; font-weight: bold; margin: 0.5em 0 0 0.75em; padding: 0; }
+          pre,table { font-family: Consolas; font-size: 0.8em; margin: 0 0 0 1em; padding: 0; }
+          table { padding-bottom: 0.25em; }
+          th { padding: 0 0.5em; border-right: 1px solid #bbb; text-align: left; }
+          td { padding-left: 0.5em; }
+          .divided { border-top: solid 1px #f0f5fa; padding-top: 0.5em; }
+          .row, .altrow { padding: 0.1em 0.3em; }
+          .row { background-color: #f0f5fa; }
+          .altrow { background-color: #e1ebf4; }
+          .success, .failure, .skipped { font-family: Arial Unicode MS; font-weight: normal; float: left; width: 1em; display: block; }
+          .success { color: #0c0; }
+          .failure { color: #c00; }
+          .skipped { color: #cc0; }
+          .timing { float: right; }
+          .indent { margin: 0.25em 0 0.5em 2em; }
+          .clickable { cursor: pointer; }
+          .testcount { font-size: 85%; }
+        </style>
+    <script language="javascript">
+          function ToggleClass(id) {
+            var elem = document.getElementById(id);
+            if (elem.style.display == "none") {
+              elem.style.display = "block";
+            }
+            else {
+              elem.style.display = "none";
+            }
+          }
+        </script>
+  </head>
+  <body>
+    <h3 class="divided">
+      <b>Assemblies Run</b>
+    </h3>
+    <div>Test.Xwellbehaved.Samples.dll</div>
+    <h3 class="divided">
+      <b>Summary</b>
+    </h3>
+    <div>
+          Tests run: <a href="#all"><b>6</b></a> —
+          
+            Failures: <a href="#failures"><b>1</b></a>,
+          
+          Run time: <b>0.243s</b>,
+          Finished: <b>12/08/2020 10:28:07</b></div>
+    <br />
+    <h2>
+      <a id="failures" />Failed tests
+          </h2>
+    <div class="row">
+      <span class="timing">0.0080818s
+        </span>
+      <span class="failure">✘</span>
+       Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [06] (Scenario): Then actual equal to expected<br clear="all" /><pre>Assert.Equal() Failure\r\nExpected: 4\r\nActual:   3</pre><pre>   at Xwellbehaved.DebuggingScenariosIncorrectResult.&lt;&gt;c__DisplayClass1_0.&lt;Addition&gt;b__5() in X:\path\to\xWellBehaved.net\master\src\Test.Xwellbehaved.Samples\DebuggingScenariosIncorrectResult.cs:line 25
+   at Xwellbehaved.StringExtensions.&lt;&gt;c__DisplayClass2_0.&lt;x&gt;b__0(IStepContext c) in X:\path\to\xWellBehaved.net\master\src\Xwellbehaved.Core\StringExtensions.cs:line 32
+   at Xwellbehaved.Execution.StepInvoker.&lt;RunAsync&gt;b__6_1() in X:\path\to\xWellBehaved.net\master\src\Xwellbehaved\StepInvoker.cs:line 53
+   at Xwellbehaved.Execution.Invoker.&lt;&gt;c__DisplayClass0_1.&lt;&lt;Invoke&gt;b__1&gt;d.MoveNext() in X:\path\to\xWellBehaved.net\master\src\Xwellbehaved\Invoker.cs:line 23
+--- End of stack trace from previous location where exception was thrown ---</pre></div>
+    <br />
+    <h2>
+      <a id="all" />All tests
+        </h2>
+    <h5>Click test class name to expand/collapse test details</h5>
+    <h3>
+      <span class="timing">0.014s
+            </span>
+      <span class="clickable" onclick="ToggleClass('classID0EY')" ondblclick="ToggleClass('classID0EY')">
+        <span class="failure">✘</span>
+               Xwellbehaved.DebuggingScenariosIncorrectResult
+               <span class="testcount">
+                (6 tests)
+              </span></span>
+      <br clear="all" />
+    </h3>
+    <div class="indent" id="classID0EY">
+      <div class="row">
+        <span class="timing">0.0027093s
+        </span>
+        <span class="success">✔</span>
+       Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [01] (Scenario): Let x equal to 1<br clear="all" /></div>
+      <div class="altrow">
+        <span class="timing">0.0001211s
+        </span>
+        <span class="success">✔</span>
+       Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [02] (Scenario): Let y equal to 2<br clear="all" /></div>
+      <div class="row">
+        <span class="timing">0.0001069s
+        </span>
+        <span class="success">✔</span>
+       Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [03] (Scenario): Let expected equal to 4<br clear="all" /></div>
+      <div class="altrow">
+        <span class="timing">0.0002296s
+        </span>
+        <span class="success">✔</span>
+       Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [04] (Scenario): And given calculator<br clear="all" /></div>
+      <div class="row">
+        <span class="timing">0.0030374s
+        </span>
+        <span class="success">✔</span>
+       Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [05] (Scenario): When x plus y<br clear="all" /></div>
+      <div class="altrow">
+        <span class="timing">0.0080818s
+        </span>
+        <span class="failure">✘</span>
+       Xwellbehaved.DebuggingScenariosIncorrectResult.Addition() [06] (Scenario): Then actual equal to expected<br clear="all" /><pre>Assert.Equal() Failure\r\nExpected: 4\r\nActual:   3</pre><pre>   at Xwellbehaved.DebuggingScenariosIncorrectResult.&lt;&gt;c__DisplayClass1_0.&lt;Addition&gt;b__5() in X:\path\to\xWellBehaved.net\master\src\Test.Xwellbehaved.Samples\DebuggingScenariosIncorrectResult.cs:line 25
+   at Xwellbehaved.StringExtensions.&lt;&gt;c__DisplayClass2_0.&lt;x&gt;b__0(IStepContext c) in X:\path\to\xWellBehaved.net\master\src\Xwellbehaved.Core\StringExtensions.cs:line 32
+   at Xwellbehaved.Execution.StepInvoker.&lt;RunAsync&gt;b__6_1() in X:\path\to\xWellBehaved.net\master\src\Xwellbehaved\StepInvoker.cs:line 53
+   at Xwellbehaved.Execution.Invoker.&lt;&gt;c__DisplayClass0_1.&lt;&lt;Invoke&gt;b__1&gt;d.MoveNext() in X:\path\to\xWellBehaved.net\master\src\Xwellbehaved\Invoker.cs:line 23
+--- End of stack trace from previous location where exception was thrown ---</pre></div>
+    </div>
+  </body>
+</html>
