@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <NoWarn>$(NoWarn);NU5128;CA1303;NU1603</NoWarn>
+        <NoWarn>$(NoWarn);NU5128;CA1303;NU1603;CS0618</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -12,10 +12,10 @@
         <Description>Includes the libraries for writing tests with xWellBehaved.net. Installing this package installs xunit.core.</Description>
         <TargetName>$(MSBuildProjectName)</TargetName>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>2.5.3.1171</Version>
-        <AssemblyVersion>2.5.3.1171</AssemblyVersion>
-        <FileVersion>2.5.3.1171</FileVersion>
-        <PackageVersion>2.5.3.1171</PackageVersion>
+        <Version>2.5.3.1193</Version>
+        <AssemblyVersion>2.5.3.1193</AssemblyVersion>
+        <FileVersion>2.5.3.1193</FileVersion>
+        <PackageVersion>2.5.3.1193</PackageVersion>
         <NuspecFile>$(MSBuildProjectName).nuspec</NuspecFile>
         <BumpSpecSwitch>init</BumpSpecSwitch>
     </PropertyGroup>
