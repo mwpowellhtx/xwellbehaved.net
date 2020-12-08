@@ -9,20 +9,15 @@
         <Configuration>Debug</Configuration>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>Xwellbehaved.Prototypes</RootNamespace>
-        <Version>1.0.0.52</Version>
-        <AssemblyVersion>1.0.0.52</AssemblyVersion>
-        <FileVersion>1.0.0.52</FileVersion>
-        <PackageVersion>1.0.0.52</PackageVersion>
+        <Version>1.0.0.53</Version>
+        <AssemblyVersion>1.0.0.53</AssemblyVersion>
+        <FileVersion>1.0.0.53</FileVersion>
+        <PackageVersion>1.0.0.53</PackageVersion>
     </PropertyGroup>
 
-    <ItemGroup>
-        <!-- TODO: TBD: isolate core unit testing build properties for all of the unit test projects... -->
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
-        <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.utility" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-        <PackageReference Include="xunit.fluently.assert" Version="1.6.1" />
-    </ItemGroup>
+    <ImportGroup>
+        <Import Project="..\Unit.Testing.props" />
+    </ImportGroup>
 
     <ItemGroup>
         <!-- TODO: TBD: which, we could also reference Validate.Fluently, but the core of it causing us grief is Validation. -->

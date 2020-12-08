@@ -3,32 +3,32 @@
     <PropertyGroup>
         <CodeAnalysisRuleSet>Test.Xwellbehaved.ruleset</CodeAnalysisRuleSet>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-        <NoWarn>$(NoWarn);CS0168;CS1591;NU1603</NoWarn>
+        <NoWarn>$(NoWarn);CS0168;CS1591;NU1603;CS0618</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup>
         <Configuration>Debug</Configuration>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <Version>2.5.0.1109</Version>
-        <AssemblyVersion>2.5.0.1109</AssemblyVersion>
-        <FileVersion>2.5.0.1109</FileVersion>
-        <PackageVersion>2.5.0.1109</PackageVersion>
+        <Version>2.5.0.1114</Version>
+        <AssemblyVersion>2.5.0.1114</AssemblyVersion>
+        <FileVersion>2.5.0.1114</FileVersion>
+        <PackageVersion>2.5.0.1114</PackageVersion>
         <BumpSpecSwitch>init</BumpSpecSwitch>
     </PropertyGroup>
+
+    <ImportGroup>
+        <Import Project="..\Unit.Testing.props" />
+    </ImportGroup>
+
+    <ItemGroup>
+        <!-- Which we also require for Feature testing... -->
+        <PackageReference Include="xunit.runner.utility" Version="2.4.1" />
+        <PackageReference Include="PublicApiGenerator" Version="10.2" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Xwellbehaved.Core\Xwellbehaved.Core.csproj" />
         <ProjectReference Include="..\Xwellbehaved\Xwellbehaved.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <!-- TODO: TBD: ditto re: FluentAssertions, etc. -->
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
-        <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.utility" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-        <PackageReference Include="xunit.fluently.assert" Version="1.7" />
-        <PackageReference Include="PublicApiGenerator" Version="10.2" />
     </ItemGroup>
 
 </Project>
