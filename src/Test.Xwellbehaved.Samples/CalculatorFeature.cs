@@ -1,6 +1,5 @@
 namespace Xwellbehaved
 {
-    using Xunit;
     using Xunit.Abstractions;
 
     public abstract class CalculatorFeature : SampleFeature

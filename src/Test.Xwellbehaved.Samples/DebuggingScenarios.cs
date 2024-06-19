@@ -21,7 +21,8 @@ namespace Xwellbehaved
 
             "And given calculator".x(() => calculator = new Calculator());
 
-            "When x plus y".x(() => actual = calculator.AssertNotNull().Add(x, y));
+            // TODO: ditto generic AssertNotNull
+            "When x plus y".x(() => actual = calculator.AssertNotNull().AssertIsType<Calculator>().Add(x, y));
 
             "Then actual equal to expected".x(() => actual.AssertEqual(expected));
         }
