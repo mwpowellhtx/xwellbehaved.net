@@ -1,18 +1,19 @@
 <Project>
 
     <PropertyGroup>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <RootNamespace>Xwellbehaved</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
-        <XunitVersion>2.4.1</XunitVersion>
-        <XunitExtensibilityVersion>2.4.1</XunitExtensibilityVersion>
+        <XunitVersion>2.8.1</XunitVersion>
+        <XunitExtensibilityCorePackage>xunit.extensibility.core</XunitExtensibilityCorePackage>
+        <XunitExtensibilityVersion>2.8.1</XunitExtensibilityVersion>
         <XwellbehavedCorePackageId>Xwellbehaved.Core</XwellbehavedCorePackageId>
         <PackageProjectUrl>https://github.com/mwpowellhtx/xwellbehaved.net</PackageProjectUrl>
-        <PackageIconFileName>xwellbehaved_dotnet_256x256.png</PackageIconFileName>
-        <PackageIconDir>..\..\assets\</PackageIconDir>
-        <Company>Ellumination Technologies</Company>
-        <Copyright>Copyright (c) 2020</Copyright>
         <Product>xWellBehaved.net</Product>
         <ProductName>xWellBehaved.net</ProductName>
     </PropertyGroup>
@@ -24,8 +25,12 @@
 
     <!-- Versioning... -->
     <PropertyGroup>
-        <BumpAssemblyVersionsVersion>1.8.0</BumpAssemblyVersionsVersion>
-        <BumpAssemblyVersionsTargetsPath>..\packages\BumpAssemblyVersions\$(BumpAssemblyVersionsVersion)\build\BumpAssemblyVersions.targets</BumpAssemblyVersionsTargetsPath>
+        <BumpAssemblyVersionsVersion>1.9.1</BumpAssemblyVersionsVersion>
+        <!-- TODO: BAV conditions change a bit, do not need to be path aware any longer;
+            instead we may simply look at the $(TargetFramework) and condition accordingly, depending whether single/multi targeting.
+            -->
+        <!--<BumpAssemblyVersionsTargetsPath>..\packages\BumpAssemblyVersions\$(BumpAssemblyVersionsVersion)\build\BumpAssemblyVersions.targets</BumpAssemblyVersionsTargetsPath>-->
+        <!-- This much is probably good however from a metadata perspective. -->
         <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Release'">MinutesSinceMidnight</BumpAssemblyVersionBuildProvider>
         <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Debug'">Increment</BumpAssemblyVersionBuildProvider>
     </PropertyGroup>
@@ -36,7 +41,7 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Debug' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Debug'">
         <BumpVersionSpec Include="Version" BuildProviderTemplate="Increment" />
         <BumpVersionSpec Include="AssemblyVersion" BuildProviderTemplate="Increment" />
         <BumpVersionSpec Include="FileVersion" BuildProviderTemplate="Increment" />
@@ -44,35 +49,35 @@
     </ItemGroup>
 
     <!-- ReSharper disable UnknownProperty -->
-    <ItemGroup Condition="'$(Configuration)' == 'Debug' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Debug'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'init' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'init'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'patch' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'patch'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'minor' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'minor'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'major' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'major'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
@@ -97,15 +102,16 @@
 
     </Target>
 
+    <!-- TODO: is the separate NuGet packaging step for properties still necessary?
+        or is it something we can fall back on inherent project properties for furnish?
+        key is probably the 'license file question', which seems to have been resolved in today's MSBuild, etc
+        -->
     <!-- The timing of which is key here, after versions bump, before build, and subsequent packaging. -->
-    <Target Name="InitializeCommonNuspecProperties" AfterTargets="BumpAssemblyVersionsBeforeBuild" BeforeTargets="BeforeBuild">
-
+    <!--<Target Name="InitializeCommonNuspecProperties" AfterTargets="BumpAssemblyVersions" BeforeTargets="BeforeBuild">
         <PropertyGroup>
             <TargetFrameworkDependencyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">.NETStandard2.0</TargetFrameworkDependencyGroup>
         </PropertyGroup>
-
         <Message Importance="high" Text="TargetName is '$(TargetName)'" />
-
         <ItemGroup>
             <NuspecProperty Include="description=$(Description)" />
             <NuspecProperty Include="title=$(Title)" />
@@ -113,24 +119,23 @@
             <NuspecProperty Include="targetName=$(TargetName)" />
             <NuspecProperty Include="id=$(PackageId)" />
             <NuspecProperty Include="company=$(Company)" />
-            <NuspecProperty Include="contributorsFile=$(DestinationContribFileName)" />
+            <NuspecProperty Include="contributorFile=$(PackageContributorFile)" />
             <NuspecProperty Include="iconDir=$(PackageIconDir)" />
             <NuspecProperty Include="iconFile=$(PackageIconFileName)" />
+        </ItemGroup>
+        <ItemGroup Condition="'$(PackageReadmeFile)' != '' And Exists('$(PackageReadmeFile)')">
+            <NuspecProperty Include="readmeFile=$(PackageReadmeFile)" />
+        </ItemGroup>
+        <ItemGroup>
             <NuspecProperty Include="licenseFile=$(DestinationLicenseFileName)" />
             <NuspecProperty Include="projectUrl=$(PackageProjectUrl)" />
             <NuspecProperty Include="repositoryType=$(RepositoryType)" />
             <NuspecProperty Include="repositoryUrl=$(PrivateRepositoryUrl)" />
             <NuspecProperty Include="repositoryCommit=$(SourceRevisionId)" />
             <NuspecProperty Include="config=$(Configuration)" />
-            <!-- This is a calculated risk putting this here. TargetFramework or TargetFrameworks
-             is declared at the project level, but we know at a solution level we want to target
-             in a single target manner, not a multitarget manner. If we decided on multitarget,
-             for whatever reason, then we would need to reconsider the strategy, communicating
-             those bits through NuGet Properties to the NuGet specifications. -->
             <NuspecProperty Include="targetFramework=$(TargetFramework)" />
             <NuspecProperty Include="targetFrameworkDependencyGroup=$(TargetFrameworkDependencyGroup)" />
         </ItemGroup>
-
-    </Target>
+    </Target>-->
 
 </Project>

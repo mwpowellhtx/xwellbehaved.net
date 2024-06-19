@@ -1,0 +1,20 @@
+<Project TreatAsLocalProperty="_AssetsDir;_IconFile">
+
+    <!-- Similar issue as with Licensing.props... Rinse and repeat. -->
+
+    <PropertyGroup>
+        <_AssetsDir>..\..\assets\</_AssetsDir>
+        <_IconFile>xwellbehaved_dotnet_256x256.png</_IconFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(_AssetsDir)$(_IconFile)" Visible="false" Link="$(_IconFile)" Pack="true" PackagePath=".">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <PackageIcon>$(_IconFile)</PackageIcon>
+    </PropertyGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+<Project TreatAsLocalProperty="_ContributorDir;_ContributorFile">
+
+    <!-- Similar issue as with Licensing.props... Rinse and repeat. -->
+
+    <PropertyGroup>
+        <_ContributorDir>..\..\</_ContributorDir>
+        <_ContributorFile>CONTRIBUTORS</_ContributorFile>
+        <PackageContributorFile>$(_ContributorFile)</PackageContributorFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(_ContributorDir)$(_ContributorFile)" Link="$(_ContributorFile)" Pack="true" PackagePath=".">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>
