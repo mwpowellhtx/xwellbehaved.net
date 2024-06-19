@@ -74,9 +74,8 @@ namespace Xwellbehaved
             {
 
 #pragma warning disable IDE0021 // Use expression body for constructors
-                this._fixture = fixture.AssertNotNull();
-#pragma warning restore IDE0021 // Use expression body for constructors
-
+                // TODO: ditto fluent inconsistencies
+                this._fixture = fixture.AssertNotNull().AssertIsType<Fixture>();
             }
 
             [Scenario]
@@ -90,11 +89,8 @@ namespace Xwellbehaved
 
             public ScenarioWithACollectionFixture2(Fixture fixture)
             {
-
-#pragma warning disable IDE0021 // Use expression body for constructors
-                this._fixture = fixture.AssertNotNull();
-#pragma warning restore IDE0021 // Use expression body for constructors
-
+                // TODO: ditto fluent
+                this._fixture = fixture.AssertNotNull().AssertIsType<Fixture>();
             }
 
             [Scenario]

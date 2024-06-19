@@ -37,16 +37,29 @@ namespace Xwellbehaved
         /// </summary>
         /// <param name="actual"></param>
         /// <returns>The <see cref="Visited"/> instance following Verification.</returns>
-        protected IList<Guid> VerifyVisitedExists(Guid actual) =>
-            this.Visited.AssertNotNull().AssertCollectionNotEmpty().AssertEqual(actual, x => x.Last());
+        protected IList<Guid> VerifyVisitedExists(Guid actual)
+        {
+            // TODO: fluently, we have some NRT incongruities there which could use some attention...
+            var this_Visited = this.Visited;
+            this_Visited.AssertNotNull();
+            this_Visited.AssertCollectionNotEmpty();
+            this_Visited.AssertIsAssignableTo<IList<Guid>>();
+            return this_Visited.AssertEqual(actual, x => x.Last());
+        }
 
         /// <summary>
         /// Verifies that <see cref="Visited"/> <paramref name="actual"/> Does Not Exist.
         /// </summary>
         /// <param name="actual"></param>
         /// <returns>The <see cref="Visited"/> instance following Verification.</returns>
-        protected IList<Guid> VerifyVisitedDoesNotExist(Guid actual) =>
-            this.Visited.AssertNotNull().AssertFalse(x => x.Contains(actual));
+        protected IList<Guid> VerifyVisitedDoesNotExist(Guid actual)
+        {
+            // TODO: ditto flueut inconsistencies
+            var this_Visited = this.Visited;
+            this_Visited.AssertNotNull();
+            this_Visited.AssertIsAssignableTo<IList<Guid>>();
+            return this_Visited.AssertFalse(x => x.Contains(actual));
+        }
 
         [Background]
         public void BackgroundOne()
@@ -211,7 +224,7 @@ namespace Xwellbehaved
         {
             // And we have early detection in the sense of backgrounds doing a little preliminary verification.
             "Finally, Visited should appear in the expected order".x(
-                () => this.Visited.AssertEqual(new[] { BaseOneId, BaseTwoId, BaseThreeId })
+                () => this.Visited.AssertCollectionEqual([BaseOneId, BaseTwoId, BaseThreeId])
             );
         }
     }

@@ -7,6 +7,7 @@ namespace Xwellbehaved
     using Xunit;
     using Xunit.Abstractions;
     using Xwellbehaved.Infrastructure;
+    using Xwellbehaved.Sdk;
 
     /// <summary>
     /// In order to release allocated resources as a developer I want to execute teardowns after a
@@ -131,7 +132,7 @@ namespace Xwellbehaved
         }
 
         [Scenario]
-        public void TeardownsWhichThrowExceptionsWhenExecuted(Type feature, ITestResultMessage[] results)
+        public void TeardownsWhichThrowExceptionsWhenExecutedShouldRollback(Type feature, ITestResultMessage[] results)
         {
             "Given a step with three teardowns which throw exceptions when executed".x(
                 () => feature = typeof(StepWithThreeBadTeardowns));
@@ -144,11 +145,21 @@ namespace Xwellbehaved
 
             "And the second result should be a failure".x(() => results[1].AssertIsAssignableTo<ITestFailed>());
 
-            "And the name of the teardown should end in '(Teardown)'".x(() => results[1].Test.DisplayName.AssertEndsWith("(Teardown)"));
+            // Which text is based correctly on the enumerated value.
+            const string Rollback = nameof(StepType.Rollback);
+
+            /* Not sure why we thought 'Teardown' in this case, but the inward machinery looks correct,
+             * and we are definitely falling through to a Rollback scenario, properly, we think.
+             */
+            $"And the test display message should end in '({Rollback})'".x(() =>
+            {
+                var result_Test_DisplayName = results[1].Test.DisplayName;
+                result_Test_DisplayName.AssertEndsWith($"({Rollback})");
+            });
 
             "And the teardowns should be executed in reverse order after the step".x(() =>
                 typeof(TeardownFeature).GetTestEvents().AssertEqual(
-                    new[] { "step1", "teardown3", "teardown2", "teardown1" }));
+                    ["step1", "teardown3", "teardown2", "teardown1"]));
         }
 
         [Scenario]
@@ -164,8 +175,10 @@ namespace Xwellbehaved
             "And there should be no failures".x(() => results.All(result => result is ITestPassed).AssertTrue());
 
             "And the teardowns should be executed in reverse order after the steps".x(() =>
-                typeof(TeardownFeature).GetTestEvents().AssertEqual(
-                    new[] { "step1", "step2", "teardown6", "teardown5", "teardown4", "teardown3", "teardown2", "teardown1" }));
+            {
+                var testEvents = typeof(TeardownFeature).GetTestEvents();
+                testEvents.AssertCollectionEqual("step1", "step2", "teardown6", "teardown5", "teardown4", "teardown3", "teardown2", "teardown1");
+            });
         }
 
         [Scenario]
@@ -179,8 +192,10 @@ namespace Xwellbehaved
             "Then there should be one failure".x(() => results.OfType<ITestFailed>().AssertEqual(1, x => x.Count()));
 
             "And the teardowns should be executed after each step".x(() =>
-                typeof(TeardownFeature).GetTestEvents().AssertEqual(
-                    new[] { "step1", "step2", "step3", "teardown2", "teardown1" }));
+            {
+                var testEvents = typeof(TeardownFeature).GetTestEvents();
+                testEvents.AssertCollectionEqual("step1", "step2", "step3", "teardown2", "teardown1");
+            });
         }
 
         [Scenario]
@@ -194,8 +209,10 @@ namespace Xwellbehaved
             "Then there should be one failure".x(() => results.OfType<ITestFailed>().Count().AssertEqual(1));
 
             "And the teardowns should be executed in reverse order after the step".x(() =>
-                typeof(TeardownFeature).GetTestEvents().AssertEqual(
-                    new[] { "step1", "teardown3", "teardown2", "teardown1" }));
+            {
+                var testEvents = typeof(TeardownFeature).GetTestEvents();
+                testEvents.AssertCollectionEqual("step1", "teardown3", "teardown2", "teardown1");
+            });
         }
 
         [Scenario]

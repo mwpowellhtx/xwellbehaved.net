@@ -75,13 +75,10 @@ namespace Xwellbehaved
         [Scenario]
         public void Backgrounds_should_be_visited_in_the_correct_order()
         {
-
 #pragma warning disable IDE0022 // Use expression body for methods
             // And we have early detection in the sense of backgrounds doing a little preliminary verification.
             "Finally, Visited should appear in the expected order".x(() => this.Visited.AssertEqual(
-                new[] { this.BaseOneId, this.BaseTwoId, this.BaseThreeId, this.BaseFourId }));
-#pragma warning restore IDE0022 // Use expression body for methods
-
+                [this.BaseOneId, this.BaseTwoId, this.BaseThreeId, this.BaseFourId]));
         }
     }
 }

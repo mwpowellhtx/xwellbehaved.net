@@ -86,7 +86,7 @@ namespace Xunit
 
             if (!contains)
             {
-                throw new ContainsException(expected, actual);
+                throw ContainsException.ForCollectionFilterNotMatched(nameof(actual));
             }
 
             return actual;

@@ -60,15 +60,12 @@ namespace Xwellbehaved.Infrastructure
                     writer.Write(DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
                 }
             }
-#pragma warning restore IDE0063 // 'using' statement can be simplified
-
         }
 
         public static async Task SaveTestEventAsync(this Type feature, string @event)
         {
             await Task.Delay(1);
 
-#pragma warning disable IDE0063 // 'using' statement can be simplified
             using (var file = File.Create(Path.Combine(GetDirectoryName(feature), string.Concat(@event, ".", feature.Name))))
             {
                 using (var writer = new StreamWriter(file))
@@ -76,8 +73,6 @@ namespace Xwellbehaved.Infrastructure
                     await writer.WriteAsync(DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
                 }
             }
-#pragma warning restore IDE0063 // 'using' statement can be simplified
-
         }
 
         private static string GetDirectoryName(this Type feature) =>
