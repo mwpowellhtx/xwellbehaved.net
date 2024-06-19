@@ -38,7 +38,6 @@ namespace Xwellbehaved
             // Which, we "do", in DEBUG mode.
 #pragma warning disable CA1062 // ...validate parameter 'name' is non-null before using it...
             stepContext.Using(disposable);
-#pragma warning restore CA1062 // ...validate parameter 'name' is non-null before using it...
 
 #endif
 

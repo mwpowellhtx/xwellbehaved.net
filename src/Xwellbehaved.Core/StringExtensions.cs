@@ -96,7 +96,5 @@ namespace Xwellbehaved
             CurrentThread.Add(stepDef);
             return stepDef;
         }
-#pragma warning restore IDE1006 // Naming Styles
-
     }
 }

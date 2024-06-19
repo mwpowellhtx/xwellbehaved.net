@@ -38,7 +38,6 @@ namespace Xwellbehaved
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "data", Justification = "Following the pattern of Xunit.InlineDataAttribute.")]
 #pragma warning disable IDE0060 // Remove unused parameter
         public ExampleAttribute(params object[] data)
-#pragma warning restore IDE0060 // Remove unused parameter
         {
         }
 
