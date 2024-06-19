@@ -2,8 +2,6 @@
 
     <PropertyGroup>
         <CodeAnalysisRuleSet>$(MSBuildProjectName).ruleset</CodeAnalysisRuleSet>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <RootNamespace>Xwellbehaved.Execution</RootNamespace>
         <NoWarn>$(NoWarn);CS1591;NU1603</NoWarn>
     </PropertyGroup>
@@ -13,11 +11,10 @@
         <!-- In better cooperation with our distribution model. -->
         <TargetName>$(MSBuildProjectName).Execution</TargetName>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>2.5.3.1193</Version>
-        <AssemblyVersion>2.5.3.1193</AssemblyVersion>
-        <FileVersion>2.5.3.1193</FileVersion>
-        <PackageVersion>2.5.3.1193</PackageVersion>
-        <NuspecFile>$(MSBuildProjectName).nuspec</NuspecFile>
+        <Version>2.5.3.1254</Version>
+        <AssemblyVersion>2.5.3.1254</AssemblyVersion>
+        <FileVersion>2.5.3.1254</FileVersion>
+        <PackageVersion>2.5.3.1254</PackageVersion>
         <BumpSpecSwitch>init</BumpSpecSwitch>
     </PropertyGroup>
 
@@ -26,7 +23,7 @@
     </ItemGroup>
 
     <PropertyGroup Condition="'$(Platform)' == 'AnyCPU'">
-        <DocumentationFile>obj\$(Configuration)\netstandard2.0\$(MSBuildProjectName).Execution.xml</DocumentationFile>
+        <DocumentationFile>obj\$(Configuration)\$(TargetFramework)\$(TargetName).xml</DocumentationFile>
     </PropertyGroup>
 
     <Import Project="..\SourceLink.props" />
@@ -36,32 +33,13 @@
         <PackageReference Include="xunit.extensibility.execution" Version="$(XunitExtensibilityVersion)" />
     </ItemGroup>
 
-    <!--<ItemGroup>
-        <AssemblyAttribute Include="Xunit.Sdk.PlatformSpecificAssembly" />
-    </ItemGroup>-->
-
-    <!-- The timing of which is key here, after versions bump, before build, and subsequent packaging. -->
-    <Target Name="InitializeNuspecProperties" AfterTargets="InitializeCommonNuspecProperties" BeforeTargets="BeforeBuild">
-
-        <ItemGroup>
-            <!-- TODO: TBD: And here are the Nuspec properties... -->
-            <!-- TODO: TBD: Which more could be exposed, i.e. authors, etc... -->
-            <!-- TODO: TBD: Or differently, i.e. do not need/want Commit, etc... -->
-            <NuspecProperty Include="coreId=$(XwellbehavedCorePackageId)" />
-            <NuspecProperty Include="coreVersion=$(PackageVersion)" />
-            <NuspecProperty Include="xunitVersion=$(XunitVersion)" />
-        </ItemGroup>
-
-        <PropertyGroup>
-            <NuspecProperties>@(NuspecProperty, ';')</NuspecProperties>
-        </PropertyGroup>
-
-    </Target>
+    <Import Project="..\NuGet.Symbols.props" />
+    <Import Project="..\NuGet.Corporate.props" />
+    <Import Project="..\NuGet.Contributors.props" />
+    <Import Project="..\NuGet.Readme.props" />
+    <Import Project="..\NuGet.License.props" />
 
     <Import Project="..\Validations.props" />
     <Import Project="..\Signed.props" />
-
-    <Import Project="..\..\Contributors.props" />
-    <Import Project="..\..\Licensing.props" />
 
 </Project>
