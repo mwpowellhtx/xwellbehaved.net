@@ -7,20 +7,20 @@
 
     <PropertyGroup>
         <Configuration>Debug</Configuration>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <RootNamespace>Xwellbehaved.Prototypes</RootNamespace>
-        <Version>1.0.0.53</Version>
-        <AssemblyVersion>1.0.0.53</AssemblyVersion>
-        <FileVersion>1.0.0.53</FileVersion>
-        <PackageVersion>1.0.0.53</PackageVersion>
+        <Version>1.0.0.59</Version>
+        <AssemblyVersion>1.0.0.59</AssemblyVersion>
+        <FileVersion>1.0.0.59</FileVersion>
+        <PackageVersion>1.0.0.59</PackageVersion>
     </PropertyGroup>
 
     <ImportGroup>
         <Import Project="..\Unit.Testing.props" />
     </ImportGroup>
 
+    <!-- TODO: which, we could also reference Validate.Fluently, but the core of it causing us grief is Validation. -->
     <ItemGroup>
-        <!-- TODO: TBD: which, we could also reference Validate.Fluently, but the core of it causing us grief is Validation. -->
         <PackageReference Include="Validation" Version="2.4.22" PrivateAssets="All" />
         <PackageReference Include="LiteGuard.Source" Version="2.2.0" PrivateAssets="All" />
     </ItemGroup>
