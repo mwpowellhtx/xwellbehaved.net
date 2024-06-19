@@ -1,0 +1,11 @@
+<Project>
+
+    <ItemGroup>
+        <Folder Include="Properties\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\shared\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    </ItemGroup>
+
+</Project>
