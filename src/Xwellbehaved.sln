@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28922.388
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{33269118-539E-4B80-8298-556253F984FE}"
 EndProject
@@ -19,7 +19,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{3154940B-6ED5-44F0-A2E6-B4AEA2A7D0E0}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
-		..\Licensing.props = ..\Licensing.props
+		NuGet.License.props = NuGet.License.props
+		NuGet.Readme.props = NuGet.Readme.props
 		Signed.props = Signed.props
 		SourceLink.props = SourceLink.props
 		Static.Code.Analysis.props = Static.Code.Analysis.props
@@ -35,10 +36,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".parent", ".parent", "{7B68
 		..\.gitignore = ..\.gitignore
 		..\.mailmap = ..\.mailmap
 		..\build.cmd = ..\build.cmd
-		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
 		..\CONTRIBUTORS = ..\CONTRIBUTORS
-		..\Contributors.props = ..\Contributors.props
 		..\LICENSE = ..\LICENSE
+		NuGet.Assets.props = NuGet.Assets.props
+		NuGet.Contributors.props = NuGet.Contributors.props
+		NuGet.Corporate.props = NuGet.Corporate.props
+		NuGet.Symbols.props = NuGet.Symbols.props
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -50,7 +53,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{490E6A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Xwellbehaved.Prototypes", "Test.Xwellbehaved.Prototypes\Test.Xwellbehaved.Prototypes.csproj", "{EE4EDA7A-73EA-482B-A9EF-590744F316EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Xwellbehaved.Samples", "Test.Xwellbehaved.Samples\Test.Xwellbehaved.Samples.csproj", "{AD55ADB8-C32D-4FF3-931D-0C0308528CB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Xwellbehaved.Samples", "Test.Xwellbehaved.Samples\Test.Xwellbehaved.Samples.csproj", "{AD55ADB8-C32D-4FF3-931D-0C0308528CB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".project", ".project", "{287C3066-46BD-48DC-8F69-7B8AC8038966}"
+	ProjectSection(SolutionItems) = preProject
+		shared\Project.Shared.props = shared\Project.Shared.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,6 +100,7 @@ Global
 		{7B680FCF-5B6D-4B05-B3CF-E2E4C38F4A60} = {3154940B-6ED5-44F0-A2E6-B4AEA2A7D0E0}
 		{EE4EDA7A-73EA-482B-A9EF-590744F316EE} = {41BB5C25-6084-4CA2-A9E8-EE35A1CA1DEA}
 		{AD55ADB8-C32D-4FF3-931D-0C0308528CB6} = {41BB5C25-6084-4CA2-A9E8-EE35A1CA1DEA}
+		{287C3066-46BD-48DC-8F69-7B8AC8038966} = {3154940B-6ED5-44F0-A2E6-B4AEA2A7D0E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {397F0EE3-6CD7-4EF4-B6D2-ED3FEAAE5FBF}
