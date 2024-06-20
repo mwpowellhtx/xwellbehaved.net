@@ -9,10 +9,10 @@
         <Description>Includes the libraries for writing tests with xWellBehaved.net. Installing this package installs $(XunitExtensibilityCorePackage).</Description>
         <TargetName>$(MSBuildProjectName)</TargetName>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>2.5.4.762</Version>
-        <AssemblyVersion>2.5.4.762</AssemblyVersion>
-        <FileVersion>2.5.4.762</FileVersion>
-        <PackageVersion>2.5.4.762</PackageVersion>
+        <Version>2.5.5.827</Version>
+        <AssemblyVersion>2.5.5.827</AssemblyVersion>
+        <FileVersion>2.5.5.827</FileVersion>
+        <PackageVersion>2.5.5.827</PackageVersion>
         <!--<BumpSpecSwitch>patch</BumpSpecSwitch>-->
     </PropertyGroup>
 

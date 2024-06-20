@@ -1,6 +1,7 @@
+
 ## xWellBehaved.net Core
 
-<img src="https://github.com/mwpowellhtx/xwellbehaved.net/assets/xwellbehaved_dotnet_256x256.png" width="32" />
+<img src="https://github.com/mwpowellhtx/xwellbehaved.net/blob/master/assets/xwellbehaved_dotnet_256x256.png" width="32" />
 
 ﻿You are here (&#x2611;), including a cross reference to our `xWellBehaved.net` packages.
 
