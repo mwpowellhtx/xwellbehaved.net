@@ -17,8 +17,8 @@ namespace Xwellbehaved
             {
 
 #pragma warning disable IDE0021 // Use expression body for constructors
-                this._fixture = fixture.AssertNotNull();
-#pragma warning restore IDE0021 // Use expression body for constructors
+                // TODO: ditto minor inconsistencies which need fluent addressing
+                this._fixture = fixture.AssertNotNull().AssertIsType<Fixture>();
 
             }
 

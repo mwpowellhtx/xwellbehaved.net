@@ -8,12 +8,12 @@
 
     <PropertyGroup>
         <Configuration>Debug</Configuration>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
-        <Version>1.0.0.17</Version>
-        <AssemblyVersion>1.0.0.17</AssemblyVersion>
-        <FileVersion>1.0.0.17</FileVersion>
-        <PackageVersion>1.0.0.17</PackageVersion>
-        <BumpSpecSwitch>init</BumpSpecSwitch>
+        <TargetFramework>net8.0</TargetFramework>
+        <Version>1.0.0.31</Version>
+        <AssemblyVersion>1.0.0.31</AssemblyVersion>
+        <FileVersion>1.0.0.31</FileVersion>
+        <PackageVersion>1.0.0.31</PackageVersion>
+        <BumpSpecSwitch>patch</BumpSpecSwitch>
     </PropertyGroup>
 
     <ItemGroup>

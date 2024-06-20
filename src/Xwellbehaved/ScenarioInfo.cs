@@ -37,7 +37,6 @@ namespace Xwellbehaved.Execution
             // Which, we "do", in DEBUG mode.
 #pragma warning disable CA1062 // ...validate parameter 'name' is non-null before using it...
             var parameters = testMethod.GetParameters().ToList();
-#pragma warning restore CA1062 // ...validate parameter 'name' is non-null before using it...
 
             var typeParams = testMethod.GetGenericArguments().ToList();
 

@@ -1,10 +1,18 @@
+using System;
+
 namespace Xwellbehaved
 {
     using Xunit;
     using Xunit.Abstractions;
+    using Xunit.Sdk;
 
     public class DebuggingScenariosIncorrectResult : DebuggingScenarios
     {
+        /// <summary>
+        /// Action used during the scenario.
+        /// </summary>
+        private Action Action { get; set; }
+
         public DebuggingScenariosIncorrectResult(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
@@ -20,9 +28,14 @@ namespace Xwellbehaved
 
             "And given calculator".x(() => calculator = new Calculator());
 
-            "When x plus y".x(() => actual = calculator.AssertNotNull().Add(x, y));
+            // TODO: might not be the worst idea to have an 'AssertNotNull<T>() where T : class'
+            "When x plus y".x(() => actual = calculator.AssertNotNull().AssertIsType<Calculator>().Add(x, y));
 
-            "Then actual equal to expected".x(() => actual.AssertEqual(expected));
+            // Working within the parameters of the override signature, we setup a private Action.
+            "Arrange exception action".x(() => this.Action = () => actual.AssertEqual(expected));
+
+            // Because we are expecting Add to yield not equal, so we should see an exception in this instance.
+            "Then actual equal to expected".x(() => this.Action.AssertThrows<EqualException>());
         }
     }
 }

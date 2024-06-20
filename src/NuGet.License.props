@@ -1,0 +1,24 @@
+<Project TreatAsLocalProperty="_LicenseDir;_LicenseFile">
+
+    <PropertyGroup>
+        <_LicenseDir>..\..\</_LicenseDir>
+        <_LicenseFile>LICENSE</_LicenseFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageLicenseFile>$(_LicenseFile)</PackageLicenseFile>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+
+    <!-- TODO: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj -->
+    <!--<PropertyGroup>
+        <PackageLicenseExpression Condition="!Exists('$()')">GPL-3.0-only</PackageLicenseExpression>
+    </PropertyGroup>-->
+
+    <ItemGroup>
+        <None Include="$(_LicenseDir)$(_LicenseFile)" Link="$(_LicenseFile)" Pack="true" PackagePath=".\">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>

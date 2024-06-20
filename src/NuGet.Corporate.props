@@ -1,0 +1,10 @@
+<Project TreatAsLocalProperty="_ContributorDir;_ContributorFile">
+
+    <PropertyGroup>
+        <Company>Ellumination Technologies</Company>
+        <!-- Not to be confused with CONTRIBUTORS. -->
+        <Authors>$(Company)</Authors>
+        <Copyright>Copyright (c) 2020-2024</Copyright>
+    </PropertyGroup>
+
+</Project>

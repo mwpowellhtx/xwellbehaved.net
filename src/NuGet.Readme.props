@@ -1,0 +1,15 @@
+<Project TreatAsLocalProperty="_ProjectReadmeFile">
+
+    <!-- TODO: what else do we need to do here to package... -->
+    <PropertyGroup>
+        <_ProjectReadmeFile>README.md</_ProjectReadmeFile>
+        <PackageReadmeFile Condition="Exists('$(ProjectDir)$(_ProjectReadmeFile)')">$(ProjectDir)$(_ProjectReadmeFile)</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup Condition="Exists('$(ProjectDir)$(_ProjectReadmeFile)')">
+        <None Include="$(ProjectDir)$(_ProjectReadmeFile)" Pack="true" PackagePath=".\">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>

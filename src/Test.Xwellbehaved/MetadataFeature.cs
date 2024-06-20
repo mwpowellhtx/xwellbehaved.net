@@ -18,21 +18,24 @@ namespace Xwellbehaved
             , Example("abc")]
 #pragma warning disable IDE0060 // Remove unused parameter 'text' if it is not part of a shipped public API
         public void UsingMetadata(string text, IStepContext stepContext, IStep step, IScenario scenario)
-#pragma warning restore IDE0060 // Remove unused parameter 'text' if it is not part of a shipped public API
         {
             "When I execute a step".x(context => stepContext = context)
                 .Teardown(context => context.AssertSame(stepContext));
 
             "Then the step context contains metadata about the step".x(() =>
             {
-                step = stepContext.Step.AssertNotNull();
+                // TODO: ditto fluent inconsistencies
+                stepContext.Step.AssertNotNull().AssertIsAssignableTo<IStep>();
+                step = stepContext.Step;
                 var stepDisplayName = step.DisplayName;
                 stepDisplayName.AssertEqual($"Xwellbehaved.MetadataFeature.UsingMetadata(text: \"abc\") [01] ({StepType.Scenario}): When I execute a step");
             });
 
             "And the step contains metadata about the scenario".x(() =>
             {
-                scenario = step.Scenario.AssertNotNull();
+                // TODO: ditto
+                step.Scenario.AssertNotNull().AssertIsAssignableTo<IScenario>();
+                scenario = step.Scenario;
                 var scenarioDisplayName = scenario.DisplayName;
                 scenarioDisplayName.AssertEqual("Xwellbehaved.MetadataFeature.UsingMetadata(text: \"abc\")");
             });

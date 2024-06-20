@@ -16,21 +16,23 @@ namespace Xwellbehaved.Prototypes.Validations
     /// <see cref="!:https://github.com/xbehave/xbehave.net/issues/665">Q: What&apos;s the difference between LiteGuard.Source and Validation</see>
     public class ValidationTests
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [Fact]
         public void Verify()
         {
-            object obj = null;
+            // Took the opportunity to update for language features.
+            var obj = default(object);
 
-#pragma warning disable IDE0039 // Use local function
-            Action requiresAction = () => Requires.NotNull(obj, nameof(obj));
+            // Although, fundamentally, csharp and dotnet remain pretty consistent.
+            void RequiresAction() => Requires.NotNull(obj, nameof(obj));
 
-            Action guardAction = () => Guard.AgainstNullArgument(nameof(obj), obj);
+            void GuardAction() => Guard.AgainstNullArgument(nameof(obj), obj);
 
-            var guardEx = Assert.Throws<ArgumentNullException>(guardAction);
+            var guardEx = Assert.Throws<ArgumentNullException>(GuardAction);
 
-            var requiresEx = Assert.Throws<ArgumentNullException>(requiresAction);
-#pragma warning restore IDE0039 // Use local function
-
+            var requiresEx = Assert.Throws<ArgumentNullException>(RequiresAction);
         }
     }
 }

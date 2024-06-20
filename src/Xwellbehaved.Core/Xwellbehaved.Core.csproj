@@ -1,56 +1,42 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <NoWarn>$(NoWarn);NU5128;CA1303;NU1603;CS0618</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup>
         <Title>$(MSBuildProjectName) xUnit Extensibility Assembly</Title>
-        <Description>Includes the libraries for writing tests with xWellBehaved.net. Installing this package installs xunit.core.</Description>
+        <Description>Includes the libraries for writing tests with xWellBehaved.net. Installing this package installs $(XunitExtensibilityCorePackage).</Description>
         <TargetName>$(MSBuildProjectName)</TargetName>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>2.5.3.1193</Version>
-        <AssemblyVersion>2.5.3.1193</AssemblyVersion>
-        <FileVersion>2.5.3.1193</FileVersion>
-        <PackageVersion>2.5.3.1193</PackageVersion>
-        <NuspecFile>$(MSBuildProjectName).nuspec</NuspecFile>
-        <BumpSpecSwitch>init</BumpSpecSwitch>
+        <Version>2.5.4.762</Version>
+        <AssemblyVersion>2.5.4.762</AssemblyVersion>
+        <FileVersion>2.5.4.762</FileVersion>
+        <PackageVersion>2.5.4.762</PackageVersion>
+        <!--<BumpSpecSwitch>patch</BumpSpecSwitch>-->
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Platform)' == 'AnyCPU'">
-        <DocumentationFile>obj\$(Configuration)\netstandard2.0\$(MSBuildProjectName).xml</DocumentationFile>
+        <DocumentationFile>obj\$(Configuration)\$(TargetFramework)\$(TargetName).xml</DocumentationFile>
     </PropertyGroup>
 
     <Import Project="..\SourceLink.props" />
     <Import Project="..\Static.Code.Analysis.props" />
 
     <ItemGroup>
-        <PackageReference Include="xunit.extensibility.core" Version="$(XunitExtensibilityVersion)" />
+        <PackageReference Include="$(XunitExtensibilityCorePackage)" Version="$(XunitExtensibilityVersion)" />
     </ItemGroup>
 
-    <!-- The timing of which is key here, after versions bump, before build, and subsequent packaging. -->
-    <Target Name="InitializeNuspecProperties" AfterTargets="InitializeCommonNuspecProperties" BeforeTargets="BeforeBuild">
+    <Import Project="..\shared\Project.Shared.props" />
 
-        <ItemGroup>
-            <!-- TODO: TBD: And here are the Nuspec properties... -->
-            <!-- TODO: TBD: Which more could be exposed, i.e. authors, etc... -->
-            <!-- TODO: TBD: Or differently, i.e. do not need/want Commit, etc... -->
-            <NuspecProperty Include="xunitExtensibilityVersion=$(XunitExtensibilityVersion)" />
-        </ItemGroup>
-
-        <PropertyGroup>
-            <NuspecProperties>@(NuspecProperty, ';')</NuspecProperties>
-        </PropertyGroup>
-
-    </Target>
+    <Import Project="..\NuGet.Symbols.props" />
+    <Import Project="..\NuGet.Assets.props" />
+    <Import Project="..\NuGet.Corporate.props" />
+    <Import Project="..\NuGet.Contributors.props" />
+    <Import Project="..\NuGet.Readme.props" />
+    <Import Project="..\NuGet.License.props" />
 
     <Import Project="..\Validations.props" />
     <Import Project="..\Signed.props" />
-
-    <Import Project="..\..\Contributors.props" />
-    <Import Project="..\..\Licensing.props" />
 
 </Project>

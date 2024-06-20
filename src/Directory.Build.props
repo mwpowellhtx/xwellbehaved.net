@@ -1,18 +1,19 @@
-<Project>
+<Project TreatAsLocalProperty="_NuGetPackageExtension;_SymbolsNuGetPackageExtension;_PackageOutputPathWildcard;_SymbolsPackageOutputPathWildcard">
 
     <PropertyGroup>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <RootNamespace>Xwellbehaved</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
-        <XunitVersion>2.4.1</XunitVersion>
-        <XunitExtensibilityVersion>2.4.1</XunitExtensibilityVersion>
+        <XunitVersion>2.8.1</XunitVersion>
+        <XunitExtensibilityCorePackage>xunit.extensibility.core</XunitExtensibilityCorePackage>
+        <XunitExtensibilityVersion>2.8.1</XunitExtensibilityVersion>
         <XwellbehavedCorePackageId>Xwellbehaved.Core</XwellbehavedCorePackageId>
         <PackageProjectUrl>https://github.com/mwpowellhtx/xwellbehaved.net</PackageProjectUrl>
-        <PackageIconFileName>xwellbehaved_dotnet_256x256.png</PackageIconFileName>
-        <PackageIconDir>..\..\assets\</PackageIconDir>
-        <Company>Ellumination Technologies</Company>
-        <Copyright>Copyright (c) 2020</Copyright>
         <Product>xWellBehaved.net</Product>
         <ProductName>xWellBehaved.net</ProductName>
     </PropertyGroup>
@@ -24,10 +25,9 @@
 
     <!-- Versioning... -->
     <PropertyGroup>
-        <BumpAssemblyVersionsVersion>1.8.0</BumpAssemblyVersionsVersion>
-        <BumpAssemblyVersionsTargetsPath>..\packages\BumpAssemblyVersions\$(BumpAssemblyVersionsVersion)\build\BumpAssemblyVersions.targets</BumpAssemblyVersionsTargetsPath>
+        <BumpAssemblyVersionsVersion>1.9.1</BumpAssemblyVersionsVersion>
+        <!-- Provider specified in Release configuration only.  -->
         <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Release'">MinutesSinceMidnight</BumpAssemblyVersionBuildProvider>
-        <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Debug'">Increment</BumpAssemblyVersionBuildProvider>
     </PropertyGroup>
 
     <ItemGroup>
@@ -36,100 +36,88 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Debug' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <!-- ReSharper disable UnknownProperty -->
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Debug'">
         <BumpVersionSpec Include="Version" BuildProviderTemplate="Increment" />
         <BumpVersionSpec Include="AssemblyVersion" BuildProviderTemplate="Increment" />
         <BumpVersionSpec Include="FileVersion" BuildProviderTemplate="Increment" />
         <BumpVersionSpec Include="PackageVersion" BuildProviderTemplate="Increment" />
     </ItemGroup>
 
-    <!-- ReSharper disable UnknownProperty -->
-    <ItemGroup Condition="'$(Configuration)' == 'Debug' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <!-- Internally, our BumpAssemblyVersions protocol is switched according to the following
+        keywords:
+
+        init: initiates versioning
+        patch: adjusts patch versioning only
+        minor: adjusts from minor.patch versioning
+        major: adjusts from major.minor.patch versioning
+
+        We also trigger based on Configuration, Debug and Release modes.
+
+        In addition to which, for best coodrination, we also trigger based upon TargetFramework
+        being single-targeted.
+
+        UTC is assumed during Release mode builds; additionally, we allow for element resetting
+        during overflow or runoff situations.
+
+        One last observation, initially, we thought perhaps we needed to be very hands on
+        with internal project/package reference versions. However, after a bit of testing,
+        verification, and validation, it seems as though, not only is the NuGet package
+        versioning on target, but we are also observing a very aligned versioning output.
+        So, we think we can run very hands off, not have to regulate any NuGet properties,
+        and it is a Win-Win-Win.
+        -->
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'init'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'init' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
-        <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
-        <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
-        <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
-        <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'patch' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'patch'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'minor' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'minor'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" MinorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'major' And Exists('$(BumpAssemblyVersionsTargetsPath)')">
+    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'major'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <Target Name="DeleteOutputPackagesBeforeBuild" BeforeTargets="PreBuildEvent">
+    <!-- TODO: this one could probably see its own dedicated 'targets' file... -->
+    <Target Name="DeleteOutputPackagesBeforeBuild" BeforeTargets="Clean;PreBuildEvent">
 
         <PropertyGroup>
             <_NuGetPackageExtension>.nupkg</_NuGetPackageExtension>
             <_PackageOutputPathWildcard>$(PackageOutputPath)$(PackageId).*$(_NuGetPackageExtension)</_PackageOutputPathWildcard>
         </PropertyGroup>
 
-        <ItemGroup>
-            <_PackagePathsToDelete Include="$(_PackageOutputPathWildcard)" />
-        </ItemGroup>
-
-        <Message Importance="high" Text="Deleting packages '%(_PackagePathsToDelete.Identity)' ..." Condition="@(_PackagePathsToDelete->Count()) > 0" />
-
-        <!-- TODO: TBD: for whatever reason, <Delete /> does not seem to work here? -->
-        <Exec Command="if exist &quot;$(_PackageOutputPathWildcard)&quot; del /f &quot;$(_PackageOutputPathWildcard)&quot;" />
-
-    </Target>
-
-    <!-- The timing of which is key here, after versions bump, before build, and subsequent packaging. -->
-    <Target Name="InitializeCommonNuspecProperties" AfterTargets="BumpAssemblyVersionsBeforeBuild" BeforeTargets="BeforeBuild">
-
+        <!-- Remember to include the Symbols packages during the cleanup process. -->
         <PropertyGroup>
-            <TargetFrameworkDependencyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">.NETStandard2.0</TargetFrameworkDependencyGroup>
+            <_SymbolsNuGetPackageExtension>.snupkg</_SymbolsNuGetPackageExtension>
+            <_SymbolsPackageOutputPathWildcard>$(PackageOutputPath)$(PackageId).*$(_SymbolsNuGetPackageExtension)</_SymbolsPackageOutputPathWildcard>
         </PropertyGroup>
 
-        <Message Importance="high" Text="TargetName is '$(TargetName)'" />
-
         <ItemGroup>
-            <NuspecProperty Include="description=$(Description)" />
-            <NuspecProperty Include="title=$(Title)" />
-            <NuspecProperty Include="version=$(PackageVersion)" />
-            <NuspecProperty Include="targetName=$(TargetName)" />
-            <NuspecProperty Include="id=$(PackageId)" />
-            <NuspecProperty Include="company=$(Company)" />
-            <NuspecProperty Include="contributorsFile=$(DestinationContribFileName)" />
-            <NuspecProperty Include="iconDir=$(PackageIconDir)" />
-            <NuspecProperty Include="iconFile=$(PackageIconFileName)" />
-            <NuspecProperty Include="licenseFile=$(DestinationLicenseFileName)" />
-            <NuspecProperty Include="projectUrl=$(PackageProjectUrl)" />
-            <NuspecProperty Include="repositoryType=$(RepositoryType)" />
-            <NuspecProperty Include="repositoryUrl=$(PrivateRepositoryUrl)" />
-            <NuspecProperty Include="repositoryCommit=$(SourceRevisionId)" />
-            <NuspecProperty Include="config=$(Configuration)" />
-            <!-- This is a calculated risk putting this here. TargetFramework or TargetFrameworks
-             is declared at the project level, but we know at a solution level we want to target
-             in a single target manner, not a multitarget manner. If we decided on multitarget,
-             for whatever reason, then we would need to reconsider the strategy, communicating
-             those bits through NuGet Properties to the NuGet specifications. -->
-            <NuspecProperty Include="targetFramework=$(TargetFramework)" />
-            <NuspecProperty Include="targetFrameworkDependencyGroup=$(TargetFrameworkDependencyGroup)" />
+            <PackagePathsToDelete Include="$(_PackageOutputPathWildcard)" />
+            <PackagePathsToDelete Include="$(_SymbolsPackageOutputPathWildcard)" />
         </ItemGroup>
+
+        <Message Importance="high" Text="Deleting packages '%(PackagePathsToDelete.Identity)' ..." Condition="@(PackagePathsToDelete->Count()) > 0" />
+
+        <!-- Not sure why <Delete /> task was not working here. -->
+        <Exec Command="if exist &quot;$(_PackageOutputPathWildcard)&quot; del /f &quot;$(_PackageOutputPathWildcard)&quot;" />
 
     </Target>
 

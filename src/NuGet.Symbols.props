@@ -1,0 +1,8 @@
+<Project>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+
+</Project>

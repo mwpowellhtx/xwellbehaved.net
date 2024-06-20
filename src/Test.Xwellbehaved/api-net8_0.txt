@@ -1,0 +1,134 @@
+[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
+namespace Xwellbehaved
+{
+    public class BackgroundAttribute : Xwellbehaved.SupportMethodAttribute
+    {
+        public BackgroundAttribute() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Method, AllowMultiple=true, Inherited=true)]
+    public abstract class BeforeAfterScenarioAttribute : Xunit.Sdk.BeforeAfterTestAttribute
+    {
+        protected BeforeAfterScenarioAttribute() { }
+    }
+    public static class DisposableExtensions
+    {
+        public static T Using<T>(this T disposable, Xwellbehaved.Sdk.IStepContext stepContext)
+            where T : System.IDisposable { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple=true)]
+    [Xunit.Sdk.DataDiscoverer("Xunit.Sdk.InlineDataDiscoverer", "xunit.core")]
+    public sealed class ExampleAttribute : Xunit.Sdk.DataAttribute
+    {
+        public ExampleAttribute(params object[] data) { }
+        public override System.Collections.Generic.IEnumerable<object[]> GetData(System.Reflection.MethodInfo testMethod) { }
+    }
+    public static class IStepBuilderExtensions
+    {
+        public static Xwellbehaved.Sdk.IStepBuilder Rollback(this Xwellbehaved.Sdk.IStepBuilder stepBuilder, System.Action onRollback) { }
+        public static Xwellbehaved.Sdk.IStepBuilder Rollback(this Xwellbehaved.Sdk.IStepBuilder stepBuilder, System.Action<Xwellbehaved.Sdk.IStepContext> onRollback) { }
+        public static Xwellbehaved.Sdk.IStepBuilder Rollback(this Xwellbehaved.Sdk.IStepBuilder stepBuilder, System.Func<System.Threading.Tasks.Task> onRollback) { }
+        [System.Obsolete("We are moving away from tear down verbiage in favor of rollback so as not to conf" +
+            "use with Tear Down decoration")]
+        public static Xwellbehaved.Sdk.IStepBuilder Teardown(this Xwellbehaved.Sdk.IStepBuilder stepBuilder, System.Action onTeardown) { }
+        [System.Obsolete("We are moving away from tear down verbiage in favor of rollback so as not to conf" +
+            "use with Tear Down decoration")]
+        public static Xwellbehaved.Sdk.IStepBuilder Teardown(this Xwellbehaved.Sdk.IStepBuilder stepBuilder, System.Action<Xwellbehaved.Sdk.IStepContext> onTeardown) { }
+        [System.Obsolete("We are moving away from tear down verbiage in favor of rollback so as not to conf" +
+            "use with Tear Down decoration")]
+        public static Xwellbehaved.Sdk.IStepBuilder Teardown(this Xwellbehaved.Sdk.IStepBuilder stepBuilder, System.Func<System.Threading.Tasks.Task> onTeardown) { }
+    }
+    public static class IStepDefinitionExtensions
+    {
+        public static Xwellbehaved.Sdk.IStepDefinition Teardown(this Xwellbehaved.Sdk.IStepDefinition stepDefinition, System.Action action) { }
+        public static Xwellbehaved.Sdk.IStepDefinition Teardown(this Xwellbehaved.Sdk.IStepDefinition stepDefinition, System.Action<Xwellbehaved.Sdk.IStepContext> action) { }
+        public static Xwellbehaved.Sdk.IStepDefinition Teardown(this Xwellbehaved.Sdk.IStepDefinition stepDefinition, System.Func<System.Threading.Tasks.Task> action) { }
+    }
+    public enum RemainingSteps
+    {
+        Skip = 0,
+        Run = 1,
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method)]
+    [Xunit.Sdk.XunitTestCaseDiscoverer("Xwellbehaved.Execution.ScenarioDiscoverer", "Xwellbehaved.Execution")]
+    public class ScenarioAttribute : Xunit.FactAttribute
+    {
+        public ScenarioAttribute() { }
+    }
+    public static class StringExtensions
+    {
+        public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Action body) { }
+        public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Action<Xwellbehaved.Sdk.IStepContext> body) { }
+        public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Func<System.Threading.Tasks.Task> body) { }
+        public static Xwellbehaved.Sdk.IStepBuilder x(this string text, System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> body) { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method)]
+    public abstract class SupportMethodAttribute : System.Attribute
+    {
+        protected SupportMethodAttribute() { }
+    }
+    public class TearDownAttribute : Xwellbehaved.SupportMethodAttribute
+    {
+        public TearDownAttribute() { }
+    }
+}
+namespace Xwellbehaved.Sdk
+{
+    public static class CurrentThread
+    {
+        public static System.Collections.Generic.IEnumerable<Xwellbehaved.Sdk.IStepDefinition> StepDefinitions { get; }
+        public static void Add(Xwellbehaved.Sdk.IStepDefinition item) { }
+        public static System.IDisposable EnterStepDefinitionContext() { }
+    }
+    public delegate string GetStepDisplayText(string stepText, Xwellbehaved.Sdk.StepType stepDefinitionType);
+    public interface IFilter<T>
+    {
+        System.Collections.Generic.IEnumerable<T> Filter(System.Collections.Generic.IEnumerable<T> source);
+    }
+    public interface IScenario : Xunit.Abstractions.ITest
+    {
+        new string DisplayName { get; }
+        Xunit.Sdk.IXunitTestCase ScenarioOutline { get; }
+    }
+    public interface IStep : Xunit.Abstractions.ITest
+    {
+        Xwellbehaved.Sdk.IScenario Scenario { get; }
+    }
+    public interface IStepBuilder
+    {
+        Xwellbehaved.Sdk.IStepBuilder OnFailure(Xwellbehaved.RemainingSteps behavior);
+        Xwellbehaved.Sdk.IStepBuilder Rollback(System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> onRollback);
+        Xwellbehaved.Sdk.IStepBuilder Skip(string reason);
+        [System.Obsolete("We are moving away from this as the syntax to avoid confusion with TearDown annot" +
+            "ations")]
+        Xwellbehaved.Sdk.IStepBuilder Teardown(System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> action);
+    }
+    public interface IStepContext
+    {
+        Xwellbehaved.Sdk.IStep Step { get; }
+        Xwellbehaved.Sdk.IStepContext Using(System.IDisposable disposable);
+    }
+    public interface IStepDefinition : Xwellbehaved.Sdk.IStepBuilder
+    {
+        System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> Body { get; set; }
+        Xwellbehaved.RemainingSteps FailureBehavior { get; set; }
+        Xwellbehaved.Sdk.GetStepDisplayText OnDisplayText { get; set; }
+        System.Collections.Generic.ICollection<System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task>> Rollbacks { get; }
+        string SkipReason { get; set; }
+        Xwellbehaved.Sdk.StepType StepDefinitionType { get; set; }
+        [System.Obsolete("We are moving away from the tear down verbiage in order to avoid confusion with t" +
+            "he Tear Down annotation")]
+        System.Collections.Generic.ICollection<System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task>> Teardowns { get; }
+        string Text { get; set; }
+        Xwellbehaved.Sdk.IStepDefinition ConfigureDisplayText(Xwellbehaved.Sdk.GetStepDisplayText onDisplayText);
+        Xwellbehaved.Sdk.IStepDefinition OnFailure(Xwellbehaved.RemainingSteps behavior);
+        Xwellbehaved.Sdk.IStepDefinition Skip(string reason);
+        Xwellbehaved.Sdk.IStepDefinition Teardown(System.Func<Xwellbehaved.Sdk.IStepContext, System.Threading.Tasks.Task> action);
+    }
+    public enum StepType
+    {
+        Background = 0,
+        Scenario = 1,
+        TearDown = 2,
+        Rollback = 3,
+    }
+}

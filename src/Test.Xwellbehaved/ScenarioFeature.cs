@@ -93,8 +93,8 @@ namespace Xwellbehaved
         {
 
 #pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable IDE0290 // Use primary constructor
             public FeatureWithANonStaticScenarioButNoDefaultConstructor(int ignored)
-#pragma warning restore IDE0060 // Remove unused parameter
             {
             }
 
@@ -128,8 +128,6 @@ namespace Xwellbehaved
 
 #pragma warning disable IDE0022 // Use expression body for methods
                 "Given something".x(() => "With something nested".x(() => { }));
-#pragma warning restore IDE0022 // Use expression body for methods
-
             }
         }
 
