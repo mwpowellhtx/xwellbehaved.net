@@ -11,10 +11,10 @@
         <!-- In better cooperation with our distribution model. -->
         <TargetName>$(MSBuildProjectName).Execution</TargetName>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>2.5.4.760</Version>
-        <AssemblyVersion>2.5.4.760</AssemblyVersion>
-        <FileVersion>2.5.4.760</FileVersion>
-        <PackageVersion>2.5.4.760</PackageVersion>
+        <Version>2.5.5.827</Version>
+        <AssemblyVersion>2.5.5.827</AssemblyVersion>
+        <FileVersion>2.5.5.827</FileVersion>
+        <PackageVersion>2.5.5.827</PackageVersion>
         <!--<BumpSpecSwitch>patch</BumpSpecSwitch>-->
     </PropertyGroup>
 
