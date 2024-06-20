@@ -13,7 +13,7 @@
         <AssemblyVersion>2.5.0.1145</AssemblyVersion>
         <FileVersion>2.5.0.1145</FileVersion>
         <PackageVersion>2.5.0.1145</PackageVersion>
-        <BumpSpecSwitch>init</BumpSpecSwitch>
+        <BumpSpecSwitch>patch</BumpSpecSwitch>
     </PropertyGroup>
 
     <ImportGroup>

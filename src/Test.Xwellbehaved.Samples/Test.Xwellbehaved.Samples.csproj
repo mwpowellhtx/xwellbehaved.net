@@ -13,7 +13,7 @@
         <AssemblyVersion>1.0.0.31</AssemblyVersion>
         <FileVersion>1.0.0.31</FileVersion>
         <PackageVersion>1.0.0.31</PackageVersion>
-        <BumpSpecSwitch>init</BumpSpecSwitch>
+        <BumpSpecSwitch>patch</BumpSpecSwitch>
     </PropertyGroup>
 
     <ItemGroup>

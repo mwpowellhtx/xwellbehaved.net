@@ -1,4 +1,4 @@
-<Project>
+<Project TreatAsLocalProperty="_NuGetPackageExtension;_SymbolsNuGetPackageExtension;_PackageOutputPathWildcard;_SymbolsPackageOutputPathWildcard">
 
     <PropertyGroup>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -26,13 +26,8 @@
     <!-- Versioning... -->
     <PropertyGroup>
         <BumpAssemblyVersionsVersion>1.9.1</BumpAssemblyVersionsVersion>
-        <!-- TODO: BAV conditions change a bit, do not need to be path aware any longer;
-            instead we may simply look at the $(TargetFramework) and condition accordingly, depending whether single/multi targeting.
-            -->
-        <!--<BumpAssemblyVersionsTargetsPath>..\packages\BumpAssemblyVersions\$(BumpAssemblyVersionsVersion)\build\BumpAssemblyVersions.targets</BumpAssemblyVersionsTargetsPath>-->
-        <!-- This much is probably good however from a metadata perspective. -->
+        <!-- Provider specified in Release configuration only.  -->
         <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Release'">MinutesSinceMidnight</BumpAssemblyVersionBuildProvider>
-        <BumpAssemblyVersionBuildProvider Condition="'$(Configuration)' == 'Debug'">Increment</BumpAssemblyVersionBuildProvider>
     </PropertyGroup>
 
     <ItemGroup>
@@ -41,6 +36,7 @@
         </PackageReference>
     </ItemGroup>
 
+    <!-- ReSharper disable UnknownProperty -->
     <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Debug'">
         <BumpVersionSpec Include="Version" BuildProviderTemplate="Increment" />
         <BumpVersionSpec Include="AssemblyVersion" BuildProviderTemplate="Increment" />
@@ -48,14 +44,29 @@
         <BumpVersionSpec Include="PackageVersion" BuildProviderTemplate="Increment" />
     </ItemGroup>
 
-    <!-- ReSharper disable UnknownProperty -->
-    <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Debug'">
-        <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
-        <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
-        <BumpVersionSpec Include="FileVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
-        <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
-    </ItemGroup>
+    <!-- Internally, our BumpAssemblyVersions protocol is switched according to the following
+        keywords:
 
+        init: initiates versioning
+        patch: adjusts patch versioning only
+        minor: adjusts from minor.patch versioning
+        major: adjusts from major.minor.patch versioning
+
+        We also trigger based on Configuration, Debug and Release modes.
+
+        In addition to which, for best coodrination, we also trigger based upon TargetFramework
+        being single-targeted.
+
+        UTC is assumed during Release mode builds; additionally, we allow for element resetting
+        during overflow or runoff situations.
+
+        One last observation, initially, we thought perhaps we needed to be very hands on
+        with internal project/package reference versions. However, after a bit of testing,
+        verification, and validation, it seems as though, not only is the NuGet package
+        versioning on target, but we are also observing a very aligned versioning output.
+        So, we think we can run very hands off, not have to regulate any NuGet properties,
+        and it is a Win-Win-Win.
+        -->
     <ItemGroup Condition="'$(TargetFramework)' != '' And '$(Configuration)' == 'Release' And '$(BumpSpecSwitch)' == 'init'">
         <BumpVersionSpec Include="Version" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
         <BumpVersionSpec Include="AssemblyVersion" UseUtc="true" MayReset="true" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
@@ -84,58 +95,30 @@
         <BumpVersionSpec Include="PackageVersion" UseUtc="true" MayReset="true" MajorProviderTemplate="Increment" PatchProviderTemplate="Increment" BuildProviderTemplate="$(BumpAssemblyVersionBuildProvider)" />
     </ItemGroup>
 
-    <Target Name="DeleteOutputPackagesBeforeBuild" BeforeTargets="PreBuildEvent">
+    <!-- TODO: this one could probably see its own dedicated 'targets' file... -->
+    <Target Name="DeleteOutputPackagesBeforeBuild" BeforeTargets="Clean;PreBuildEvent">
 
         <PropertyGroup>
             <_NuGetPackageExtension>.nupkg</_NuGetPackageExtension>
             <_PackageOutputPathWildcard>$(PackageOutputPath)$(PackageId).*$(_NuGetPackageExtension)</_PackageOutputPathWildcard>
         </PropertyGroup>
 
+        <!-- Remember to include the Symbols packages during the cleanup process. -->
+        <PropertyGroup>
+            <_SymbolsNuGetPackageExtension>.snupkg</_SymbolsNuGetPackageExtension>
+            <_SymbolsPackageOutputPathWildcard>$(PackageOutputPath)$(PackageId).*$(_SymbolsNuGetPackageExtension)</_SymbolsPackageOutputPathWildcard>
+        </PropertyGroup>
+
         <ItemGroup>
-            <_PackagePathsToDelete Include="$(_PackageOutputPathWildcard)" />
+            <PackagePathsToDelete Include="$(_PackageOutputPathWildcard)" />
+            <PackagePathsToDelete Include="$(_SymbolsPackageOutputPathWildcard)" />
         </ItemGroup>
 
-        <Message Importance="high" Text="Deleting packages '%(_PackagePathsToDelete.Identity)' ..." Condition="@(_PackagePathsToDelete->Count()) > 0" />
+        <Message Importance="high" Text="Deleting packages '%(PackagePathsToDelete.Identity)' ..." Condition="@(PackagePathsToDelete->Count()) > 0" />
 
-        <!-- TODO: TBD: for whatever reason, <Delete /> does not seem to work here? -->
+        <!-- Not sure why <Delete /> task was not working here. -->
         <Exec Command="if exist &quot;$(_PackageOutputPathWildcard)&quot; del /f &quot;$(_PackageOutputPathWildcard)&quot;" />
 
     </Target>
-
-    <!-- TODO: is the separate NuGet packaging step for properties still necessary?
-        or is it something we can fall back on inherent project properties for furnish?
-        key is probably the 'license file question', which seems to have been resolved in today's MSBuild, etc
-        -->
-    <!-- The timing of which is key here, after versions bump, before build, and subsequent packaging. -->
-    <!--<Target Name="InitializeCommonNuspecProperties" AfterTargets="BumpAssemblyVersions" BeforeTargets="BeforeBuild">
-        <PropertyGroup>
-            <TargetFrameworkDependencyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">.NETStandard2.0</TargetFrameworkDependencyGroup>
-        </PropertyGroup>
-        <Message Importance="high" Text="TargetName is '$(TargetName)'" />
-        <ItemGroup>
-            <NuspecProperty Include="description=$(Description)" />
-            <NuspecProperty Include="title=$(Title)" />
-            <NuspecProperty Include="version=$(PackageVersion)" />
-            <NuspecProperty Include="targetName=$(TargetName)" />
-            <NuspecProperty Include="id=$(PackageId)" />
-            <NuspecProperty Include="company=$(Company)" />
-            <NuspecProperty Include="contributorFile=$(PackageContributorFile)" />
-            <NuspecProperty Include="iconDir=$(PackageIconDir)" />
-            <NuspecProperty Include="iconFile=$(PackageIconFileName)" />
-        </ItemGroup>
-        <ItemGroup Condition="'$(PackageReadmeFile)' != '' And Exists('$(PackageReadmeFile)')">
-            <NuspecProperty Include="readmeFile=$(PackageReadmeFile)" />
-        </ItemGroup>
-        <ItemGroup>
-            <NuspecProperty Include="licenseFile=$(DestinationLicenseFileName)" />
-            <NuspecProperty Include="projectUrl=$(PackageProjectUrl)" />
-            <NuspecProperty Include="repositoryType=$(RepositoryType)" />
-            <NuspecProperty Include="repositoryUrl=$(PrivateRepositoryUrl)" />
-            <NuspecProperty Include="repositoryCommit=$(SourceRevisionId)" />
-            <NuspecProperty Include="config=$(Configuration)" />
-            <NuspecProperty Include="targetFramework=$(TargetFramework)" />
-            <NuspecProperty Include="targetFrameworkDependencyGroup=$(TargetFrameworkDependencyGroup)" />
-        </ItemGroup>
-    </Target>-->
 
 </Project>
