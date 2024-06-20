@@ -168,8 +168,9 @@ popd
 
 goto :end
 
+rem We need to also include the .snupkg symbol packages when they are included
 :publish_local
-for %%f in ("%1\bin\%config%\%1.*.nupkg") do (
+for %%f in ("%1\bin\%config%\%1.*.*nupkg") do (
     if "%dry%" == "true" (
         echo Dry run: %xcopy_exe% %%f %xcopy_dest_dir% %xcopy_opts%
     ) else (
@@ -183,6 +184,7 @@ for %%f in ("%1\bin\%config%\%1.*.nupkg") do (
 )
 exit /b
 
+rem When NuGet .snupkg symbol packages are involved, we think the push function automatically picks those up
 :publish_nuget
 for %%f in ("%1\bin\%config%\%1.*.nupkg") do (
     if "%dry%" == "true" (
